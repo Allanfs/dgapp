@@ -2,6 +2,7 @@ package com.github.allanfs.dgapp.modelo;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,7 +17,7 @@ import lombok.Setter;
 public class Recheio {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Getter private Long id;
 
     @Getter @Setter private String nome;

@@ -4,12 +4,13 @@ import java.util.List;
 
 public interface IService<T> {
 
-    public void cadastrar( T obj );
+    public T cadastrar( T obj );
 
-    public void editar( T obj );
+    public T editar( T obj );
 
     public List<T> buscarTodos();
 
-    public T buscarUm( Long id);
+    public T buscarPorId( Long id );
 
+    public void deletar( Long id );
 }

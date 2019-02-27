@@ -11,20 +11,24 @@ public class CategoriaSaborService implements IService<CategoriaSabor>{
     @Autowired
     private CategoriaSaborRepository categoriaRepo;
 
-    public void cadastrar(CategoriaSabor categoria){
-        categoriaRepo.save(categoria);
+    public CategoriaSabor cadastrar(CategoriaSabor categoria){
+        return categoriaRepo.save(categoria);
     }
     
-    public void editar(CategoriaSabor categoria){
-        categoriaRepo.save(categoria);
+    public CategoriaSabor editar(CategoriaSabor categoria){
+        return categoriaRepo.save(categoria);
     }
 
     public List<CategoriaSabor> buscarTodos(){
         return categoriaRepo.findAll();
     }
 
-    public CategoriaSabor buscarUm( Long id) {
+    public CategoriaSabor buscarPorId( Long id) {
         return categoriaRepo.findById( id ).get();
     }
-
+    
+    public void deletar( Long id ) {
+    	categoriaRepo.deleteById( id );
+    }
+    
 }
