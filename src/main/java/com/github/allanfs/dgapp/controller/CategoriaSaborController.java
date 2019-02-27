@@ -2,6 +2,7 @@ package com.github.allanfs.dgapp.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,21 +15,22 @@ import com.github.allanfs.dgapp.service.CategoriaSaborService;
 @RestController
 public class CategoriaSaborController implements IController<CategoriaSabor> {
 
-	private static final String SERVICO = "/categoria";
+	private static final String SERVICO = "/categoriasabor";
 	
-	private CategoriaSaborService categoriaServ = new CategoriaSaborService();
+	@Autowired
+	private CategoriaSaborService categoriaServ;
 	
 	@PostMapping(SERVICO)
 	public CategoriaSabor cadastrar(CategoriaSabor categoria) {
 		return categoriaServ.cadastrar(categoria);
 	}
 	
-	@GetMapping(SERVICO)
+	@GetMapping(value=SERVICO, produces="application/json")
 	public List<CategoriaSabor> buscarTodos(){
 		return categoriaServ.buscarTodos();
 	}
 	
-	@GetMapping(SERVICO + "/{id}")
+	@GetMapping(value=SERVICO + "/{id}", produces="application/json")
 	public CategoriaSabor buscarPorId( Long id) {
 		return categoriaServ.buscarPorId(id);
 	}

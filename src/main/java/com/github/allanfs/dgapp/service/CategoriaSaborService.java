@@ -3,9 +3,12 @@ package com.github.allanfs.dgapp.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.github.allanfs.dgapp.modelo.CategoriaSabor;
 import com.github.allanfs.dgapp.repository.CategoriaSaborRepository;
+
+@Service
 public class CategoriaSaborService implements IService<CategoriaSabor>{
 
     @Autowired
@@ -24,7 +27,7 @@ public class CategoriaSaborService implements IService<CategoriaSabor>{
     }
 
     public CategoriaSabor buscarPorId( Long id) {
-        return categoriaRepo.findById( id ).get();
+        return categoriaRepo.findById( id ).orElse(null);
     }
     
     public void deletar( Long id ) {
