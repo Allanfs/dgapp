@@ -1,6 +1,7 @@
+@NoArgsConstructor @AllArgsConstructor
 public class Recheio {
-
-    private String nome;
-    private boolean especial;
+    
+    @Getter @Setter private String nome;
+    @Getter @Setter private boolean especial;
     
 }

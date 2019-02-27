@@ -1,5 +1,7 @@
+@NoArgsConstructor @AllArgsConstructor
 public class CategoriaSabor {
 
-    private String nome;
+    
+    @Getter @Setter private String nome;
     
 }
