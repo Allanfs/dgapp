@@ -10,4 +10,18 @@ Para utilização do Lombok no Eclipse siga [esta resposta no StackOverflow](htt
 
 ### Banco de Dados
 **Mysql** em Docker
->  docker run -it -e MYSQL\_ROOT\_PASSWORD=123 -d mysql
+>  docker run -it -e MYSQL\_ROOT\_PASSWORD=123 mysql
+
+>  mysql> create database db;
+
+## Endpoints
+
+Entidades em [~.modelo](https://github.com/Allanfs/dgapp/tree/master/src/main/java/com/github/allanfs/dgapp/modelo) possuem controllers que atendem as estas requisições.
+
+| Requisição                	| Descrição                      	|
+|---------------------------	|--------------------------------	|
+| `GET /{entidade}`         	| retorna todos os registros     	|
+| `GET /{entidade}/{id}`    	| retorna registro de id {id}    	|
+| `POST /{entidade}`        	| cadastra a entidade            	|
+| `DELETE /{entidade}/{id}` 	| exclui a entidade de id {id}   	|
+| `PUT /{entidade}/{id}`    	| atualiza a entidade de id {id} 	|
