@@ -15,7 +15,7 @@ import com.github.allanfs.dgapp.service.ProdutoService;
 @RestController
 public class ProdutoController implements IController<Produto> {
 
-	private static final String SERVICO = "/Produto";
+	private static final String SERVICO = "/produto";
 	
 	@Autowired
 	private ProdutoService ProdutoServ;

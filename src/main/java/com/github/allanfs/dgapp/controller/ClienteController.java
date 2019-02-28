@@ -15,7 +15,7 @@ import com.github.allanfs.dgapp.service.ClienteService;
 @RestController
 public class ClienteController implements IController<Cliente> {
 
-	private static final String SERVICO = "/Cliente";
+	private static final String SERVICO = "/cliente";
 	
 	@Autowired
 	private ClienteService ClienteServ;
