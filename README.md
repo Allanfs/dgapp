@@ -1,5 +1,5 @@
 # dgapp
-Aplicação Web da Pizzaria Dom Gilittu's
+Aplicação Web de Pizzaria
 
 ## Execução e Configuração do Ambiente
 
