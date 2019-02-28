@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,19 +15,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="tb_recheio")
+@Table(name="tb_tamanho")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor @AllArgsConstructor
-public class Recheio {
+public class Tamanho {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Getter private Long id;
-
-    @NotNull
-    @Getter @Setter private String nome;
-    
-    @Getter @Setter private boolean especial = false;
-    @Getter @Setter private boolean disponivel = false;
-    
+	
+	@Getter @Setter private String nome;
+	@Getter @Setter private double preco;
+	@Getter @Setter private boolean disponivel;
+	@ManyToOne
+	@Getter @Setter private Categoria categoria;
+	
 }

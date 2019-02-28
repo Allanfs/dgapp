@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +36,8 @@ public class Cliente {
     @Getter @Setter private Set<Endereco> endereco;
 
     @Getter @Setter private String nome;
+    
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     @Getter @Setter private Date dataNascimento;
     @Getter @Setter private String cpf;
 

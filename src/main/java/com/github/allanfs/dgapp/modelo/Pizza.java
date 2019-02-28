@@ -1,10 +1,12 @@
 package com.github.allanfs.dgapp.modelo;
 
-import javax.persistence.Entity;
+import java.util.Set;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,20 +16,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name="tb_recheio")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor @AllArgsConstructor
-public class Recheio {
+public class Pizza extends Produto {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Getter private Long id;
 
-    @NotNull
-    @Getter @Setter private String nome;
+    @OneToMany
+    @NotNull @NotEmpty
+	@Getter @Setter private Set<Sabor> sabores;
+    @Getter @Setter private Tamanho base;
+    @Getter @Setter private boolean especial;
     
-    @Getter @Setter private boolean especial = false;
-    @Getter @Setter private boolean disponivel = false;
-    
+    @Getter @Setter private double preco;
 }
