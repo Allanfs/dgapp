@@ -5,28 +5,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.allanfs.dgapp.modelo.CategoriaSabor;
-import com.github.allanfs.dgapp.repository.CategoriaSaborRepository;
+import com.github.allanfs.dgapp.modelo.Categoria;
+import com.github.allanfs.dgapp.repository.CategoriaRepository;
 
 @Service
-public class CategoriaSaborService implements IService<CategoriaSabor>{
+public class CategoriaService implements IService<Categoria>{
 
     @Autowired
-    private CategoriaSaborRepository categoriaRepo;
+    private CategoriaRepository categoriaRepo;
 
-    public CategoriaSabor cadastrar(CategoriaSabor categoria){
+    public Categoria cadastrar(Categoria categoria){
         return categoriaRepo.save(categoria);
     }
     
-    public CategoriaSabor editar(CategoriaSabor categoria){
+    public Categoria editar(Categoria categoria){
         return categoriaRepo.save(categoria);
     }
 
-    public List<CategoriaSabor> buscarTodos(){
+    public List<Categoria> buscarTodos(){
         return categoriaRepo.findAll();
     }
 
-    public CategoriaSabor buscarPorId( Long id) {
+    public Categoria buscarPorId( Long id) {
         return categoriaRepo.findById( id ).orElse(null);
     }
     

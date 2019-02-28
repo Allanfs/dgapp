@@ -9,34 +9,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.allanfs.dgapp.modelo.CategoriaSabor;
-import com.github.allanfs.dgapp.service.CategoriaSaborService;
+import com.github.allanfs.dgapp.modelo.Categoria;
+import com.github.allanfs.dgapp.service.CategoriaService;
 
 @RestController
-public class CategoriaSaborController implements IController<CategoriaSabor> {
+public class CategoriaController implements IController<Categoria> {
 
-	private static final String SERVICO = "/categoriasabor";
+	private static final String SERVICO = "/categoria";
 	
 	@Autowired
-	private CategoriaSaborService categoriaServ;
+	private CategoriaService categoriaServ;
 	
 	@PostMapping(SERVICO)
-	public CategoriaSabor cadastrar(CategoriaSabor categoria) {
+	public Categoria cadastrar(Categoria categoria) {
 		return categoriaServ.cadastrar(categoria);
 	}
 	
 	@GetMapping(value=SERVICO, produces="application/json")
-	public List<CategoriaSabor> buscarTodos(){
+	public List<Categoria> buscarTodos(){
 		return categoriaServ.buscarTodos();
 	}
 	
 	@GetMapping(value=SERVICO + "/{id}", produces="application/json")
-	public CategoriaSabor buscarPorId( Long id) {
+	public Categoria buscarPorId( Long id) {
 		return categoriaServ.buscarPorId(id);
 	}
 	
 	@PutMapping(SERVICO + "/{id}")
-	public CategoriaSabor editar( CategoriaSabor categoria, Long id) {
+	public Categoria editar( Categoria categoria, Long id) {
 		return categoriaServ.cadastrar(categoria);
 	}
 	

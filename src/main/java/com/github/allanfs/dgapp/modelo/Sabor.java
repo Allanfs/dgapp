@@ -32,6 +32,6 @@ public class Sabor implements Serializable{
     @Getter @Setter private Set<Recheio> recheios;
     
     @ManyToOne
-    @Getter @Setter private CategoriaSabor categoria;
+    @Getter @Setter private Categoria categoria;
 
 }
