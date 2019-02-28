@@ -15,17 +15,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="tb_recheio")
+@Table(name="tb_endereco")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor @AllArgsConstructor
-public class Recheio {
-
+public class Endereco {
+	
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Getter private Long id;
 
     @NotNull
-    @Getter @Setter private String nome;
-    @Getter @Setter private boolean especial;
+	@Getter @Setter private String logradouro;
     
+    @NotNull
+	@Getter @Setter private String bairro;
+	@Getter @Setter private String complemento;
+	
+	@NotNull
+	@Getter @Setter private String numero;
+	@Getter @Setter private String cep;
+	
+    @Getter @Setter private String localidade;
+    @Getter @Setter private String uf;
+	
 }
