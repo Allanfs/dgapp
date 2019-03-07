@@ -24,4 +24,7 @@ public class Promocao {
 	@Getter @Setter private Date dataFim;
 	
 	@Getter @Setter private Set<Produto> produtos;
+	
+	@Getter @Setter private double valor;
+	
 }
