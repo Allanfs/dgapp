@@ -1,5 +1,5 @@
-# dgapp
-Aplicação Web de Pizzaria
+# DGApp Backend
+Aplicação REST de Pizzaria
 
 ## Execução e Configuração do Ambiente
 
