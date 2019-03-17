@@ -3,6 +3,7 @@ package com.github.allanfs.dgapp.modelo;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class Promocao {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id_promocao")
 	@Getter private Long id;
 	@Getter @Setter private String nome;
 	@Getter @Setter private Date dataInicio;

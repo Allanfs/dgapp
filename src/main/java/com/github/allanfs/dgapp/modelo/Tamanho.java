@@ -1,5 +1,6 @@
 package com.github.allanfs.dgapp.modelo;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class Tamanho {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="id_tamanho")
     @Getter private Long id;
 	
 	@Getter @Setter private String nome;

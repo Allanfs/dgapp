@@ -1,9 +1,11 @@
 package com.github.allanfs.dgapp.modelo;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -22,9 +24,11 @@ public class Telefone {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="id_telefone")
     @Getter private Long id;
 
     @ManyToOne
+    @JoinColumn( name="id_cliente_fk")
     @Getter @Setter private Cliente cliente;
 
     @Getter @Setter private Integer ddd;

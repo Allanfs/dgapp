@@ -1,5 +1,6 @@
 package com.github.allanfs.dgapp.modelo;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,23 +16,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="")
+@Table(name="tb_pedido_itempedido")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemPedido {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id_itempedido")
 	@Getter private Long id;
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "id_pedido")
+	@JoinColumn(name = "id_pedido_fk")
 	@Getter @Setter private Pedido pedido;
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "id_produto")
+	@JoinColumn(name = "id_produto_fk")
 	@Getter @Setter private Produto produto;
 
 	@NotNull
