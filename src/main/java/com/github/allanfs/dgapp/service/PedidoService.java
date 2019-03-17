@@ -2,37 +2,34 @@ package com.github.allanfs.dgapp.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.github.allanfs.dgapp.modelo.Pedido;
+import com.github.allanfs.dgapp.repository.PedidoRepository;
 
 public class PedidoService implements IService<Pedido> {
 
-	@Override
-	public Pedido cadastrar(Pedido obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Autowired
+    private PedidoRepository pedidoRepo;
 
-	@Override
-	public Pedido editar(Pedido obj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Pedido cadastrar(Pedido pedido){
+        return pedidoRepo.save(pedido);
+    }
+    
+    public Pedido editar(Pedido pedido){
+        return pedidoRepo.save(pedido);
+    }
 
-	@Override
-	public List<Pedido> buscarTodos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public List<Pedido> buscarTodos(){
+        return pedidoRepo.findAll();
+    }
 
-	@Override
-	public Pedido buscarPorId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Pedido buscarPorId( Long id) {
+        return pedidoRepo.findById( id ).orElse(null);
+    }
+    
+    public void deletar( Long id ) {
+    	pedidoRepo.deleteById( id );
+    }
 
-	@Override
-	public void deletar(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
 }

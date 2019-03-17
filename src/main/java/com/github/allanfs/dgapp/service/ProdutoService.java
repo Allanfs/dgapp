@@ -12,26 +12,26 @@ import com.github.allanfs.dgapp.repository.ProdutoRepository;
 public class ProdutoService implements IService<Produto>{
 
     @Autowired
-    private ProdutoRepository ProdutoRepo;
+    private ProdutoRepository produtoRepo;
 
     public Produto cadastrar(Produto Produto){
-        return ProdutoRepo.save(Produto);
+        return produtoRepo.save(Produto);
     }
     
     public Produto editar(Produto Produto){
-        return ProdutoRepo.save(Produto);
+        return produtoRepo.save(Produto);
     }
 
     public List<Produto> buscarTodos(){
-        return ProdutoRepo.findAll();
+        return produtoRepo.findAll();
     }
 
     public Produto buscarPorId( Long id) {
-        return ProdutoRepo.findById( id ).orElse(null);
+        return produtoRepo.findById( id ).orElse(null);
     }
     
     public void deletar( Long id ) {
-    	ProdutoRepo.deleteById( id );
+    	produtoRepo.deleteById( id );
     }
     
 }
