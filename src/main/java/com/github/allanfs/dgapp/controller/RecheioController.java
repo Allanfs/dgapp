@@ -31,7 +31,7 @@ public class RecheioController implements IController<Recheio> {
 	public List<Recheio> buscarTodos() {
 		return recheioServ.buscarTodos();
 	}
-
+	
 	@Override
 	@GetMapping(SERVICO + "/{id}")
 	public Recheio buscarPorId(Long id) {

@@ -27,6 +27,8 @@ public class Tamanho {
     @Getter private Long id;
 	
 	@Getter @Setter private String nome;
+	@Getter @Setter private int centimetros;
+	@Getter @Setter private int numeroFatias;
 	@Getter @Setter private double preco;
 	@Getter @Setter private boolean disponivel;
 	@ManyToOne
