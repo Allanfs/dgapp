@@ -3,18 +3,18 @@ package com.github.allanfs.dgapp.modelo;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,17 +37,20 @@ public class Sabor implements Serializable{
     @Getter @Setter private boolean especial;
 
     @ManyToMany
-    @JoinTable(name="sabor_possui_recheios",
-    	joinColumns= {@JoinColumn(name="id_sabor")}, 
-    	inverseJoinColumns={@JoinColumn(name="id_recheio")},
-    	foreignKey=@ForeignKey(name="FK_SABOR_ID" ),
-    	inverseForeignKey=@ForeignKey(name="FK_RECHEIO_ID"))
+
     @Getter @Setter private Set<Recheio> recheios;
     
-    @OneToMany
+    @OneToMany(cascade=CascadeType.PERSIST)
+    @JsonIgnoreProperties("sabor")
     @Getter @Setter private Set<SaborPreco> precosTamanhos;
     
     @ManyToOne
     @Getter @Setter private Categoria categoria;
+
+	@Override
+	public String toString() {
+		return "Sabor [id=" + id + ", nome=" + nome + ", especial=" + especial + ", recheios=" + recheios
+				+ ", precosTamanhos=" + precosTamanhos + ", categoria=" + categoria + "]";
+	}
 
 }
