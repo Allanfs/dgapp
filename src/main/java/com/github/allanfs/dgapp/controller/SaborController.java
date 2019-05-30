@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.allanfs.dgapp.modelo.Sabor;
+import com.github.allanfs.dgapp.modelo.SaborPrecoEmbeddedId;
 import com.github.allanfs.dgapp.service.SaborService;
 
 @RestController
@@ -23,6 +24,9 @@ public class SaborController implements IController<Sabor>{
 	@Override
 	@PostMapping(SERVICO)
 	public Sabor cadastrar(Sabor obj) {
+		
+		obj.getPrecosTamanhos().forEach(pt -> pt.getId().setSabor(obj) );
+		
 		return saborServ.cadastrar(obj);
 	}
 
@@ -41,7 +45,12 @@ public class SaborController implements IController<Sabor>{
 	@Override
 	@PutMapping(SERVICO + "/{id}")
 	public Sabor editar(Sabor obj, Long id) {
-		return saborServ.editar(obj);
+		System.out.println(obj.getNome());
+//		obj.getPrecosTamanhos().forEach( pt -> System.out.println(pt) );
+		Sabor editar = saborServ.editar(obj);
+		
+		
+		return editar;
 	}
 
 	@Override

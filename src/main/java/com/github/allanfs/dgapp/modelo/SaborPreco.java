@@ -1,12 +1,11 @@
 package com.github.allanfs.dgapp.modelo;
 
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,21 +13,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="preco_sabor_no_tamanho")
+@Table(name = "preco_sabor_no_tamanho")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class SaborPreco {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_saborPreco")
-	@Getter private Long id;
-	
-    @ManyToOne
-	@Getter @Setter private Sabor sabor;
-	
-    @ManyToOne
-	@Getter @Setter private Tamanho tamanho;
-	
-	@Getter @Setter private double preco;
+	@EmbeddedId
+	@Getter
+	@Setter
+	private SaborPrecoEmbeddedId id;
+
+	@Getter
+	@Setter
+	private double preco;
+
 }
