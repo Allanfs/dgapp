@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.modelo;
+package com.github.allanfs.dgapp.modelo.pizza;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

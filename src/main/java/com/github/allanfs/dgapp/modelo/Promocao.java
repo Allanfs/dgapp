@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.allanfs.dgapp.modelo.pedido.Produto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

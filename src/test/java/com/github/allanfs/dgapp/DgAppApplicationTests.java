@@ -12,7 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.github.allanfs.dgapp.modelo.Recheio;
+import com.github.allanfs.dgapp.modelo.pizza.Recheio;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

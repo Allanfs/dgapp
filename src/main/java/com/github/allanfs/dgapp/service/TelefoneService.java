@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.allanfs.dgapp.modelo.Telefone;
+import com.github.allanfs.dgapp.modelo.cliente.Telefone;
 import com.github.allanfs.dgapp.repository.TelefoneRepository;
 
 @Service

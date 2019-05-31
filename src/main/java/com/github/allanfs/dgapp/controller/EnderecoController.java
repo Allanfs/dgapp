@@ -2,7 +2,7 @@ package com.github.allanfs.dgapp.controller;
 
 import java.util.List;
 
-import com.github.allanfs.dgapp.modelo.Endereco;
+import com.github.allanfs.dgapp.modelo.cliente.Endereco;
 import com.github.allanfs.dgapp.service.EnderecoService;
 
 import org.springframework.beans.factory.annotation.Autowired;

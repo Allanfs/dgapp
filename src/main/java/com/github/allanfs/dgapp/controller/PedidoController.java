@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.allanfs.dgapp.modelo.Pedido;
+import com.github.allanfs.dgapp.modelo.pedido.Pedido;
 import com.github.allanfs.dgapp.service.PedidoService;
 
 @RestController
@@ -23,6 +23,7 @@ public class PedidoController implements IController<Pedido> {
 	@Override
 	@PostMapping(SERVICO)
 	public Pedido cadastrar(Pedido obj) {
+		obj.getItemPedido().forEach( item -> item.setPedido(obj));
 		return PedidoServ.cadastrar(obj);
 	}
 

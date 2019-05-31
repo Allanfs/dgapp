@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.modelo;
+package com.github.allanfs.dgapp.modelo.pedido;
 
 import java.util.Date;
 import java.util.Set;
@@ -19,37 +19,49 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.engine.internal.ForeignKeys;
 import org.hibernate.mapping.ForeignKey;
 
+import com.github.allanfs.dgapp.modelo.cliente.Cliente;
+import com.github.allanfs.dgapp.modelo.cliente.Endereco;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="tb_pedido")
+@Table(name = "tb_pedido")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pedido {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_pedido")
-	@Getter private Long id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_pedido")
+	@Getter
+	private Long id;
+
 	@NotNull
-	@JoinColumn( name="id_cliente_fk")
-	@OneToOne(targetEntity=Cliente.class)
-	@Getter @Setter private Cliente cliente;
-	
+	@JoinColumn(name = "id_cliente_fk")
+	@OneToOne(targetEntity = Cliente.class)
+	@Getter
+	@Setter
+	private Cliente cliente;
+
 	@NotNull
-	@OneToOne(targetEntity=Endereco.class)
-	@JoinColumn( name="id_endereco_fk")
-	@Getter @Setter private Endereco enderecoEntrega;
-	
-	@OneToMany(cascade= CascadeType.PERSIST,fetch=FetchType.EAGER)
-	@JoinColumn( name="id_itempedido")
+	@OneToOne(targetEntity = Endereco.class)
+	@JoinColumn(name = "id_endereco_fk")
+	@Getter
+	@Setter
+	private Endereco enderecoEntrega;
+
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_itempedido")
+	@Getter
+	@Setter
 	private Set<ItemPedido> itemPedido;
-	
-	@Column(name="dt_pedido")
-	@Getter @Setter private Date dataPedido;
-	
+
+	@Column(name = "dt_pedido")
+	@Getter
+	@Setter
+	private Date dataPedido;
+
 }

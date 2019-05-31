@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.modelo;
+package com.github.allanfs.dgapp.modelo.pizza;
 
 import java.util.Set;
 
@@ -10,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.allanfs.dgapp.modelo.pedido.Produto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

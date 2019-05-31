@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.allanfs.dgapp.modelo.Sabor;
-import com.github.allanfs.dgapp.modelo.SaborPrecoEmbeddedId;
+import com.github.allanfs.dgapp.modelo.pizza.Sabor;
+import com.github.allanfs.dgapp.modelo.pizza.SaborPrecoEmbeddedId;
 import com.github.allanfs.dgapp.service.SaborService;
 
 @RestController
@@ -45,7 +45,6 @@ public class SaborController implements IController<Sabor>{
 	@Override
 	@PutMapping(SERVICO + "/{id}")
 	public Sabor editar(Sabor obj, Long id) {
-		System.out.println(obj.getNome());
 //		obj.getPrecosTamanhos().forEach( pt -> System.out.println(pt) );
 		Sabor editar = saborServ.editar(obj);
 		

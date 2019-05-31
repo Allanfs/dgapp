@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.modelo;
+package com.github.allanfs.dgapp.modelo.pizza;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "preco_sabor_no_tamanho")
+@Table(name = "tb_preco_sabor_no_tamanho")
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")

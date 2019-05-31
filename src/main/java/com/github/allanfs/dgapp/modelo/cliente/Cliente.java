@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.modelo;
+package com.github.allanfs.dgapp.modelo.cliente;
 
 import java.util.Date;
 import java.util.Set;

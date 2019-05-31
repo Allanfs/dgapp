@@ -1,14 +1,15 @@
-package com.github.allanfs.dgapp.modelo;
+package com.github.allanfs.dgapp.modelo.pizza;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.allanfs.dgapp.modelo.Categoria;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,28 +17,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="tb_endereco")
+@Table(name="tb_tamanho")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor @AllArgsConstructor
-public class Endereco {
-	
+public class Tamanho {
+
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="id_endereco")
+    @Column(name="id_tamanho")
     @Getter private Long id;
-
-    @NotNull
-	@Getter @Setter private String logradouro;
-    
-    @NotNull
-	@Getter @Setter private String bairro;
-	@Getter @Setter private String complemento;
 	
-	@NotNull
-	@Getter @Setter private String numero;
-	@Getter @Setter private String cep;
-	
-    @Getter @Setter private String localidade;
-    @Getter @Setter private String uf;
+	@Getter @Setter private String nome;
+	@Getter @Setter private int centimetros;
+	@Getter @Setter private int numeroFatias;
+	@Getter @Setter private double preco;
+	@Getter @Setter private boolean disponivel;
+	@ManyToOne
+	@Getter @Setter private Categoria categoria;
 	
 }

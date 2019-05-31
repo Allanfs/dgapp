@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.allanfs.dgapp.modelo.Recheio;
+import com.github.allanfs.dgapp.modelo.pizza.Recheio;
 import com.github.allanfs.dgapp.repository.RecheioRepository;
 
 @Service

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.allanfs.dgapp.modelo.Cliente;
+import com.github.allanfs.dgapp.modelo.cliente.Cliente;
 import com.github.allanfs.dgapp.service.ClienteService;
 
 @RestController

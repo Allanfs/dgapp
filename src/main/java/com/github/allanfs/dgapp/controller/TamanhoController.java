@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.allanfs.dgapp.modelo.Tamanho;
+import com.github.allanfs.dgapp.modelo.pizza.Tamanho;
 import com.github.allanfs.dgapp.service.TamanhoService;
 
 @RestController

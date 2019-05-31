@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.allanfs.dgapp.modelo.Tamanho;
+import com.github.allanfs.dgapp.modelo.pizza.Tamanho;
 import com.github.allanfs.dgapp.repository.TamanhoRepository;
 
 @Service
