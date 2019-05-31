@@ -23,7 +23,9 @@ public class PedidoController implements IController<Pedido> {
 	@Override
 	@PostMapping(SERVICO)
 	public Pedido cadastrar(Pedido obj) {
-		obj.getItemPedido().forEach( item -> item.setPedido(obj));
+		
+		obj.getItemPedido().forEach( item -> item.getId().setPedido(obj));
+		
 		return PedidoServ.cadastrar(obj);
 	}
 

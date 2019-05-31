@@ -1,12 +1,7 @@
 package com.github.allanfs.dgapp.modelo.pedido;
 
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -21,20 +16,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ItemPedido {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_itempedido")
-	@Getter private Long id;
-	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "id_pedido_fk")
-	@Getter @Setter private Pedido pedido;
-	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "id_produto_fk")
-	@Getter @Setter private Produto produto;
+	@EmbeddedId
+	@Getter
+	@Setter
+	ItemPedidoEmbeddedKey id;
 
 	@NotNull
 	@Getter @Setter private Integer quantidade;
