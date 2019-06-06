@@ -2,6 +2,7 @@ package com.github.allanfs.dgapp.dgapp.controllers;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,29 +12,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
+import com.github.allanfs.dgapp.dgapp.pizza.service.TamanhoService;
 
 @RestController
 @RequestMapping(name = "TamanhoController", path="/tamanho")
 public class TamanhoController implements Controller<Tamanho>{
 
+	@Autowired
+	private TamanhoService service;
+	
 	@Override
 	@PostMapping
 	public ResponseEntity<Tamanho> cadastrar(Tamanho obj) {
-		// TODO Auto-generated method stub
+		service.cadastrar(obj);
 		return null;
 	}
 
 	@Override
 	@GetMapping()
 	public ResponseEntity<Tamanho> buscarTodos() {
-		// TODO Auto-generated method stub
+		service.buscarTodos();
 		return null;
 	}
 
 	@Override
 	@GetMapping("/{id}")
 	public ResponseEntity<Tamanho> buscarPorId(UUID id) {
-		// TODO Auto-generated method stub
+		service.buscarPorId(id);
 		return null;
 	}
 
@@ -47,8 +52,7 @@ public class TamanhoController implements Controller<Tamanho>{
 	@Override
 	@DeleteMapping("/{id}")
 	public void deletar(UUID id) {
-		// TODO Auto-generated method stub
-		
+		service.deletar(id);
 	}
 
 }
