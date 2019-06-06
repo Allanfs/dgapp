@@ -1,0 +1,20 @@
+spring:
+   main:
+      banner-mode: "off"   # por algum motivo tem que ser entre aspas duplas
+      
+   datasource:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://192.168.0.20:5432/db
+      username: postgres
+      password: 123
+      
+   jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.ddl-auto: update
+      generate-ddl: true
+      show-sql: true
+      database: POSTGRESQL
+      properties:
+      # evita de aparecer o erro: HHH000424: Disabling contextual LOB creation as createClob() 
+      # https://stackoverflow.com/questions/4588755/disabling-contextual-lob-creation-as-createclob-method-threw-error
+         hibernate.temp.use_jdbc_metadata_defaults: false
