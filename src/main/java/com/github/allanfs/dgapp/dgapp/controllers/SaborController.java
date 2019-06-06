@@ -1,5 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class SaborController implements Controller<Sabor>{
 
 	@Override
 	@GetMapping()
-	public ResponseEntity<Sabor> buscarTodos() {
+	public ResponseEntity<List<Sabor>> buscarTodos() {
 		service.buscarTodos();
 		return null;
 	}

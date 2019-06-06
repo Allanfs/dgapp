@@ -1,5 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ interface Controller<T> {
 
 	ResponseEntity<T> cadastrar( @RequestBody T obj );
 	
-	ResponseEntity<T> buscarTodos();
+	ResponseEntity<List<T>> buscarTodos();
 	
 	ResponseEntity<T> buscarPorId(@PathVariable UUID id );
 	

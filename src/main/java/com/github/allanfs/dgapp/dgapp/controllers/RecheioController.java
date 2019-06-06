@@ -1,5 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class RecheioController implements Controller<Recheio>{
 
 	@Override
 	@GetMapping()
-	public ResponseEntity<Recheio> buscarTodos() {
+	public ResponseEntity<List<Recheio>> buscarTodos() {
 		service.buscarTodos();
 		return null;
 	}
