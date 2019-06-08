@@ -1,12 +1,14 @@
 package com.github.allanfs.dgapp.dgapp.pizza.service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
@@ -17,13 +19,30 @@ public class TamanhoService implements IService<Tamanho>{
 
     @Autowired
     private TamanhoRepository tamanhoRepo;
+    
+    @Autowired
+    private MessageSource mensagem;
 
     public Tamanho cadastrar(Tamanho tamanho){
         return tamanhoRepo.save(tamanho);
     }
     
-    public Tamanho editar(Tamanho tamanho){
-        return tamanhoRepo.save(tamanho);
+    public Tamanho editar(Tamanho tamanhoEditar){
+    	
+    	if( tamanhoEditar.getId() == null ) {
+    		throw new EntityNotFoundException(mensagem.getMessage("tamanho.nao.cadastrado", null, Locale.ROOT));
+    	}
+    	
+    	Optional<Tamanho> tamanhoBuscadoOpt = tamanhoRepo.findById( tamanhoEditar.getId() );
+    	
+    	if(tamanhoBuscadoOpt.isPresent()) {
+    		
+    		return tamanhoRepo.save(tamanhoEditar);
+    		
+    	}else {
+    		throw new EntityNotFoundException(mensagem.getMessage("tamanho.nao.cadastrado", null, Locale.ROOT));
+    	}
+    	
     }
 
     public List<Tamanho> buscarTodos(){
@@ -34,7 +53,7 @@ public class TamanhoService implements IService<Tamanho>{
         Optional<Tamanho> tamanhoBuscado = tamanhoRepo.findById( id );
         
         if( !tamanhoBuscado.isPresent() ) {
-        	throw new EntityNotFoundException("Tamanho Inexistente");
+        	throw new EntityNotFoundException(mensagem.getMessage("tamanho.inexistente", null, Locale.ROOT));
         }
         
 		return tamanhoBuscado.get();
@@ -43,9 +62,10 @@ public class TamanhoService implements IService<Tamanho>{
     @Override
 	public Tamanho buscarPorNome(String nome) {
     	Optional<Tamanho> tamanhoBuscado = tamanhoRepo.findByNome( nome );
-        
+    	
         if( !tamanhoBuscado.isPresent() ) {
-        	throw new EntityNotFoundException( String.format("Tamanho %s inexistente", nome ) );
+			throw new EntityNotFoundException(
+					mensagem.getMessage("tamanho.x.inexistente", new Object[] { nome }, Locale.ROOT));
         }
         
 		return tamanhoBuscado.get();
@@ -56,7 +76,7 @@ public class TamanhoService implements IService<Tamanho>{
     	Optional<Tamanho> tamanhoBuscado = tamanhoRepo.findById( id );
     	
     	if( !tamanhoBuscado.isPresent() ) {
-        	throw new EntityNotFoundException("Tamanho Inexistente");
+        	throw new EntityNotFoundException(mensagem.getMessage("tamanho.inexistente", null, Locale.ROOT));
         }
     	
     	tamanhoRepo.delete( tamanhoBuscado.get() );

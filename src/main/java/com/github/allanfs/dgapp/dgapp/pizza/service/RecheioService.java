@@ -1,12 +1,14 @@
 package com.github.allanfs.dgapp.dgapp.pizza.service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Recheio;
@@ -18,6 +20,9 @@ public class RecheioService implements IService<Recheio>{
     @Autowired
     private RecheioRepository recheioRepo;
 
+    @Autowired
+    private MessageSource mensagem;
+    
     public Recheio cadastrar(Recheio Recheio){
         return recheioRepo.save(Recheio);
     }
@@ -34,7 +39,7 @@ public class RecheioService implements IService<Recheio>{
     	Optional<Recheio> recheioBuscado = recheioRepo.findById( id );
     	
     	if( !recheioBuscado.isPresent() ) {
-    		throw new EntityNotFoundException("Recheio Inexistente");
+    		throw new EntityNotFoundException(mensagem.getMessage("recheio.inexistente", null, Locale.ROOT));
     	}
     	
         return recheioBuscado.get();
@@ -44,7 +49,8 @@ public class RecheioService implements IService<Recheio>{
     	Optional<Recheio> recheioBuscado = recheioRepo.findByNome( nome );
     	
     	if( !recheioBuscado.isPresent() ) {
-    		throw new EntityNotFoundException( String.format("Recheio %s inexistente", nome ) );
+			throw new EntityNotFoundException(
+					mensagem.getMessage("recheio.x.inexistente", new Object[] { nome }, Locale.ROOT));
     	}
     	
         return recheioBuscado.get();
@@ -55,7 +61,7 @@ public class RecheioService implements IService<Recheio>{
     	Optional<Recheio> recheioBuscado = recheioRepo.findById( id );
     	
     	if( !recheioBuscado.isPresent() ) {
-    		throw new EntityNotFoundException("Recheio Inexistente");
+    		throw new EntityNotFoundException(mensagem.getMessage("recheio.inexistente", null, Locale.ROOT));
     	}
     	
     	recheioRepo.delete( recheioBuscado.get() );
