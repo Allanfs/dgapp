@@ -15,4 +15,5 @@ public abstract class TipoInsumo {
 	
 	@Getter	@Setter	private boolean ehSalgado;
 	@Getter	@Setter	private boolean ehEspecial;
+	@Getter	@Setter	private boolean ehDisponivel;
 }

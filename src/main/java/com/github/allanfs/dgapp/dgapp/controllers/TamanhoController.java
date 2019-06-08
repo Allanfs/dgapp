@@ -27,8 +27,8 @@ public class TamanhoController implements Controller<Tamanho>{
 	@Override
 	@PostMapping
 	public ResponseEntity<Tamanho> cadastrar(Tamanho obj) {
-		service.cadastrar(obj);
-		return null;
+		Tamanho novoTamanho = service.cadastrar(obj);
+		return new ResponseEntity<Tamanho>( novoTamanho, HttpStatus.OK);
 	}
 
 	@Override
@@ -41,14 +41,15 @@ public class TamanhoController implements Controller<Tamanho>{
 	@Override
 	@GetMapping("/{id}")
 	public ResponseEntity<Tamanho> buscarPorId(UUID id) {
-		service.buscarPorId(id);
-		return null;
+		Tamanho tamanhoBuscado = service.buscarPorId(id);
+		return new ResponseEntity<Tamanho>( tamanhoBuscado, HttpStatus.OK);
 	}
 
 	@Override
 	@PutMapping("/{id}")
 	public ResponseEntity<Tamanho> editar(Tamanho obj, UUID id) {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 

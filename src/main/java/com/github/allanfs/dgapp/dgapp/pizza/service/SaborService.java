@@ -1,7 +1,10 @@
 package com.github.allanfs.dgapp.dgapp.pizza.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +31,23 @@ public class SaborService implements IService<Sabor>{
     }
 
     public Sabor buscarPorId( UUID id) {
-        return saborRepo.findById( id ).orElse(null);
+    	Optional<Sabor> saborBuscado = saborRepo.findById( id );
+    	
+    	if( !saborBuscado.isPresent() ) {
+    		throw new EntityNotFoundException("Sabor Inexistente");
+    	}
+        return saborBuscado.get();
     }
     
     public void deletar( UUID id ) {
-    	saborRepo.deleteById( id );
+    	
+    	Optional<Sabor> saborBuscado = saborRepo.findById( id );
+    	
+    	if( !saborBuscado.isPresent() ) {
+    		throw new EntityNotFoundException("Sabor Inexistente");
+    	}
+    	
+    	saborRepo.delete(saborBuscado.get());
     }
     
 }
