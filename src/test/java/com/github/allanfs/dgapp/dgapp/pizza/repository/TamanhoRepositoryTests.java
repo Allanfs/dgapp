@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.dgapp;
+package com.github.allanfs.dgapp.dgapp.pizza.repository;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;

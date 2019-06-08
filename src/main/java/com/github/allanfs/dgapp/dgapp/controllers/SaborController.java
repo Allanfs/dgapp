@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
-import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 import com.github.allanfs.dgapp.dgapp.pizza.service.SaborService;
 
 @RestController

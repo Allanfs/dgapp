@@ -1,5 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Recheio;
-import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
 import com.github.allanfs.dgapp.dgapp.pizza.service.RecheioService;
 
 import io.swagger.annotations.Api;
@@ -40,8 +40,8 @@ public class RecheioController implements Controller<Recheio>{
 	@GetMapping()
 	@ApiOperation(value="Busca todos os recheios cadastrados")
 	public ResponseEntity<List<Recheio>> buscarTodos() {
-		service.buscarTodos();
-		return null;
+		ArrayList<Recheio> todos = (ArrayList<Recheio>) service.buscarTodos();
+		return ResponseEntity.ok(todos);
 	}
 
 	@Override
