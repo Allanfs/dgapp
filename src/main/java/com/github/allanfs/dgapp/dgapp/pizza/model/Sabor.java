@@ -28,8 +28,8 @@ public class Sabor extends TipoInsumo{
 	@Getter	@Setter	UUID id;
 	@Getter @Setter private String nome;
 	
-	@ManyToMany
-	@Getter @Setter private Set<Recheio> recheios;
+	@OneToMany(cascade = CascadeType.PERSIST)
+	@Getter @Setter private Set<SaborOrdemRecheio> recheios;
 	
 	@OneToMany(cascade = CascadeType.PERSIST)
 	@Getter @Setter private Set<SaborPrecoTamanho> precosTamanhos;
