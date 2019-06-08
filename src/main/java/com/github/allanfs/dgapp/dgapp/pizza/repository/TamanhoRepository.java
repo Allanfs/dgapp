@@ -8,4 +8,5 @@ import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 
 public interface TamanhoRepository extends JpaRepository<Tamanho, UUID> {
 
+	Tamanho findByNome( String nome);
 }

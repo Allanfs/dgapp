@@ -1,20 +1,23 @@
 package com.github.allanfs.dgapp.dgapp;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.github.allanfs.dgapp.dgapp.controllers.TamanhoController;
 
-@RunWith(SpringRunner.class)
+@SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class DgappApplicationTests {
 
@@ -32,10 +35,20 @@ public class DgappApplicationTests {
 		assertThat(controller).isNotNull();
 	}
 
-	@Test
-	public void greetingShouldReturnDefaultMessage() throws Exception {
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/tamanho", ResponseEntity.class)).isNull();
-				;
+	/**
+	 * Verifica se obtem resposta dos endpoints
+	 */
+	@DisplayName("Testa existencia dos controllers")
+	@ParameterizedTest
+	@ValueSource(strings = {"tamanho","recheio","sabor"})
+	public void verificaExistenciaDosEndpoint(String endpoint) throws Exception {
+		
+		String urlPart = String.format("http://localhost:%d/", port);
+		
+		String URL = urlPart + endpoint;
+		
+		assertEquals( HttpStatus.OK ,this.restTemplate.getForEntity(URL, Object.class).getStatusCode() );
+		
 	}
 
 }
