@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Recheio;
+import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
 import com.github.allanfs.dgapp.dgapp.pizza.service.RecheioService;
 
 import io.swagger.annotations.Api;
@@ -50,6 +51,13 @@ public class RecheioController implements Controller<Recheio>{
 		Recheio retorno = service.buscarPorId(id);
 		return ResponseEntity.ok(retorno);
 	}
+	
+	@Override
+	@GetMapping("/buscar")
+	public ResponseEntity<Recheio> buscarPorNome(String nome) {
+		Recheio retorno = service.buscarPorNome(nome);
+		return ResponseEntity.ok(retorno);
+	}
 
 	@Override
 	@PutMapping("/{id}")
@@ -67,5 +75,7 @@ public class RecheioController implements Controller<Recheio>{
 		service.deletar(id);
 		
 	}
+
+	
 
 }

@@ -1,9 +1,11 @@
 package com.github.allanfs.dgapp.dgapp.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
+import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 import com.github.allanfs.dgapp.dgapp.pizza.service.SaborService;
 
 @RestController
@@ -32,15 +35,22 @@ public class SaborController implements Controller<Sabor>{
 	@Override
 	@GetMapping()
 	public ResponseEntity<List<Sabor>> buscarTodos() {
-		service.buscarTodos();
-		return null;
+		ArrayList<Sabor> todos = (ArrayList<Sabor>)service.buscarTodos();
+		return new ResponseEntity<List<Sabor>>( todos, HttpStatus.OK);
 	}
 
 	@Override
 	@GetMapping("/{id}")
 	public ResponseEntity<Sabor> buscarPorId(UUID id) {
-		service.buscarPorId(id);
-		return null;
+		Sabor retorno = service.buscarPorId(id);
+		return ResponseEntity.ok(retorno);
+	}
+	
+	@Override
+	@GetMapping("/buscar")
+	public ResponseEntity<Sabor> buscarPorNome(String nome) {
+		Sabor retorno = service.buscarPorNome(nome);
+		return ResponseEntity.ok(retorno);
 	}
 
 	@Override

@@ -39,6 +39,15 @@ public class SaborService implements IService<Sabor>{
         return saborBuscado.get();
     }
     
+    public Sabor buscarPorNome( String nome) {
+    	Optional<Sabor> saborBuscado = saborRepo.findByNome( nome );
+    	
+    	if( !saborBuscado.isPresent() ) {
+    		throw new EntityNotFoundException( String.format("Recheio %s inexistente", nome ) );
+    	}
+        return saborBuscado.get();
+    }
+    
     public void deletar( UUID id ) {
     	
     	Optional<Sabor> saborBuscado = saborRepo.findById( id );

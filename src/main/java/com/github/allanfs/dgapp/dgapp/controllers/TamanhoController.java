@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
@@ -41,10 +42,17 @@ public class TamanhoController implements Controller<Tamanho>{
 	@Override
 	@GetMapping("/{id}")
 	public ResponseEntity<Tamanho> buscarPorId(UUID id) {
-		Tamanho tamanhoBuscado = service.buscarPorId(id);
-		return new ResponseEntity<Tamanho>( tamanhoBuscado, HttpStatus.OK);
+		Tamanho retorno = service.buscarPorId(id);
+		return ResponseEntity.ok(retorno);
 	}
 
+	@Override
+	@GetMapping("/buscar")
+	public ResponseEntity<Tamanho> buscarPorNome(String nome) {
+		Tamanho retorno = service.buscarPorNome(nome);
+		return ResponseEntity.ok(retorno);
+	}
+	
 	@Override
 	@PutMapping("/{id}")
 	public ResponseEntity<Tamanho> editar(Tamanho obj, UUID id) {
@@ -58,5 +66,6 @@ public class TamanhoController implements Controller<Tamanho>{
 	public void deletar(UUID id) {
 		service.deletar(id);
 	}
+
 
 }

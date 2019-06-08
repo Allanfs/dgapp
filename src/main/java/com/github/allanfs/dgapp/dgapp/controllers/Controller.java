@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 interface Controller<T> {
 
@@ -14,6 +15,8 @@ interface Controller<T> {
 	ResponseEntity<List<T>> buscarTodos();
 	
 	ResponseEntity<T> buscarPorId(@PathVariable UUID id );
+	
+	ResponseEntity<T> buscarPorNome(@RequestParam() String nome );
 	
 	ResponseEntity<T> editar( @RequestBody  T obj, @PathVariable UUID id);
 	

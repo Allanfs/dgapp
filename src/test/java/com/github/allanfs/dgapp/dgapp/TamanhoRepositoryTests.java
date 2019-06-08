@@ -29,7 +29,7 @@ public class TamanhoRepositoryTests {
 	@CsvSource(value = {"Pequena, 25, 4, 17","Média, 30, 6, 22","Grande, 35, 8, 29"})
 	public void buscaNomeExistente(String nome, int centimetros, int numeroFatias, float preco)  {
 		
-		Tamanho tamanhoAtual = tamanhoRepo.findByNome(nome);
+		Tamanho tamanhoAtual = tamanhoRepo.findByNome(nome).get();
 		assertNotNull( tamanhoAtual );
 		
 		assertEquals(nome, tamanhoAtual.getNome());
@@ -43,7 +43,7 @@ public class TamanhoRepositoryTests {
 	@Test
 	public void buscaNomeNaoExistente(){
 		
-		Tamanho tamanhoAtual = tamanhoRepo.findByNome("Pão");
+		Tamanho tamanhoAtual = tamanhoRepo.findByNome("Pão").get();
 		assertNull( tamanhoAtual );
 		
 	}

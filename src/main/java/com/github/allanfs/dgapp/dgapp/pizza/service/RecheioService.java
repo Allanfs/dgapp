@@ -40,6 +40,16 @@ public class RecheioService implements IService<Recheio>{
         return recheioBuscado.get();
     }
     
+    public Recheio buscarPorNome( String nome ) {
+    	Optional<Recheio> recheioBuscado = recheioRepo.findByNome( nome );
+    	
+    	if( !recheioBuscado.isPresent() ) {
+    		throw new EntityNotFoundException( String.format("Recheio %s inexistente", nome ) );
+    	}
+    	
+        return recheioBuscado.get();
+    }
+    
     public void deletar( UUID id ) {
     	
     	Optional<Recheio> recheioBuscado = recheioRepo.findById( id );

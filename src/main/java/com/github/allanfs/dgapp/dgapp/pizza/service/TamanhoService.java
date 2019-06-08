@@ -12,14 +12,6 @@ import org.springframework.stereotype.Service;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 import com.github.allanfs.dgapp.dgapp.pizza.repository.TamanhoRepository;
 
-/**
- * Os métodos se reponsabilizam de verificar
- * a consistencia dos dados, e caso não estejam
- * corretos, devem lançar exceções, as quais devem
- * ser tratadas pelos controllers.
- * @author allan
- *
- */
 @Service
 public class TamanhoService implements IService<Tamanho>{
 
@@ -48,6 +40,17 @@ public class TamanhoService implements IService<Tamanho>{
 		return tamanhoBuscado.get();
     }
     
+    @Override
+	public Tamanho buscarPorNome(String nome) {
+    	Optional<Tamanho> tamanhoBuscado = tamanhoRepo.findByNome( nome );
+        
+        if( !tamanhoBuscado.isPresent() ) {
+        	throw new EntityNotFoundException( String.format("Tamanho %s inexistente", nome ) );
+        }
+        
+		return tamanhoBuscado.get();
+	}
+    
     public void deletar( UUID id ) {
     	
     	Optional<Tamanho> tamanhoBuscado = tamanhoRepo.findById( id );
@@ -58,5 +61,7 @@ public class TamanhoService implements IService<Tamanho>{
     	
     	tamanhoRepo.delete( tamanhoBuscado.get() );
     }
+
+	
     
 }
