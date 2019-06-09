@@ -26,8 +26,8 @@ public class TamanhoRepositoryTests {
 
 	@DisplayName("Buscar tamanho por nome")
 	@ParameterizedTest(name = "Buscar tamanho de nome: {0}" )
-	@CsvSource(value = {"Pequena, 25, 4, 17","Média, 30, 6, 22","Grande, 35, 8, 29"})
-	public void buscaNomeExistente(String nome, int centimetros, int numeroFatias, float preco)  {
+	@CsvSource(value = {"Pequena, 25, 4, 1, 17","Média, 30, 6, 2, 22","Grande, 35, 8, 3, 29"})
+	public void buscaNomeExistente(String nome, int centimetros, int numeroFatias, int numeroSabores, float preco)  {
 		
 		Tamanho tamanhoAtual = tamanhoRepo.findByNome(nome).get();
 		assertNotNull( tamanhoAtual );
@@ -35,6 +35,7 @@ public class TamanhoRepositoryTests {
 		assertEquals(nome, tamanhoAtual.getNome());
 		assertEquals(centimetros, tamanhoAtual.getCentimetros());
 		assertEquals(numeroFatias, tamanhoAtual.getNumeroFatias());
+		assertEquals(numeroSabores, tamanhoAtual.getNumeroMaximoSabores());
 		assertEquals(preco, tamanhoAtual.getPrecoPadrao());
 		
 	}

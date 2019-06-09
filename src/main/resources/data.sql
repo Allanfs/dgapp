@@ -1,9 +1,9 @@
 --- tamanhos ---
 
-INSERT INTO tb_tamanho (id_tamanho, nome, centimetros, numero_fatias, preco_padrao) VALUES ('d134a92e-889f-11e9-bc42-526af7764f64','Pequena', 25, 4, 17);
-INSERT INTO tb_tamanho (id_tamanho, nome, centimetros, numero_fatias, preco_padrao) VALUES ('d134aba4-889f-11e9-bc42-526af7764f64','Média', 30, 6, 22);
-INSERT INTO tb_tamanho (id_tamanho, nome, centimetros, numero_fatias, preco_padrao) VALUES ('d134ace4-889f-11e9-bc42-526af7764f64','Grande', 35, 8, 29);
-INSERT INTO tb_tamanho (id_tamanho, nome, centimetros, numero_fatias, preco_padrao) VALUES ('d134ae10-889f-11e9-bc42-526af7764f64','Gigante', 40, 12, 40);
+INSERT INTO tb_tamanho (id_tamanho, nome, centimetros, numero_fatias, numero_maximo_sabores,preco_padrao) VALUES ('d134a92e-889f-11e9-bc42-526af7764f64','Pequena', 25, 4, 1,17);
+INSERT INTO tb_tamanho (id_tamanho, nome, centimetros, numero_fatias, numero_maximo_sabores,preco_padrao) VALUES ('d134aba4-889f-11e9-bc42-526af7764f64','Média', 30, 6, 2, 22);
+INSERT INTO tb_tamanho (id_tamanho, nome, centimetros, numero_fatias, numero_maximo_sabores,preco_padrao) VALUES ('d134ace4-889f-11e9-bc42-526af7764f64','Grande', 35, 8, 3, 29);
+INSERT INTO tb_tamanho (id_tamanho, nome, centimetros, numero_fatias, numero_maximo_sabores,preco_padrao) VALUES ('d134ae10-889f-11e9-bc42-526af7764f64','Gigante', 40, 12, 3, 40);
 
 --- recheios ---
 
