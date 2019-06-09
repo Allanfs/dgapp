@@ -1,5 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.pizza.model;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -7,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -25,21 +25,25 @@ import lombok.Setter;
 public class Sabor extends TipoInsumo{
 
 	@Id
-	@GeneratedValue(generator = "UUID",strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "UUID")
 	@Column(name="id_sabor")
 	@Getter	@Setter	UUID id;
 	@Getter @Setter private String nome;
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToMany(  cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
 	@JsonManagedReference
-	@Getter @Setter private Set<SaborOrdemRecheio> recheios;
+	@Getter @Setter private Set<SaborOrdemRecheio> recheios = new HashSet<SaborOrdemRecheio>();
 	
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToMany( cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@JsonManagedReference
 	@Getter @Setter private Set<SaborPrecoTamanho> precosTamanhos;
 	
-	@Override
-	public String toString() {
-		return "Sabor [id=" + id + ", nome=" + nome + ", recheios=" + recheios + ", precosTamanhos=" + precosTamanhos
-				+ "]";
+	public void adicionarRecheio(Recheio recheio, int posicao) {
+		recheios.add( new SaborOrdemRecheio(recheio, posicao));
 	}
+	
+	public void removerRecheioNaPosicao(int posicao) {
+		recheios.removeIf( sor -> sor.getPosicao() == posicao);
+	}
+	
 }

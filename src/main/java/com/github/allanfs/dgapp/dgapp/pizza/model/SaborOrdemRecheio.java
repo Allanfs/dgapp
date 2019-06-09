@@ -86,11 +86,4 @@ public class SaborOrdemRecheio {
 			return false;
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return String.format("SaborOrdemRecheio [posicao=%s, getRecheio()=%s, getSabor()=%s]", posicao, getRecheio().getNome(),
-				getSabor().getNome());
-	}
-
 }

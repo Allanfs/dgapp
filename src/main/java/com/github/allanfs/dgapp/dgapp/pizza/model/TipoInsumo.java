@@ -44,6 +44,4 @@ public abstract class TipoInsumo {
 		return true;
 	}
 	
-	
-	
 }

@@ -2,6 +2,7 @@ package com.github.allanfs.dgapp.dgapp.pizza.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,11 +16,11 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 class SaborPrecoTamanhoEmbeddeId implements Serializable{
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name="ID_SABOR_FK", referencedColumnName="id_sabor")
 	@Getter @Setter private Sabor sabor;
 	
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name="ID_TAMANHO_FK", referencedColumnName="id_tamanho")
 	@Getter @Setter private Tamanho tamanho;
 

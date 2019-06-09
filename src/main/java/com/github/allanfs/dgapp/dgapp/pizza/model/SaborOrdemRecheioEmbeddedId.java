@@ -29,7 +29,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(value = "sabor")
 public class SaborOrdemRecheioEmbeddedId implements Serializable{
 
-	@ManyToOne(cascade = {CascadeType.MERGE})
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	@JoinColumn(name="ID_SABOR_FK", referencedColumnName="id_sabor")
 	@Getter @Setter private Sabor sabor;
 	
@@ -65,10 +65,6 @@ public class SaborOrdemRecheioEmbeddedId implements Serializable{
 		} else if (!sabor.equals(other.sabor))
 			return false;
 		return true;
-	}
-	@Override
-	public String toString() {
-		return String.format("SaborOrdemRecheioEmbeddedId [sabor=%s, recheio=%s]", sabor, recheio);
 	}
 	
 }

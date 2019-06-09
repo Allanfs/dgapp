@@ -44,7 +44,9 @@ public class SaborService implements IService<Sabor>{
     			}
     			
     			// settar o sabor
-    			saborOrdemRecheio.setSabor(sabor);
+    			if(saborOrdemRecheio.getSabor() == null) {
+    				saborOrdemRecheio.setSabor(sabor);
+    			}
     		}
     		
     	});
@@ -52,8 +54,9 @@ public class SaborService implements IService<Sabor>{
         return saborRepo.save(sabor);
     }
     
-    public Sabor editar(Sabor Sabor){
-        return saborRepo.save(Sabor);
+    public Sabor editar(Sabor sabor){
+    	
+        return saborRepo.save(sabor);
     }
 
     public List<Sabor> buscarTodos(){
