@@ -1,6 +1,15 @@
 # DGApp Backend
 Aplicação REST de Pizzaria
 
+Aplicação de vendas para uma pizzaria, o objetivo final é que seja um sistema de vendas gamificado, em que o cliente possa fazer pedidos e ganhar pontos, avançar os níveis, obter recursos exclusivos para determinados níveis, e desbloquear conquistas dentro da plataforma.
+
+## Roadmap
+1. Desenvolver sistema de vendas
+2. Desenvolver a interface da aplicação de vendas para a administração da pizzaria cadastrar seus clientes, pedidos, produtos.
+3. Desenvolver e integrar o sistema gamificado ao de vendas
+4. Incrementar a interface da aplicação de vendas para a administração da pizzaria cadastrar valores de pontos e níveis aos itens.
+5. Desenvolver interface da aplicação gamificada para ser utilizada pelos clientes.
+
 ## Execução e Configuração do Ambiente
 
 ### Lombok
@@ -9,19 +18,7 @@ Para utilização do Lombok no Eclipse siga [esta resposta no StackOverflow](htt
 * [Uma visão sobre o Projeto Lombok - Devmedia](https://www.devmedia.com.br/uma-visao-sobre-o-projeto-lombok/28321)
 
 ### Banco de Dados
-**Mysql** em Docker
->  docker run -it -e MYSQL\_ROOT\_PASSWORD=123 mysql
-
->  mysql> create database db;
+**Postgresql** em Docker
 
 ## Endpoints
-
-Entidades em [~.modelo](https://github.com/Allanfs/dgapp/tree/master/src/main/java/com/github/allanfs/dgapp/modelo) possuem controllers que atendem as estas requisições.
-
-| Requisição                	| Descrição                      	|
-|---------------------------	|--------------------------------	|
-| `GET /{entidade}`         	| retorna todos os registros     	|
-| `GET /{entidade}/{id}`    	| retorna registro de id {id}    	|
-| `POST /{entidade}`        	| cadastra a entidade            	|
-| `DELETE /{entidade}/{id}` 	| exclui a entidade de id {id}   	|
-| `PUT /{entidade}/{id}`    	| atualiza a entidade de id {id} 	|
+Os endpoints da aplicação podem ser visualizados com Swagger2
