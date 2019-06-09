@@ -21,10 +21,35 @@ public class SaborService implements IService<Sabor>{
     private SaborRepository saborRepo;
     
     @Autowired
+    private RecheioService recheioService;
+    
+    @Autowired
     private MessageSource mensagem;
 
-    public Sabor cadastrar(Sabor Sabor){
-        return saborRepo.save(Sabor);
+    public Sabor cadastrar(Sabor sabor){
+    	
+    	sabor.getRecheios().forEach( saborOrdemRecheio -> {
+    		
+    		if( saborOrdemRecheio.getId() == null ) {
+    			// lançar exceção: não existe recheio associado
+    			// entityNotFound: não existe recheio associado para o sabor
+    		}else {
+    			// verificar se o recheio existe - se lançar exceção então não existe
+    			saborOrdemRecheio.setRecheio( recheioService.buscarPorId( saborOrdemRecheio.getRecheio().getId() ) );
+    			
+    			// verificar se a posição é maior que 0
+    			if( saborOrdemRecheio.getPosicao() < 0 ) {
+    				// lança exceção posição negativa
+    				// posição negativa: um recheio não pode ter uma posição menor que zero
+    			}
+    			
+    			// settar o sabor
+    			saborOrdemRecheio.setSabor(sabor);
+    		}
+    		
+    	});
+    	
+        return saborRepo.save(sabor);
     }
     
     public Sabor editar(Sabor Sabor){

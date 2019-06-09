@@ -2,9 +2,12 @@ package com.github.allanfs.dgapp.dgapp.pizza.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,13 +26,14 @@ import lombok.Setter;
 
 @Embeddable
 @NoArgsConstructor @AllArgsConstructor
+@JsonIgnoreProperties(value = "sabor")
 public class SaborOrdemRecheioEmbeddedId implements Serializable{
 
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.MERGE})
 	@JoinColumn(name="ID_SABOR_FK", referencedColumnName="id_sabor")
 	@Getter @Setter private Sabor sabor;
 	
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.MERGE})
 	@JoinColumn(name="ID_RECHEIO_FK", referencedColumnName="id_recheio")
 	@Getter @Setter private Recheio recheio;
 	
@@ -62,6 +66,9 @@ public class SaborOrdemRecheioEmbeddedId implements Serializable{
 			return false;
 		return true;
 	}
-	
+	@Override
+	public String toString() {
+		return String.format("SaborOrdemRecheioEmbeddedId [sabor=%s, recheio=%s]", sabor, recheio);
+	}
 	
 }

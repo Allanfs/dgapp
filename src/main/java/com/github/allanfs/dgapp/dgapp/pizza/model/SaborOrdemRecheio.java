@@ -4,6 +4,9 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +23,42 @@ import lombok.Setter;
 public class SaborOrdemRecheio {
 
 	@EmbeddedId
-	@Getter @Setter private SaborOrdemRecheioEmbeddedId id;
-	@Getter @Setter private int posicao;
+	@JsonIgnore
+	@Getter private SaborOrdemRecheioEmbeddedId id;
+	@Getter @Setter private Integer posicao;
+	
+	public SaborOrdemRecheio(Sabor saborNovo, Recheio recheio, int i) {
+		this(recheio, i);
+		setSabor(saborNovo);
+	}
+	
+	public SaborOrdemRecheio(Recheio recheio, Integer i) {
+		setRecheio(recheio);
+		setPosicao(i);
+	}
+	
+	public Recheio getRecheio() {
+		return id.getRecheio();
+	}
+	
+	@JsonBackReference
+	public Sabor getSabor() {
+		return id.getSabor();
+	}
+	
+	public void setRecheio( Recheio recheio ) {
+		if( id == null ) {
+			id = new SaborOrdemRecheioEmbeddedId();
+		}
+		id.setRecheio(recheio);
+	}
+	
+	public void setSabor( Sabor sabor ) {
+		if( id == null ) {
+			id = new SaborOrdemRecheioEmbeddedId();
+		}
+		id.setSabor(sabor);
+	}
 	
 	@Override
 	public int hashCode() {
@@ -49,7 +86,11 @@ public class SaborOrdemRecheio {
 			return false;
 		return true;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return String.format("SaborOrdemRecheio [posicao=%s, getRecheio()=%s, getSabor()=%s]", posicao, getRecheio().getNome(),
+				getSabor().getNome());
+	}
+
 }
