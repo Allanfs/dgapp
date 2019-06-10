@@ -139,12 +139,7 @@ public class SaborService implements IService<Sabor> {
 		if(sabor.getPrecos() == null) {
 			HashSet<SaborPrecoTamanho> precosTamanhos = new HashSet<SaborPrecoTamanho>();
 			
-			tamanhoService.buscarTodos().forEach( tamanho -> {
-				SaborPrecoTamanho precoDoSaborNoTamanho = new SaborPrecoTamanho();
-				precoDoSaborNoTamanho.setTamanho(tamanho);
-				precoDoSaborNoTamanho.setPreco(tamanho.getPrecoPadrao());
-				precosTamanhos.add( precoDoSaborNoTamanho);
-			});
+			inserirTamanhosCadastradosNo(precosTamanhos);
 			
 			sabor.setPrecos(precosTamanhos);
 			
@@ -152,6 +147,10 @@ public class SaborService implements IService<Sabor> {
 		}else {
 		
 			sabor.getPrecos().forEach( precoTamanho -> {
+				
+				if( precoTamanho.getTamanho() == null ) {
+					
+				}
 				
 				if( precoTamanho.getPreco() <= 0 ) {
 					precoTamanho.setPreco( precoTamanho.getTamanho().getPrecoPadrao());
@@ -163,6 +162,18 @@ public class SaborService implements IService<Sabor> {
 				}
 			});
 		}
+	}
+
+	private void inserirTamanhosCadastradosNo(Set<SaborPrecoTamanho> precosTamanhos) {
+		tamanhoService.buscarTodos().forEach( tamanho -> {
+			
+			SaborPrecoTamanho precoDoSaborNoTamanho = new SaborPrecoTamanho();
+			
+			precoDoSaborNoTamanho.setTamanho(tamanho);
+			precoDoSaborNoTamanho.setPreco(tamanho.getPrecoPadrao());
+			
+			precosTamanhos.add( precoDoSaborNoTamanho);
+		});
 	}
 
 	/**

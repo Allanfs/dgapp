@@ -55,5 +55,12 @@ public class Sabor extends TipoInsumo {
 	public void removerRecheioNaPosicao(int posicao) {
 		recheios.removeIf(sor -> sor.getPosicao() == posicao);
 	}
-
+	
+	
+	public float atribuirPrecoAoTamanho(Tamanho tamanho, float preco) {
+		// TODO se enviar uma preço, mas não enviar o tamanho, que tipo de mensagem/erro deve ser retornado?
+//		precos.put(tamanho, preco);
+		return 0;
+	}
+	
 }
