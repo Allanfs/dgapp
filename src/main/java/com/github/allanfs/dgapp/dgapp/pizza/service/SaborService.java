@@ -135,7 +135,6 @@ public class SaborService implements IService<Sabor> {
 	 */
 	private void sePrecoInvalidoPreencherValorPadrao(Sabor sabor) {
 
-
 		if(sabor.getPrecos() == null) {
 			HashSet<SaborPrecoTamanho> precosTamanhos = new HashSet<SaborPrecoTamanho>();
 			
@@ -149,17 +148,24 @@ public class SaborService implements IService<Sabor> {
 			sabor.getPrecos().forEach( precoTamanho -> {
 				
 				if( precoTamanho.getTamanho() == null ) {
-					
+					/* 
+					 * caso apenas o preço seja informado (ou nao),
+					 * não tem como saber para qual tamanho ele está apontando 
+					 */
+					return;
 				}
 				
 				if( precoTamanho.getPreco() <= 0 ) {
+					/*
+					 * utiliza o preço padrão do tamanho existente
+					 */
 					precoTamanho.setPreco( precoTamanho.getTamanho().getPrecoPadrao());
-					
-					if(precoTamanho.getSabor() == null) {
-						precoTamanho.setSabor(sabor);
-					}
-					
 				}
+				
+				if(precoTamanho.getSabor() == null) {
+					precoTamanho.setSabor(sabor);
+				}
+				
 			});
 		}
 	}
