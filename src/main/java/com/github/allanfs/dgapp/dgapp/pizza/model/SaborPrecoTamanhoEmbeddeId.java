@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -13,16 +14,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Embeddable
-@NoArgsConstructor @AllArgsConstructor
-class SaborPrecoTamanhoEmbeddeId implements Serializable{
+@NoArgsConstructor
+@AllArgsConstructor
+class SaborPrecoTamanhoEmbeddeId implements Serializable {
 
-	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name="ID_SABOR_FK", referencedColumnName="id_sabor")
-	@Getter @Setter private Sabor sabor;
-	
-	@ManyToOne(cascade = {CascadeType.MERGE})
-    @JoinColumn(name="ID_TAMANHO_FK", referencedColumnName="id_tamanho")
-	@Getter @Setter private Tamanho tamanho;
+	@ManyToOne(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "ID_SABOR_FK", referencedColumnName = "id_sabor")
+	@Getter
+	@Setter
+	private Sabor sabor;
+
+	@ManyToOne(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "ID_TAMANHO_FK", referencedColumnName = "id_tamanho")
+	@Getter
+	@Setter
+	private Tamanho tamanho;
 
 	@Override
 	public int hashCode() {
@@ -54,5 +60,5 @@ class SaborPrecoTamanhoEmbeddeId implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }

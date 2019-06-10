@@ -1,8 +1,10 @@
 package com.github.allanfs.dgapp.dgapp.pizza.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
@@ -12,85 +14,168 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
+import com.github.allanfs.dgapp.dgapp.pizza.model.SaborOrdemRecheio;
+import com.github.allanfs.dgapp.dgapp.pizza.model.SaborPrecoTamanho;
+import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 import com.github.allanfs.dgapp.dgapp.pizza.repository.SaborRepository;
 
 @Service
-public class SaborService implements IService<Sabor>{
+public class SaborService implements IService<Sabor> {
 
-    @Autowired
-    private SaborRepository saborRepo;
-    
-    @Autowired
-    private RecheioService recheioService;
-    
-    @Autowired
-    private MessageSource mensagem;
+	@Autowired
+	private SaborRepository saborRepo;
 
-    public Sabor cadastrar(Sabor sabor){
-    	
-    	sabor.getRecheios().forEach( saborOrdemRecheio -> {
-    		
-    		if( saborOrdemRecheio.getId() == null ) {
-    			// lançar exceção: não existe recheio associado
-    			// entityNotFound: não existe recheio associado para o sabor
-    		}else {
-    			// verificar se o recheio existe - se lançar exceção então não existe
-    			saborOrdemRecheio.setRecheio( recheioService.buscarPorId( saborOrdemRecheio.getRecheio().getId() ) );
-    			
-    			// verificar se a posição é maior que 0
-    			if( saborOrdemRecheio.getPosicao() < 0 ) {
-    				// lança exceção posição negativa
-    				// posição negativa: um recheio não pode ter uma posição menor que zero
-    			}
-    			
-    			// settar o sabor
-    			if(saborOrdemRecheio.getSabor() == null) {
-    				saborOrdemRecheio.setSabor(sabor);
-    			}
-    		}
-    		
-    	});
-    	
-        return saborRepo.save(sabor);
-    }
-    
-    public Sabor editar(Sabor sabor){
-    	
-        return saborRepo.save(sabor);
-    }
+	@Autowired
+	private RecheioService recheioService;
+	
+	@Autowired
+	private TamanhoService tamanhoService;
 
-    public List<Sabor> buscarTodos(){
-        return saborRepo.findAll();
-    }
+	@Autowired
+	private MessageSource mensagem;
 
-    public Sabor buscarPorId( UUID id) {
-    	Optional<Sabor> saborBuscado = saborRepo.findById( id );
-    	
-    	if( !saborBuscado.isPresent() ) {
-    		throw new EntityNotFoundException(mensagem.getMessage("sabor.inexistente", null, Locale.ROOT));
-    	}
-        return saborBuscado.get();
-    }
-    
-    public Sabor buscarPorNome( String nome) {
-    	Optional<Sabor> saborBuscado = saborRepo.findByNome( nome );
-    	
-    	if( !saborBuscado.isPresent() ) {
+	public Sabor cadastrar(Sabor sabor) {
+
+		validarOrdemRecheios(sabor);
+		
+		seVazioPreencherPrecosTamanhos(sabor);
+		
+		sePrecoInvalidoPreencherValorPadrao(sabor);
+
+		return saborRepo.save(sabor);
+	}
+
+	public Sabor editar(Sabor sabor) {
+
+		return saborRepo.save(sabor);
+	}
+
+	public List<Sabor> buscarTodos() {
+		return saborRepo.findAll();
+	}
+
+	public Sabor buscarPorId(UUID id) {
+		Optional<Sabor> saborBuscado = saborRepo.findById(id);
+
+		if (!saborBuscado.isPresent()) {
+			throw new EntityNotFoundException(mensagem.getMessage("sabor.inexistente", null, Locale.ROOT));
+		}
+		return saborBuscado.get();
+	}
+
+	public Sabor buscarPorNome(String nome) {
+		Optional<Sabor> saborBuscado = saborRepo.findByNome(nome);
+
+		if (!saborBuscado.isPresent()) {
 			throw new EntityNotFoundException(
 					mensagem.getMessage("sabor.x.inexistente", new Object[] { nome }, Locale.ROOT));
-    	}
-        return saborBuscado.get();
-    }
-    
-    public void deletar( UUID id ) {
-    	
-    	Optional<Sabor> saborBuscado = saborRepo.findById( id );
-    	
-    	if( !saborBuscado.isPresent() ) {
-    		throw new EntityNotFoundException(mensagem.getMessage("sabor.inexistente", null, Locale.ROOT));
-    	}
-    	
-    	saborRepo.delete(saborBuscado.get());
-    }
-    
+		}
+		return saborBuscado.get();
+	}
+
+	public void deletar(UUID id) {
+
+		Optional<Sabor> saborBuscado = saborRepo.findById(id);
+
+		if (!saborBuscado.isPresent()) {
+			throw new EntityNotFoundException(mensagem.getMessage("sabor.inexistente", null, Locale.ROOT));
+		}
+
+		saborRepo.delete(saborBuscado.get());
+	}
+	
+	public boolean recheioExisteNoSabor( String nomeRecheio, Sabor sabor ) {
+		return sabor
+				.getRecheios()
+				.stream()
+				.anyMatch(saborOrdem -> saborOrdem.getRecheio().getNome().equalsIgnoreCase(nomeRecheio));
+	}
+	
+	public boolean recheioExisteNoSabor( UUID idRecheio, Sabor sabor ) {
+		return sabor
+				.getRecheios()
+				.stream()
+				.anyMatch(saborOrdem -> saborOrdem.getRecheio().getId().equals(idRecheio));
+	}
+	
+	/**
+	 * Verifica se os dados do {@linkplain SaborOrdemRecheio ordem recheio} são validos.
+	 * 
+	 * @param sabor
+	 */
+	private void validarOrdemRecheios(Sabor sabor) {
+		sabor.getRecheios().forEach(saborOrdemRecheio -> {
+
+			if ( saborOrdemRecheio.getId() != null ) {
+				
+				// obtem o recheio se existir
+				saborOrdemRecheio.setRecheio(recheioService.buscarPorId(saborOrdemRecheio.getRecheio().getId()));
+				
+				// verifica a posicao do recheio
+				if (saborOrdemRecheio.getPosicao() < 0) {
+					Object[] args = {saborOrdemRecheio.getRecheio().getNome(), saborOrdemRecheio.getPosicao(), sabor.getNome()};
+					throw new PosicaoNegativaException(mensagem.getMessage("recheio.posicao.negativa", args, Locale.ROOT));
+				}
+
+				// settar o sabor
+				if (saborOrdemRecheio.getSabor() == null) {
+					saborOrdemRecheio.setSabor(sabor);
+				}
+			} else {
+				return;
+			}
+
+		});
+	}
+
+	/**
+	 * Caso o preço do {@link SaborPrecoTamanho} for inválido
+	 * utiliza o preço {@linkplain Tamanho#getPrecoPadrao() preço padrão do tamanho}
+	 * @param sabor
+	 */
+	private void sePrecoInvalidoPreencherValorPadrao(Sabor sabor) {
+
+		if(sabor.getPrecosTamanhos() == null) {
+			sabor.setPrecosTamanhos(new HashSet<SaborPrecoTamanho>());
+		}
+		
+		sabor.getPrecosTamanhos().forEach( precoTamanho -> {
+			
+			if( precoTamanho.getPreco() <= 0 ) {
+				precoTamanho.setPreco( precoTamanho.getTamanho().getPrecoPadrao());
+				
+				if(precoTamanho.getSabor() == null) {
+					precoTamanho.setSabor(sabor);
+				}
+				
+			}
+		});
+	}
+
+	/**
+	 * Verifica se o {@linkplain SaborPrecoTamanho} é null ou vazio.
+	 * Caso seja, utiliza o valor padrão dos {@linkplain Tamanho tamanhos} cadastrados
+	 * @param sabor
+	 */
+	private void seVazioPreencherPrecosTamanhos(Sabor sabor) {
+		
+		if( sabor.getPrecosTamanhos() == null || sabor.getPrecosTamanhos().isEmpty()) {
+			
+			Set<SaborPrecoTamanho> precoPadrao = new HashSet<SaborPrecoTamanho>();
+			
+			tamanhoService.buscarTodos().forEach( tamanho -> {
+				precoPadrao.add( new SaborPrecoTamanho() {
+					{
+						setTamanho( tamanho );
+						setPreco( tamanho.getPrecoPadrao() );
+						setSabor(sabor);
+					}
+				});
+			});
+			
+			sabor.setPrecosTamanhos(precoPadrao);
+			
+		}
+	}
+
 }

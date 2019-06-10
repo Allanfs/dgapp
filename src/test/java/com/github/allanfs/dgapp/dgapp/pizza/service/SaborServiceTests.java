@@ -35,7 +35,7 @@ public class SaborServiceTests {
 	static Sabor saborCadastrado;
 	
 	@Test
-	@DisplayName("Cadastrar um sabor")
+	@DisplayName("Cadastrar um sabor sem informar o preço nos tamanhos")
 	void aTest() {
 		
 		Sabor saborNovo = new Sabor();
@@ -46,7 +46,8 @@ public class SaborServiceTests {
 		saborNovo.setEhEspecial(true);
 		saborNovo.setEhSalgado(true);
 		
-		Recheio molho = new Recheio(UUID.fromString("a5fad176-8a2e-11e9-bc42-526af7764f64"), null);
+		String idMolho = "a5fad176-8a2e-11e9-bc42-526af7764f64";
+		Recheio molho = new Recheio(UUID.fromString(idMolho), null);
 		Recheio mussarela = new Recheio(UUID.fromString("a5facf00-8a2e-11e9-bc42-526af7764f64"), null);
 		Recheio presunto = new Recheio(UUID.fromString("a5fad95a-8a2e-11e9-bc42-526af7764f64"), null);
 		
@@ -55,8 +56,10 @@ public class SaborServiceTests {
 		saborCadastrado = service.cadastrar(saborNovo);
 		
 		assertNotNull(saborCadastrado.getId());
-		assertNotNull(saborCadastrado);
 		assertEquals(nomeSabor, saborCadastrado.getNome() );
+		assertNotNull(saborCadastrado.getPrecosTamanhos());
+		
+		assertTrue(service.recheioExisteNoSabor(UUID.fromString(idMolho), saborCadastrado));
 	}
 
 	private void criarSetDeRecheios(Sabor saborNovo, Recheio... args) {

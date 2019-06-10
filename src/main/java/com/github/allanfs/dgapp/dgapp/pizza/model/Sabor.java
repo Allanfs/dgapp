@@ -21,29 +21,38 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "tb_sabor")
-@NoArgsConstructor @AllArgsConstructor
-public class Sabor extends TipoInsumo{
+@NoArgsConstructor
+@AllArgsConstructor
+public class Sabor extends TipoInsumo {
 
+	@Getter
+	@Setter
 	@Id
+	@Column(name = "id_sabor")
 	@GeneratedValue(generator = "UUID")
-	@Column(name="id_sabor")
-	@Getter	@Setter	UUID id;
-	@Getter @Setter private String nome;
-	
-	@OneToMany(  cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
+	UUID id;
+	@Getter
+	@Setter
+	private String nome;
+
+	@Getter
+	@Setter
 	@JsonManagedReference
-	@Getter @Setter private Set<SaborOrdemRecheio> recheios = new HashSet<SaborOrdemRecheio>();
-	
-	@OneToMany( cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
+	private Set<SaborOrdemRecheio> recheios = new HashSet<SaborOrdemRecheio>();
+
+	@Getter
+	@Setter
 	@JsonManagedReference
-	@Getter @Setter private Set<SaborPrecoTamanho> precosTamanhos;
-	
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Set<SaborPrecoTamanho> precosTamanhos;
+
 	public void adicionarRecheio(Recheio recheio, int posicao) {
-		recheios.add( new SaborOrdemRecheio(recheio, posicao));
+		recheios.add(new SaborOrdemRecheio(recheio, posicao));
 	}
-	
+
 	public void removerRecheioNaPosicao(int posicao) {
-		recheios.removeIf( sor -> sor.getPosicao() == posicao);
+		recheios.removeIf(sor -> sor.getPosicao() == posicao);
 	}
-	
+
 }

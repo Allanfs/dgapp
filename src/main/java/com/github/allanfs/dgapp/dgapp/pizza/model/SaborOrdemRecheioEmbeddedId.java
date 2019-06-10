@@ -29,11 +29,11 @@ import lombok.Setter;
 @JsonIgnoreProperties(value = "sabor")
 public class SaborOrdemRecheioEmbeddedId implements Serializable{
 
-	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name="ID_SABOR_FK", referencedColumnName="id_sabor")
 	@Getter @Setter private Sabor sabor;
 	
-	@ManyToOne(cascade = {CascadeType.MERGE})
+	@ManyToOne()
 	@JoinColumn(name="ID_RECHEIO_FK", referencedColumnName="id_recheio")
 	@Getter @Setter private Recheio recheio;
 	

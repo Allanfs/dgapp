@@ -22,11 +22,24 @@ public class SaborPrecoTamanho {
 	@Getter @Setter private float preco;
 	
 	public Tamanho getTamanho() {
-		return id.getTamanho();
+		return criarIDSeNaoExistir().getTamanho();
 	}
 	
 	public void setTamanho( Tamanho tamanho ) {
-		id.setTamanho(tamanho);
+		criarIDSeNaoExistir().setTamanho(tamanho);
+	}
+	public void setSabor(Sabor sabor) {
+		criarIDSeNaoExistir().setSabor(sabor);
+	}
+	public Sabor getSabor() {
+		return criarIDSeNaoExistir().getSabor();
+	}
+	
+	private SaborPrecoTamanhoEmbeddeId criarIDSeNaoExistir() {
+		if(id == null) {
+			id = new SaborPrecoTamanhoEmbeddeId();
+		}
+		return id;
 	}
 	
 }
