@@ -11,7 +11,8 @@ import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,6 @@ import com.github.allanfs.dgapp.dgapp.pizza.model.SaborOrdemRecheio;
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DisplayName("Teste de Serviço de Recheio")
-@TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class SaborServiceTests {
 
 	@Autowired
@@ -107,6 +107,32 @@ public class SaborServiceTests {
 		assertNotNull(novoSaborEditado.getRecheios());
 		
 		saborCadastrado = novoSaborEditado;
+		
+	}
+	
+	
+	@Test
+	@DisplayName("Excluir um recheio do sabor")
+	void wTest() {
+		
+		UUID UID = saborCadastrado.getId();
+		
+		Sabor saborEncontrado = service.buscarPorId(UID);
+		
+		assertNotNull( saborEncontrado );
+		
+		int quantidadeDeRecheioAntes = saborEncontrado.getRecheios().size();
+		
+		saborEncontrado.removerRecheioNaPosicao(1);
+		
+		
+		saborEncontrado = service.editar(saborEncontrado);
+		
+		int quantidadeDeRecheioDepois = saborEncontrado.getRecheios().size();
+		
+		assertEquals(quantidadeDeRecheioAntes, (quantidadeDeRecheioDepois + 1) );
+		
+		saborCadastrado = saborEncontrado;
 		
 	}
 	

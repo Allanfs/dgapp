@@ -2,8 +2,8 @@ package com.github.allanfs.dgapp.dgapp.pizza.model;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -29,12 +29,20 @@ import lombok.Setter;
 @JsonIgnoreProperties(value = "sabor")
 public class SaborOrdemRecheioEmbeddedId implements Serializable{
 
-	@ManyToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name="ID_SABOR_FK", referencedColumnName="id_sabor")
+	@ManyToOne()
+	@JoinColumn(
+			name = "ID_SABOR_FK_sabor_ordem_recheio", 
+			referencedColumnName = "id_sabor", 
+			foreignKey = @ForeignKey(
+					name = "id_sabor_fk_esta_para_id_sabor"))
 	@Getter @Setter private Sabor sabor;
 	
 	@ManyToOne()
-	@JoinColumn(name="ID_RECHEIO_FK", referencedColumnName="id_recheio")
+	@JoinColumn(
+			name = "ID_RECHEIO_FK", 
+			referencedColumnName = "id_recheio", 
+			foreignKey = @ForeignKey(
+					name = "id_recheio_fk_esta_para_id_recheio"))
 	@Getter @Setter private Recheio recheio;
 	
 	@Override

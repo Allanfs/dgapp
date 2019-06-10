@@ -18,16 +18,24 @@ import lombok.Setter;
 @AllArgsConstructor
 class SaborPrecoTamanhoEmbeddeId implements Serializable {
 
-	@ManyToOne(cascade = { CascadeType.ALL })
-	@JoinColumn(name = "ID_SABOR_FK", referencedColumnName = "id_sabor")
 	@Getter
 	@Setter
+	@ManyToOne()
+	@JoinColumn(
+			name = "ID_SABOR_FK_sabor_preco_tamanho", 
+			referencedColumnName = "id_sabor", 
+			foreignKey = @ForeignKey(
+					name = "id_sabor_fk_esta_para_id_sabor"))
 	private Sabor sabor;
 
-	@ManyToOne(cascade = { CascadeType.ALL })
-	@JoinColumn(name = "ID_TAMANHO_FK", referencedColumnName = "id_tamanho")
 	@Getter
 	@Setter
+	@ManyToOne()
+	@JoinColumn(
+			name = "ID_TAMANHO_FK", 
+			referencedColumnName = "id_tamanho", 
+			foreignKey = @ForeignKey(
+					name = "id_tamnho_fk_esta_para_id_tamanho"))
 	private Tamanho tamanho;
 
 	@Override
