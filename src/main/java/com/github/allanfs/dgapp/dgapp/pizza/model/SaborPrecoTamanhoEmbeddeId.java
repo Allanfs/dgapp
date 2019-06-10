@@ -2,11 +2,12 @@ package com.github.allanfs.dgapp.dgapp.pizza.model;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,13 +17,14 @@ import lombok.Setter;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(value = "sabor")
 class SaborPrecoTamanhoEmbeddeId implements Serializable {
 
 	@Getter
 	@Setter
 	@ManyToOne()
 	@JoinColumn(
-			name = "ID_SABOR_FK_sabor_preco_tamanho", 
+			name = "ID_SABOR_PRECO_TAMANHO", 
 			referencedColumnName = "id_sabor", 
 			foreignKey = @ForeignKey(
 					name = "id_sabor_fk_esta_para_id_sabor"))
@@ -32,7 +34,7 @@ class SaborPrecoTamanhoEmbeddeId implements Serializable {
 	@Setter
 	@ManyToOne()
 	@JoinColumn(
-			name = "ID_TAMANHO_FK", 
+			name = "ID_TAMANHO_PRECO_TAMANHO", 
 			referencedColumnName = "id_tamanho", 
 			foreignKey = @ForeignKey(
 					name = "id_tamnho_fk_esta_para_id_tamanho"))

@@ -4,6 +4,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class SaborPrecoTamanho {
 	public void setSabor(Sabor sabor) {
 		criarIDSeNaoExistir().setSabor(sabor);
 	}
+	@JsonBackReference
 	public Sabor getSabor() {
 		return criarIDSeNaoExistir().getSabor();
 	}

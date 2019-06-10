@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,21 +36,17 @@ public class Sabor extends TipoInsumo {
 
 	@Getter
 	@Setter
-	@JsonManagedReference
-	@OneToMany(
+	@OneToMany(mappedBy= "id.sabor",
 			fetch=FetchType.EAGER, 
-			cascade = {CascadeType.PERSIST,CascadeType.REMOVE}, 
-			orphanRemoval=true)
+			cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
 	private Set<SaborOrdemRecheio> recheios = new HashSet<SaborOrdemRecheio>();
 
 	@Getter
 	@Setter
-	@JsonManagedReference
-	@OneToMany(
+	@OneToMany(mappedBy= "id.sabor",
 			fetch=FetchType.EAGER, 
-			cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, 
-			orphanRemoval=true)
-	private Set<SaborPrecoTamanho> precosTamanhos = new HashSet<SaborPrecoTamanho>();
+			cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Set<SaborPrecoTamanho> precos = new HashSet<SaborPrecoTamanho>();
 
 	public void adicionarRecheio(Recheio recheio, int posicao) {
 		recheios.add(new SaborOrdemRecheio(recheio, posicao));

@@ -31,7 +31,7 @@ public class SaborOrdemRecheioEmbeddedId implements Serializable{
 
 	@ManyToOne()
 	@JoinColumn(
-			name = "ID_SABOR_FK_sabor_ordem_recheio", 
+			name = "ID_SABOR_ORDEM_SABOR", 
 			referencedColumnName = "id_sabor", 
 			foreignKey = @ForeignKey(
 					name = "id_sabor_fk_esta_para_id_sabor"))
@@ -39,7 +39,7 @@ public class SaborOrdemRecheioEmbeddedId implements Serializable{
 	
 	@ManyToOne()
 	@JoinColumn(
-			name = "ID_RECHEIO_FK", 
+			name = "ID_RECHEIO_ORDEM_SABOR", 
 			referencedColumnName = "id_recheio", 
 			foreignKey = @ForeignKey(
 					name = "id_recheio_fk_esta_para_id_recheio"))

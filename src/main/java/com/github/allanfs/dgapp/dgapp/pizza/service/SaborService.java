@@ -135,21 +135,34 @@ public class SaborService implements IService<Sabor> {
 	 */
 	private void sePrecoInvalidoPreencherValorPadrao(Sabor sabor) {
 
-		if(sabor.getPrecosTamanhos() == null) {
-			sabor.setPrecosTamanhos(new HashSet<SaborPrecoTamanho>());
-		}
-		
-		sabor.getPrecosTamanhos().forEach( precoTamanho -> {
+
+		if(sabor.getPrecos() == null) {
+			HashSet<SaborPrecoTamanho> precosTamanhos = new HashSet<SaborPrecoTamanho>();
 			
-			if( precoTamanho.getPreco() <= 0 ) {
-				precoTamanho.setPreco( precoTamanho.getTamanho().getPrecoPadrao());
+			tamanhoService.buscarTodos().forEach( tamanho -> {
+				SaborPrecoTamanho precoDoSaborNoTamanho = new SaborPrecoTamanho();
+				precoDoSaborNoTamanho.setTamanho(tamanho);
+				precoDoSaborNoTamanho.setPreco(tamanho.getPrecoPadrao());
+				precosTamanhos.add( precoDoSaborNoTamanho);
+			});
+			
+			sabor.setPrecos(precosTamanhos);
+			
+		// caso exista preço
+		}else {
+		
+			sabor.getPrecos().forEach( precoTamanho -> {
 				
-				if(precoTamanho.getSabor() == null) {
-					precoTamanho.setSabor(sabor);
+				if( precoTamanho.getPreco() <= 0 ) {
+					precoTamanho.setPreco( precoTamanho.getTamanho().getPrecoPadrao());
+					
+					if(precoTamanho.getSabor() == null) {
+						precoTamanho.setSabor(sabor);
+					}
+					
 				}
-				
-			}
-		});
+			});
+		}
 	}
 
 	/**
@@ -159,7 +172,7 @@ public class SaborService implements IService<Sabor> {
 	 */
 	private void seVazioPreencherPrecosTamanhos(Sabor sabor) {
 		
-		if( sabor.getPrecosTamanhos() == null || sabor.getPrecosTamanhos().isEmpty()) {
+		if( sabor.getPrecos() == null || sabor.getPrecos().isEmpty()) {
 			
 			Set<SaborPrecoTamanho> precoPadrao = new HashSet<SaborPrecoTamanho>();
 			
@@ -173,7 +186,7 @@ public class SaborService implements IService<Sabor> {
 				});
 			});
 			
-			sabor.setPrecosTamanhos(precoPadrao);
+			sabor.setPrecos(precoPadrao);
 			
 		}
 	}

@@ -57,7 +57,7 @@ public class SaborServiceTests {
 		
 		assertNotNull(saborCadastrado.getId());
 		assertEquals(nomeSabor, saborCadastrado.getNome() );
-		assertNotNull(saborCadastrado.getPrecosTamanhos());
+		assertNotNull(saborCadastrado.getPrecos());
 		
 		assertTrue(service.recheioExisteNoSabor(UUID.fromString(idMolho), saborCadastrado));
 	}
