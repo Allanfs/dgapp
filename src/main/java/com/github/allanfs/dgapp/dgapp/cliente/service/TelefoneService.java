@@ -3,6 +3,7 @@ package com.github.allanfs.dgapp.dgapp.cliente.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
@@ -84,6 +85,23 @@ public class TelefoneService implements IService<Telefone> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Telefone buscarPorTelefone( String numero ) {
+		Optional<Telefone> telefoneOpt = repo.findByNumero(numero);
+		if (telefoneOpt.isPresent()) {
+			return telefoneOpt.get();
+		}else {
+			throw new EntityNotFoundException(mensagem.getMessage("telefone.x.nao.encontrado", new Object[] {numero} , Locale.ROOT));
+		}
+	}
+	
+	public boolean deletar(Telefone telefone) {
+		if(repo.existsById( telefone.getId() )) {
+			repo.delete(telefone);
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void deletar(UUID id) {
@@ -92,6 +110,11 @@ public class TelefoneService implements IService<Telefone> {
 		}else {
 			throw new EntityNotFoundException(mensagem.getMessage("telefone.inexistente", null, Locale.ROOT));
 		}
+	}
+	
+	public void deletarPorNumero( String numero ) {
+		
+		repo.deleteByNumero( buscarPorTelefone(numero).getNumero() );
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.cliente.service;
 
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -94,7 +93,17 @@ public class TelefoneServiceTests {
 	@Test
 	@DisplayName("Buscar um telefone pelo seu número")
 	void eTest() {
+		UUID idTelefone = UUID.fromString("62c48160-8d0b-11e9-bc42-526af7764f64");
 		
+		Telefone telefone = Telefone.builder()
+				.id(idTelefone)
+				.numero("990690637")
+				.build();
+		
+		Telefone telefoneEncontrado = service.buscarPorTelefone(telefone.getNumero());
+		
+		assertEquals(telefone.getNumero(), telefoneEncontrado.getNumero());
+		assertEquals(telefone.getId(), telefoneEncontrado.getId());
 	}
 	
 	@ParameterizedTest
@@ -121,6 +130,20 @@ public class TelefoneServiceTests {
 	@Test
 	@DisplayName("Excluir um telefone informando seu número")
 	void gTest() {
+		String id = "62c4850c-8d0b-11e9-bc42-526af7764f64";
+		
+		UUID uid = UUID.fromString(id);
+		UUID idCliente = UUID.fromString("b0e837d8-8d06-11e9-bc42-526af7764f64");
+		
+		Telefone telefone = Telefone.builder().id(uid).numero("997916971").cliente( Cliente.builder().id(idCliente).build() ).build();
+		
+		assertDoesNotThrow( () -> service.deletarPorNumero(telefone.getNumero() ) );
+		
+		service.buscarTodos().forEach(tel -> {
+			System.out.println(tel.getNumero());
+		});
+		assertThrows(EntityNotFoundException.class, () -> service.buscarPorId(uid) );
+		
 		
 	}
 	
