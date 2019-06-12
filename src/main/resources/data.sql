@@ -1,3 +1,6 @@
+
+------	###	OS DADOS ABAIXO NÃO PODEM IR PARA PRODUÇÃO	###	------
+
 --- clientes ---
 --- não insere datas de nascimento e de cadastro
 INSERT INTO tb_cliente (id_cliente, nome, cpf, instagram, facebook, email) VALUES ('b0e833f0-8d06-11e9-bc42-526af7764f64', 'Sarah Evelyn Silva', '23234054703', 'sara_es', null, null);
@@ -14,6 +17,23 @@ INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_clie
 INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c483ea-8d0b-11e9-bc42-526af7764f64', 83, '35122009', 'FALSE', 'Ramal trabalho', 'b0e83f62-8d06-11e9-bc42-526af7764f64');
 INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c4850c-8d0b-11e9-bc42-526af7764f64', 83, '997916971', 'TRUE', null, 'b0e83904-8d06-11e9-bc42-526af7764f64');
 INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c4862e-8d0b-11e9-bc42-526af7764f64', 27, '28119059', 'FALSE', null, 'b0e83f62-8d06-11e9-bc42-526af7764f64');
+
+--- enderecos ---
+INSERT INTO tb_endereco (id_endereco, rua, numero, bairro, complemento, id_cliente_fk) VALUES ('0916cc7a-8d2b-11e9-bc42-526af7764f64','Rua Estudante Júlio Cezar Soares da Silva', '287', 'Valentina de Figueiredo', null, 'b0e833f0-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_endereco (id_endereco, rua, numero, bairro, complemento, id_cliente_fk) VALUES ('0916cf04-8d2b-11e9-bc42-526af7764f64','Rua Severina de Freitas', '362', 'Mandacaru', null, 'b0e8368e-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_endereco (id_endereco, rua, numero, bairro, complemento, id_cliente_fk) VALUES ('0916d044-8d2b-11e9-bc42-526af7764f64','Rua Francisco Guimarães', '650', 'Ipês', null, 'b0e837d8-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_endereco (id_endereco, rua, numero, bairro, complemento, id_cliente_fk) VALUES ('0916d42c-8d2b-11e9-bc42-526af7764f64','Rua Aluísio Bezerra da Silva', '207', 'Portal do Sol', null, 'b0e83904-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_endereco (id_endereco, rua, numero, bairro, complemento, id_cliente_fk) VALUES ('0916d594-8d2b-11e9-bc42-526af7764f64','Rua Valdemiro Ferreira da Silva', '819', 'Nações', null, 'b0e83f62-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_endereco (id_endereco, rua, numero, bairro, complemento, id_cliente_fk) VALUES ('0916d6c0-8d2b-11e9-bc42-526af7764f64','Rua Professor Oswaldo de Miranda Pereira', '623', 'Brisamar', null, 'b0e83904-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_endereco (id_endereco, rua, numero, bairro, complemento, id_cliente_fk) VALUES ('0916d7ec-8d2b-11e9-bc42-526af7764f64','Rua Aparecida', '690', 'Nova Conquista', null, 'b0e83f62-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_endereco (id_endereco, rua, numero, bairro, complemento, id_cliente_fk) VALUES ('0916dbac-8d2b-11e9-bc42-526af7764f64','Rua Maria Eulina', '110', 'Popular', null, 'b0e833f0-8d06-11e9-bc42-526af7764f64');
+
+------	###	OS DADOS ACIMA NÃO PODEM IR PARA PRODUÇÃO	###	------
+
+
+
+
+
 
 
 --- tamanhos ---
