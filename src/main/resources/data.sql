@@ -1,3 +1,21 @@
+--- clientes ---
+--- não insere datas de nascimento e de cadastro
+INSERT INTO tb_cliente (id_cliente, nome, cpf, instagram, facebook, email) VALUES ('b0e833f0-8d06-11e9-bc42-526af7764f64', 'Sarah Evelyn Silva', '23234054703', 'sara_es', null, null);
+INSERT INTO tb_cliente (id_cliente, nome, cpf, instagram, facebook, email) VALUES ('b0e8368e-8d06-11e9-bc42-526af7764f64', 'Rebeca Jaqueline Melo', '64362804307', 'rebecamelo', 'rebecamelo', null );
+INSERT INTO tb_cliente (id_cliente, nome, cpf, instagram, facebook, email) VALUES ('b0e837d8-8d06-11e9-bc42-526af7764f64', 'Pietra Rita Assis', '22860007946', 'PitAssis_', null, 'pietraritaassis__pietraritaassis@unimedsjc.com.br' );
+INSERT INTO tb_cliente (id_cliente, nome, cpf, instagram, facebook, email) VALUES ('b0e83904-8d06-11e9-bc42-526af7764f64', 'Valentina Esther Fernandes', '25527765311', null, 'thether', 'valentinaestherfernandes_@raffinimobiliario.com.br' );
+INSERT INTO tb_cliente (id_cliente, nome, cpf, instagram, facebook, email) VALUES ('b0e83f62-8d06-11e9-bc42-526af7764f64', 'Ricardo Bernardo da Silva', '61955426872', null, 'Ricnardo', 'ricardobernardodasilva_@sfreitasadvogados.com.br' );
+
+--- telefones ---
+INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c479c2-8d0b-11e9-bc42-526af7764f64', 83, '32356050', 'FALSE', 'trabalho fds', 'b0e833f0-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c47c60-8d0b-11e9-bc42-526af7764f64', 83, '996185740', 'TRUE', null, 'b0e8368e-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c48160-8d0b-11e9-bc42-526af7764f64', 83, '990690637', 'FALSE', null, 'b0e837d8-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c482be-8d0b-11e9-bc42-526af7764f64', 83, '32354900', 'FALSE', null, 'b0e83904-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c483ea-8d0b-11e9-bc42-526af7764f64', 83, '35122009', 'FALSE', 'Ramal trabalho', 'b0e83f62-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c4850c-8d0b-11e9-bc42-526af7764f64', 83, '997916971', 'TRUE', null, 'b0e83904-8d06-11e9-bc42-526af7764f64');
+INSERT INTO tb_telefone (id_telefone, ddd, numero, whatsapp, observacao, id_cliente_fk) VALUES ('62c4862e-8d0b-11e9-bc42-526af7764f64', 27, '28119059', 'FALSE', null, 'b0e83f62-8d06-11e9-bc42-526af7764f64');
+
+
 --- tamanhos ---
 
 INSERT INTO tb_tamanho (id_tamanho, nome, centimetros, numero_fatias, numero_maximo_sabores,preco_padrao) VALUES ('d134a92e-889f-11e9-bc42-526af7764f64','Pequena', 25, 4, 1,17);
