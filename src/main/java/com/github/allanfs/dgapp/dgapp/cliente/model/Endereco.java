@@ -35,12 +35,12 @@ public class Endereco {
 	@Setter
 	private UUID id;
 
-	@NotNull
+	@NotNull(message = "Rua deve ser preenchida")
 	@Getter
 	@Setter
 	private String rua;
 
-	@NotNull
+	@NotNull(message = "Bairro deve ser preenchido")
 	@Getter
 	@Setter
 	private String bairro;
@@ -49,7 +49,7 @@ public class Endereco {
 	@Setter
 	private String complemento;
 
-	@NotNull
+	@NotNull(message = "Número deve ser preenchido")
 	@Getter
 	@Setter
 	private String numero;
