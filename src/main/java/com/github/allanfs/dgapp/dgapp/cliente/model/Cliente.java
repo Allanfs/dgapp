@@ -1,11 +1,14 @@
 package com.github.allanfs.dgapp.dgapp.cliente.model;
 
+import static javax.persistence.CascadeType.ALL;
+
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -36,12 +39,12 @@ public class Cliente {
 	@Setter
 	private UUID id;
 
-	@OneToMany(targetEntity = Telefone.class, mappedBy = "cliente")
+	@OneToMany(fetch = FetchType.EAGER, targetEntity = Telefone.class, mappedBy = "cliente", orphanRemoval = true, cascade = {ALL})
 	@Getter
 	@Setter
 	private Set<Telefone> telefone;
 
-	@OneToMany(targetEntity = Endereco.class, mappedBy = "cliente")
+	@OneToMany(fetch = FetchType.EAGER, targetEntity = Endereco.class, mappedBy = "cliente")
 	@Getter
 	@Setter
 	private Set<Endereco> endereco;

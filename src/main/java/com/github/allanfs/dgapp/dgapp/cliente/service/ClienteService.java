@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
@@ -15,6 +16,9 @@ public class ClienteService implements IService<Cliente> {
 
 	@Autowired
 	private ClienteRepository repo;
+	
+	@Autowired
+    private MessageSource mensagem;
 	
 	@Override
 	public Cliente cadastrar(Cliente obj) {
