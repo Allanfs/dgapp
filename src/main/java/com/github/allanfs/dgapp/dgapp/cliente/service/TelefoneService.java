@@ -9,12 +9,14 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Telefone;
 import com.github.allanfs.dgapp.dgapp.cliente.repository.TelefoneRepository;
 import com.github.allanfs.dgapp.dgapp.pizza.service.IService;
 
+@Service
 public class TelefoneService implements IService<Telefone> {
 
 	@Autowired
@@ -25,6 +27,11 @@ public class TelefoneService implements IService<Telefone> {
 	
 	@Override
 	public Telefone cadastrar(Telefone obj) {
+		
+		if( obj.getCliente() == null ) {
+			throw new EntityNotFoundException(mensagem.getMessage("cliente.inexistente", null, Locale.ROOT));
+		}
+		
 		repo.save(obj);
 		return null;
 	}
@@ -32,9 +39,9 @@ public class TelefoneService implements IService<Telefone> {
 	@Override
 	public Telefone editar(Telefone obj) {
 		
-    	if( obj.getId() == null | repo.existsById(obj.getId()) ) {
-    		throw new EntityNotFoundException(mensagem.getMessage("telefone.inexistente", null, Locale.ROOT));
-    	}
+//    	if( obj.getId() == null | repo.existsById(obj.getId()) ) {
+//    		throw new EntityNotFoundException(mensagem.getMessage("telefone.inexistente", null, Locale.ROOT));
+//    	}
     	
 		return repo.save(obj);
 	}
@@ -82,6 +89,8 @@ public class TelefoneService implements IService<Telefone> {
 	public void deletar(UUID id) {
 		if(repo.existsById(id)) {
 			repo.deleteById(id);
+		}else {
+			throw new EntityNotFoundException(mensagem.getMessage("telefone.inexistente", null, Locale.ROOT));
 		}
 	}
 

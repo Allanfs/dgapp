@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.repository.ClienteRepository;
 import com.github.allanfs.dgapp.dgapp.pizza.service.IService;
 
+@Service
 public class ClienteService implements IService<Cliente> {
 
 	@Autowired
