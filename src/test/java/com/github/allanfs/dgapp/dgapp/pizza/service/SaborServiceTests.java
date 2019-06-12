@@ -10,12 +10,8 @@ import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.hibernate.mapping.Table;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -66,28 +62,32 @@ public class SaborServiceTests {
 	}
 
 	@Test
-	@DisplayName("Cadastrar um sabor sem recheio e sem tamanho, então receber exceção")
+	@DisplayName("Cadastrar um sabor sem recheio e apenas um tamanho, então receber sabor com todos os tamanhos")
 	void cadastraSemRecheio() {
 		
-		Sabor saborNovo = new Sabor();
-		
-		String nomeSabor = "Ousadinho";
-		saborNovo.setNome(nomeSabor);
-		saborNovo.setEhDisponivel(false);
-		saborNovo.setEhEspecial(true);
-		saborNovo.setEhSalgado(true);
-		
 		Tamanho tamanho = new Tamanho();
-		tamanho.setId(UUID.fromString("d134a92e-889f-11e9-bc42-526af7764f64"));
+			tamanho.setId(UUID.fromString("d134a92e-889f-11e9-bc42-526af7764f64"));
+			
+		Tamanho t1 = Tamanho.builder()
+				.id(UUID.fromString("d134a92e-889f-11e9-bc42-526af7764f64"))
+				.centimetros(10).build();
 		
-		float precoNovo = 15;
-		saborNovo.getPrecos().add(new SaborPrecoTamanho(tamanho, saborNovo, precoNovo ));
+		Sabor saborNovo = Sabor.builder().nome("Ousadinho").build();
+		float precoDoTamanho = 15;
+		saborNovo.getPrecos().add(new SaborPrecoTamanho(tamanho, saborNovo, precoDoTamanho ));
+		
+		int quantidadePrecosTamanhoAntes = saborNovo.getPrecos().size();
 		
 		Sabor saborInserido = service.cadastrar(saborNovo);
 		
-		assertTrue(saborInserido.getPrecos().size() > saborNovo.getPrecos().size());
+		int quantidadePrecosTamanhoDepois = saborInserido.getPrecos().size();
 		
-		assertTrue(existeUmPrecoTamanhoNoValorDe(saborInserido, precoNovo));
+		
+		assertTrue(quantidadePrecosTamanhoDepois > quantidadePrecosTamanhoAntes );
+		
+		assertTrue(existeUmPrecoTamanhoNoValorDe(saborInserido, precoDoTamanho));
+		
+		assertTrue(saborInserido.getRecheios().isEmpty());
 		
 	}
 

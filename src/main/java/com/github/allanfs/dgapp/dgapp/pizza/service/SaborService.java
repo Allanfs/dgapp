@@ -34,7 +34,13 @@ public class SaborService implements IService<Sabor> {
 	@Autowired
 	private MessageSource mensagem;
 
+	/* (non-Javadoc)
+	 * Se recheios for vazio? cria um vazio
+	 * Se precosTamanho for vazio? insere todos os tamanhos com seus valores padrao 
+	 * @see com.github.allanfs.dgapp.dgapp.pizza.service.IService#cadastrar(java.lang.Object)
+	 */
 	public Sabor cadastrar(Sabor sabor) {
+		
 		List<Tamanho> todosTamanhosCadastrados = tamanhoService.buscarTodos();
 		
 		Sabor saborCadastrado = sabor;
@@ -52,7 +58,7 @@ public class SaborService implements IService<Sabor> {
 		preencherTamanhoInexistentesEm(saborCadastrado, todosTamanhosCadastrados);
 		
 		sePrecoInvalidoPreencherValorPadrao(saborCadastrado);
-
+		
 		return saborRepo.save(saborCadastrado);
 	}
 
@@ -222,8 +228,8 @@ public class SaborService implements IService<Sabor> {
 	}
 
 	/**
-	 * Verifica se o {@linkplain SaborPrecoTamanho} é null ou vazio.
-	 * Caso seja, utiliza o valor padrão dos {@linkplain Tamanho tamanhos} cadastrados
+	 * Utiliza o valor padrão dos {@linkplain Tamanho tamanhos} cadastrados
+	 * para inseri-los em {@link SaborPrecoTamanho} no sabor.
 	 * @param sabor
 	 */
 	private void preencherPrecosTamanhos(Sabor sabor) {
