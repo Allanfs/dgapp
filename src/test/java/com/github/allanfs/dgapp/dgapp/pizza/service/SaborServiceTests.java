@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.hibernate.mapping.Table;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -23,6 +24,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Recheio;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
 import com.github.allanfs.dgapp.dgapp.pizza.model.SaborOrdemRecheio;
+import com.github.allanfs.dgapp.dgapp.pizza.model.SaborPrecoTamanho;
+import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -62,23 +65,34 @@ public class SaborServiceTests {
 		assertTrue(service.recheioExisteNoSabor(UUID.fromString(idMolho), saborCadastrado));
 	}
 
-	private void criarSetDeRecheios(Sabor saborNovo, Recheio... args) {
+	@Test
+	@DisplayName("Cadastrar um sabor sem recheio e sem tamanho, então receber exceção")
+	void cadastraSemRecheio() {
 		
-		int posicao = 1;
-		for (Recheio recheio : args) {
-			saborNovo.adicionarRecheio(recheio, posicao++);
-		}
+		Sabor saborNovo = new Sabor();
+		
+		String nomeSabor = "Ousadinho";
+		saborNovo.setNome(nomeSabor);
+		saborNovo.setEhDisponivel(false);
+		saborNovo.setEhEspecial(true);
+		saborNovo.setEhSalgado(true);
+		
+		Tamanho tamanho = new Tamanho();
+		tamanho.setId(UUID.fromString("d134a92e-889f-11e9-bc42-526af7764f64"));
+		
+		float precoNovo = 15;
+		saborNovo.getPrecos().add(new SaborPrecoTamanho(tamanho, saborNovo, precoNovo ));
+		
+		Sabor saborInserido = service.cadastrar(saborNovo);
+		
+		assertTrue(saborInserido.getPrecos().size() > saborNovo.getPrecos().size());
+		
+		assertTrue(existeUmPrecoTamanhoNoValorDe(saborInserido, precoNovo));
 		
 	}
-	
-	private void criarSetDeRecheios(Set<SaborOrdemRecheio> recheios, Recheio... args) {
-		
-		int posicao = 1;
-		for (Recheio recheio : args) {
-			recheios.add( 
-					new SaborOrdemRecheio( recheio, posicao++ ));
-		}
-		
+
+	private boolean existeUmPrecoTamanhoNoValorDe(Sabor saborInserido, float preco) {
+		return saborInserido.getPrecos().stream().anyMatch(precoTamanho -> precoTamanho.getPreco() == preco);
 	}
 	
 	@Test
@@ -147,6 +161,25 @@ public class SaborServiceTests {
 		service.deletar(UID);
 		
 		assertThrows(EntityNotFoundException.class, () -> service.buscarPorId(UID));
+		
+	}
+	
+	private void criarSetDeRecheios(Sabor saborNovo, Recheio... args) {
+		
+		int posicao = 1;
+		for (Recheio recheio : args) {
+			saborNovo.adicionarRecheio(recheio, posicao++);
+		}
+		
+	}
+	
+	private void criarSetDeRecheios(Set<SaborOrdemRecheio> recheios, Recheio... args) {
+		
+		int posicao = 1;
+		for (Recheio recheio : args) {
+			recheios.add( 
+					new SaborOrdemRecheio( recheio, posicao++ ));
+		}
 		
 	}
 }

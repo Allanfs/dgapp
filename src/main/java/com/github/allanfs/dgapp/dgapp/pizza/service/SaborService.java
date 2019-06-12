@@ -35,14 +35,53 @@ public class SaborService implements IService<Sabor> {
 	private MessageSource mensagem;
 
 	public Sabor cadastrar(Sabor sabor) {
-
-		validarOrdemRecheios(sabor);
+		List<Tamanho> todosTamanhosCadastrados = tamanhoService.buscarTodos();
 		
-		seVazioPreencherPrecosTamanhos(sabor);
+		Sabor saborCadastrado = sabor;
 		
-		sePrecoInvalidoPreencherValorPadrao(sabor);
+		if(saborCadastrado.getRecheios() == null) {
+			saborCadastrado.setRecheios( new HashSet<SaborOrdemRecheio>() );
+		}
+		
+		validarOrdemRecheios(saborCadastrado);
+		
+		if(saborCadastrado.getPrecos() == null || saborCadastrado.getPrecos().isEmpty()) {
+			preencherPrecosTamanhos(sabor);
+		}
+		
+		preencherTamanhoInexistentesEm(saborCadastrado, todosTamanhosCadastrados);
+		
+		sePrecoInvalidoPreencherValorPadrao(saborCadastrado);
 
-		return saborRepo.save(sabor);
+		return saborRepo.save(saborCadastrado);
+	}
+
+	/**
+	 * Caso exista algum {@link SaborPrecoTamanho} que não informe o preço de algum {@link Tamanho} cadastrado:
+	 * o método irá inserir o tamanho não informado.
+	 * 
+	 * Isos quer dizer que: {@link SaborPrecoTamanho} deve ter a mesma quantidade de {@link Tamanho}s cadastrados
+	 * 
+	 * @param sabor
+	 * @param todosTamanhosCadastrados
+	 */
+	private void preencherTamanhoInexistentesEm(Sabor sabor, List<Tamanho> todosTamanhosCadastrados) {
+		// verifica no sabor.getPrecos qual deles cujo tamanho não é igual a 'este tamanho cadastrado'
+		// e para cada um que voce não encontrar, adicione 'este tamanho cadastrado' no sabor.precos
+		todosTamanhosCadastrados.stream().filter(
+				tamanho -> sabor.getPrecos().stream()
+				.noneMatch(
+						precoTamanho -> precoTamanho.getTamanho().getId().equals( tamanho.getId() )
+						)
+				).forEach(tamanho -> {
+							sabor.getPrecos().add(new SaborPrecoTamanho() {	
+								{
+									this.setTamanho(tamanho);
+									this.setSabor(sabor);
+									this.setPreco(tamanho.getPrecoPadrao());
+								}
+							});
+						});
 	}
 
 	public Sabor editar(Sabor sabor) {
@@ -100,7 +139,7 @@ public class SaborService implements IService<Sabor> {
 	
 	/**
 	 * Verifica se os dados do {@linkplain SaborOrdemRecheio ordem recheio} são validos.
-	 * 
+	 * Verificando se as posições são maiores que 0, e se possui ID
 	 * @param sabor
 	 */
 	private void validarOrdemRecheios(Sabor sabor) {
@@ -187,25 +226,22 @@ public class SaborService implements IService<Sabor> {
 	 * Caso seja, utiliza o valor padrão dos {@linkplain Tamanho tamanhos} cadastrados
 	 * @param sabor
 	 */
-	private void seVazioPreencherPrecosTamanhos(Sabor sabor) {
-		
-		if( sabor.getPrecos() == null || sabor.getPrecos().isEmpty()) {
-			
-			Set<SaborPrecoTamanho> precoPadrao = new HashSet<SaborPrecoTamanho>();
-			
-			tamanhoService.buscarTodos().forEach( tamanho -> {
-				precoPadrao.add( new SaborPrecoTamanho() {
-					{
-						setTamanho( tamanho );
-						setPreco( tamanho.getPrecoPadrao() );
-						setSabor(sabor);
-					}
-				});
+	private void preencherPrecosTamanhos(Sabor sabor) {
+
+		Set<SaborPrecoTamanho> precoPadrao = new HashSet<SaborPrecoTamanho>();
+
+		tamanhoService.buscarTodos().forEach(tamanho -> {
+			precoPadrao.add(new SaborPrecoTamanho() {
+				{
+					setTamanho(tamanho);
+					setPreco(tamanho.getPrecoPadrao());
+					setSabor(sabor);
+				}
 			});
-			
-			sabor.setPrecos(precoPadrao);
-			
-		}
+		});
+
+		sabor.setPrecos(precoPadrao);
+
 	}
 
 }

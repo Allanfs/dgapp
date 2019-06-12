@@ -22,6 +22,11 @@ public class SaborPrecoTamanho {
 	@Getter @Setter private SaborPrecoTamanhoEmbeddeId id;
 	@Getter @Setter private float preco;
 	
+	public SaborPrecoTamanho(Tamanho tamanho, Sabor sabor, float preco) {
+		this.setTamanho(tamanho);
+		this.setSabor(sabor);
+		this.setPreco(preco);
+	}
 	public Tamanho getTamanho() {
 		return criarIDSeNaoExistir().getTamanho();
 	}
