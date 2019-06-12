@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -37,6 +38,7 @@ public class Telefone {
 	@JoinColumn(name = "id_cliente_fk")
 	@Getter
 	@Setter
+	@NotNull
 	private Cliente cliente;
 
 	@Getter
@@ -44,6 +46,7 @@ public class Telefone {
 	private Integer ddd;
 	@Getter
 	@Setter
+	@NotNull
 	private String numero;
 	@Getter
 	@Setter

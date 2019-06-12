@@ -29,9 +29,7 @@ public class RecheioService implements IService<Recheio>{
     
     public Recheio editar(Recheio recheio){
     	
-    	// 1) id do recheio é igual a nulo?
-    	// 2) o retorno da busca pelo recheio é igual a nulo?
-    	if( recheio.getId() == null | buscarPorId( recheio.getId() ) == null ) {
+    	if( recheio.getId() == null | recheioRepo.existsById(recheio.getId()) ) {
     		throw new EntityNotFoundException(mensagem.getMessage("recheio.inexistente", null, Locale.ROOT));
     	}
     	
