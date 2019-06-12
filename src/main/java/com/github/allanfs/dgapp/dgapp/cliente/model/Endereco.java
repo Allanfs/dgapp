@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -56,5 +58,12 @@ public class Endereco {
 	@Getter
 	@Setter
 	private String cep;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_cliente_fk")
+	@Getter
+	@Setter
+	@NotNull
+	private Cliente cliente;
 
 }

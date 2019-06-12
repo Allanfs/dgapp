@@ -39,7 +39,7 @@ public class Cliente {
 	@Setter
 	private Set<Telefone> telefone;
 
-	@OneToMany
+	@OneToMany(targetEntity = Endereco.class, mappedBy = "cliente")
 	@Getter
 	@Setter
 	private Set<Endereco> endereco;
