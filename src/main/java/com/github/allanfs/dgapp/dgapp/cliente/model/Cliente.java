@@ -13,7 +13,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,7 +37,7 @@ public class Cliente {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
-	@Column(name = "id_cliente")
+	@Column(name = "id_cliente",updatable = false)
 	@Getter
 	@Setter
 	private UUID id;
@@ -51,6 +54,7 @@ public class Cliente {
 
 	@Getter
 	@Setter
+	@NotNull
 	private String nome;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -77,6 +81,8 @@ public class Cliente {
 
 	@Getter
 	@Setter
+	@Column( insertable = false, updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCadastro;
 
 }

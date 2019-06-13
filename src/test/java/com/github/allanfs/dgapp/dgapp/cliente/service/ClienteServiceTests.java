@@ -27,7 +27,7 @@ class ClienteServiceTests {
 	@ParameterizedTest
 	@CsvFileSource(resources = "/cliente/cadastrarCliente.csv",numLinesToSkip=1)
 	@DisplayName("Cadastrar um cliente com sucesso")
-	void cadastrarClienteTest(String nome, Long dataNascimento, String cpf, String insta, String email) {
+	void cadastrarClienteTest(String nome,Long dataNascimento, String cpf, String instagram, String facebook, String email) {
 		
 		Date dn = null;
 		
@@ -37,9 +37,10 @@ class ClienteServiceTests {
 		
 		Cliente cliente = Cliente.builder()
 				.nome(nome)
-				.email(email)
 				.cpf(cpf)
-				.instagram(insta)
+				.instagram(instagram)
+				.facebook(facebook)
+				.email(email)
 				.dataNascimento(dn)
 				.build();
 		
@@ -49,27 +50,24 @@ class ClienteServiceTests {
 		
 	}
 	
-	@Test
-	@DisplayName("Cadastrar um cliente sem informar telefone e endereço")
-	void cadastrarClienteSemItnformarTelefoneEEnderecoTest() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
+	@ParameterizedTest
+	@CsvFileSource(resources = "/cliente/adicionarTelefoneAoCliente.csv",numLinesToSkip=1)
 	@DisplayName("Cadastrar um novo telefone ao cliente")
-	void adicionarTelefoneAoClienteTest() {
+	void adicionarTelefoneAoClienteTest(String ddd,String numero,String whatsapp,String observação,String id_cliente) {
 		//service.adicionarTelefone(telefone);
 		fail("Not yet implemented");
 	}
 	
-	@Test
+	@ParameterizedTest
+	@CsvFileSource(resources = "/cliente/removerTelefoneDeCliente.csv",numLinesToSkip=1)
 	@DisplayName("Remover um telefone do cliente")
 	void removerUmTelefoneAoClienteTest() {
 		//service.removerEndereco(Endereco);
 		fail("Not yet implemented");
 	}
 	
-	@Test
+	@ParameterizedTest
+	@CsvFileSource(resources = "/cliente/editarTelefoneDoCliente.csv",numLinesToSkip=1)
 	@DisplayName("Editar um telefone do cliente")
 	void editarUmTelefoneAoClienteTest() {
 		//service.alterarTelefone(telefone);
@@ -77,20 +75,24 @@ class ClienteServiceTests {
 	}
 	
 	@Test
+	@ParameterizedTest
+	@CsvFileSource(resources = "/cliente/adicionarEnderecoAoCliente.csv",numLinesToSkip=1)
 	@DisplayName("Cadastar um novo endereco ao cliente")
 	void cadastrarUmEnderecoAoClienteTest() {
 		//service.adicionarEndereceo(endereco);
 		fail("Not yet implemented");
 	}
 	
-	@Test
+	@ParameterizedTest
+	@CsvFileSource(resources = "/cliente/removerEnderecoDoCliente.csv",numLinesToSkip=1)
 	@DisplayName("Remover um endereco do cliente")
 	void removerUmEnderecoDoClienteTest() {
 		//service.removerEndereco(endereco);
 		fail("Not yet implemented");
 	}
 	
-	@Test
+	@ParameterizedTest
+	@CsvFileSource(resources = "/cliente/editarEnderecoDoCliente.csv",numLinesToSkip=1)
 	@DisplayName("Editar um endereco do cliente")
 	void editarUmEnderecoDoClienteTest() {
 		fail("Not yet implemented");
