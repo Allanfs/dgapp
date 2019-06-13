@@ -2,12 +2,19 @@ package com.github.allanfs.dgapp.dgapp.cliente.service;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.sql.Date;
+import java.util.Calendar;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -16,15 +23,25 @@ class ClienteServiceTests {
 	@Autowired
 	private ClienteService service;
 	
-	@Test
+	@ParameterizedTest
+	@CsvFileSource(resources = "/cliente/cadastrarCliente.csv",numLinesToSkip=1)
 	@DisplayName("Cadastrar um cliente com sucesso")
-	void cadastrarClienteTest() {
-		fail("Not yet implemented");
+	void cadastrarClienteTest(String nome, Long dataNascimento, String cpf, String insta, String email) {
+		System.out.println(nome);
+		Date dn = new Date(dataNascimento);
+//		Date dataNascimento = new Date()
+		Cliente cliente = Cliente.builder()
+				.nome(nome)
+				.email(email)
+				.cpf(cpf)
+				.instagram(insta)
+				.dataNascimento(dn)
+				.build();
 	}
 	
 	@Test
 	@DisplayName("Cadastrar um cliente sem informar telefone e endereço")
-	void cadastrarClienteSemInformarTelefoneEEnderecoTest() {
+	void cadastrarClienteSemItnformarTelefoneEEnderecoTest() {
 		fail("Not yet implemented");
 	}
 	
