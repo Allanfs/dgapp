@@ -85,8 +85,6 @@ public class SaborService implements IService<Sabor> {
 			return sabor.getPrecos().stream().noneMatch(tamanhoComIdsIguais);
 		};
 		
-		// verifica no sabor.getPrecos qual deles cujo tamanho não é igual a 'este tamanho cadastrado'
-		// e para cada um que voce não encontrar, adicione 'este tamanho cadastrado' no sabor.precos
 		todosTamanhosCadastrados.stream().filter(tamanhosQueNaoEstaoNaLista).forEach(adicionaTamanhoAoSabor);
 	}
 
