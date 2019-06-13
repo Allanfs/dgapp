@@ -1,5 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.cliente.service;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.Date;
@@ -27,9 +28,13 @@ class ClienteServiceTests {
 	@CsvFileSource(resources = "/cliente/cadastrarCliente.csv",numLinesToSkip=1)
 	@DisplayName("Cadastrar um cliente com sucesso")
 	void cadastrarClienteTest(String nome, Long dataNascimento, String cpf, String insta, String email) {
-		System.out.println(nome);
-		Date dn = new Date(dataNascimento);
-//		Date dataNascimento = new Date()
+		
+		Date dn = null;
+		
+		if(dataNascimento != null) {
+			dn = new Date(dataNascimento);
+		}
+		
 		Cliente cliente = Cliente.builder()
 				.nome(nome)
 				.email(email)
@@ -37,6 +42,11 @@ class ClienteServiceTests {
 				.instagram(insta)
 				.dataNascimento(dn)
 				.build();
+		
+		Cliente cNovo = service.cadastrar(cliente);
+		
+		assertNotNull(cNovo.getId());
+		
 	}
 	
 	@Test
