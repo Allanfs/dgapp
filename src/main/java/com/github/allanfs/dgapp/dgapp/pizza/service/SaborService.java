@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -72,22 +74,20 @@ public class SaborService implements IService<Sabor> {
 	 * @param todosTamanhosCadastrados
 	 */
 	private void preencherTamanhoInexistentesEm(Sabor sabor, List<Tamanho> todosTamanhosCadastrados) {
+		
+		// não leia esta parte, vá para última linha
+		Consumer<? super Tamanho> adicionaTamanhoAoSabor = tamanho -> {
+					sabor.getPrecos().add( new SaborPrecoTamanho(tamanho, sabor, tamanho.getPrecoPadrao()) );
+				};
+				
+		Predicate<? super Tamanho> tamanhosQueNaoEstaoNaLista = tamanho -> {
+			Predicate<? super SaborPrecoTamanho> tamanhoComIdsIguais = precoTamanho -> precoTamanho.getTamanho().getId().equals( tamanho.getId() );
+			return sabor.getPrecos().stream().noneMatch(tamanhoComIdsIguais);
+		};
+		
 		// verifica no sabor.getPrecos qual deles cujo tamanho não é igual a 'este tamanho cadastrado'
 		// e para cada um que voce não encontrar, adicione 'este tamanho cadastrado' no sabor.precos
-		todosTamanhosCadastrados.stream().filter(
-				tamanho -> sabor.getPrecos().stream()
-				.noneMatch(
-						precoTamanho -> precoTamanho.getTamanho().getId().equals( tamanho.getId() )
-						)
-				).forEach(tamanho -> {
-							sabor.getPrecos().add(new SaborPrecoTamanho() {	
-								{
-									this.setTamanho(tamanho);
-									this.setSabor(sabor);
-									this.setPreco(tamanho.getPrecoPadrao());
-								}
-							});
-						});
+		todosTamanhosCadastrados.stream().filter(tamanhosQueNaoEstaoNaLista).forEach(adicionaTamanhoAoSabor);
 	}
 
 	public Sabor editar(Sabor sabor) {
