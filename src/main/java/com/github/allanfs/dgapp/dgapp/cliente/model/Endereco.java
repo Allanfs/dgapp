@@ -35,6 +35,13 @@ public class Endereco {
 	@Setter
 	private UUID id;
 
+	@ManyToOne
+	@JoinColumn(name = "id_cliente_fk")
+	@Getter
+	@Setter
+	@NotNull
+	private Cliente cliente;
+	
 	@NotNull(message = "Rua deve ser preenchida")
 	@Getter
 	@Setter
@@ -58,12 +65,5 @@ public class Endereco {
 	@Getter
 	@Setter
 	private String cep;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_cliente_fk")
-	@Getter
-	@Setter
-	@NotNull
-	private Cliente cliente;
 
 }

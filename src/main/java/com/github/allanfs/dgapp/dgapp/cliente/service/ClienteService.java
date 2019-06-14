@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -75,9 +76,29 @@ public class ClienteService implements IService<Cliente> {
 	}
 	public Cliente removerTelefone(Telefone telefone, Cliente cliente) {
 		
+		// o telefone possui uma referencia para o cliente informado?
+		if (!telefone.getCliente().getId().equals(cliente.getId())) {
+			// erro
 
+			// o cliente possui esse telefone na sua lista?
+			if ( !cliente.getTelefone().stream().anyMatch(tele -> telefone.getId().equals(telefone.getId()))) {
+				// erro
+				// cliente nao possui o telefone informado
+			}
+		}
 		
-		return cliente;
+		// remove o telefone da lista do cliente
+		Telefone telefoneRemover = cliente.getTelefone().stream()
+				.filter(tele -> telefone.getId().equals(telefone.getId())).findFirst().get();
+		
+		// remove o telefone
+		if (cliente.getTelefone().remove(telefoneRemover)) {
+			editar(cliente);
+			return cliente;
+		}else {
+			// erro
+			return null;
+		}
 		
 	}
 	/**
@@ -114,14 +135,16 @@ public class ClienteService implements IService<Cliente> {
 
 	@Override
 	public Cliente editar(Cliente obj) {
-		// TODO Auto-generated method stub
-		return null;
+		if (obj.getId() == null) {
+			throw new ClienteCadastradoException(mensagem.getMessage("cliente.x.ja.cadastrado", new Object[] {obj.getNome()}, Locale.ROOT));
+		}else {
+			return repo.save(obj);
+		}
 	}
 
 	@Override
 	public List<Cliente> buscarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		return repo.findAll();
 	}
 
 	@Override
@@ -138,14 +161,12 @@ public class ClienteService implements IService<Cliente> {
 
 	@Override
 	public Cliente buscarPorNome(String nome) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void deletar(UUID id) {
-		// TODO Auto-generated method stub
-		
+		repo.deleteById(id);
 	}
 	
 	private void inserirClienteNoEnderecoCasoNaoTenha(Cliente obj) {
