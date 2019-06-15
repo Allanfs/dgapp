@@ -15,7 +15,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemPedidoEmbeddedId  implements Serializable {
+class ItemPedidoEmbeddedId  implements Serializable {
 	
 	@Getter
 	@Setter

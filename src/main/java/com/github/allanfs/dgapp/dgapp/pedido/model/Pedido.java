@@ -1,6 +1,8 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -13,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
@@ -34,27 +37,38 @@ public class Pedido {
 	
 	@NotNull
 	@Column(updatable = false)
+	@Getter
+	@Setter
 	private Long codigo;
 	
 	@NotNull
-	private boolean aberto;
+	@Getter
+	@Setter
+	private Estado estado = Estado.FECHADO;
 	
 	@NotNull
+	@Getter
+	@Setter
 	@Column(name="id_cliente_fk", updatable = false)
 	private Cliente cliente;
 	
 	@NotNull
 	@Column(name="id_endereco_fk")
+	@Getter
+	@Setter
 	private Endereco endereco;
 	
 	@Column( updatable = false )
 	@Temporal(TemporalType.TIMESTAMP)
+	@Getter
+	@Setter
 	private Date horaAbertura;
 	
 	@Column( updatable = false )
 	@Temporal(TemporalType.TIMESTAMP)
+	@Getter
+	@Setter
 	private Date horaFechamento;
-	
 	
 	/**
 	 * Operações de desconto ou acrescimo
@@ -62,11 +76,30 @@ public class Pedido {
 	 */
 	@Getter
 	@Setter
-	private List<Operacao> operacoes;
+	private List<Operacao> operacoes = new ArrayList<Operacao>();
 	
 	@OneToMany
 	@Getter
 	@Setter
-	private Set<ItemPedido> itens;
+	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
+	
+	@Getter
+	@Setter
+	private List<FormaPagamento> pagamentos = new ArrayList<FormaPagamento>();
+	
+	@Getter
+	@Setter
+	@Transient
+	private float total;
+	
+	@Getter
+	@Setter
+	@Transient
+	private float subtotal;
+	
+	@Getter
+	@Setter
+	@Transient
+	private float valorPago;
 	
 }
