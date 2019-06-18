@@ -10,8 +10,10 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,6 +28,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "tb_pedido")
+@SequenceGenerator(name="pedido_seq", sequenceName="pedido_codigo_seq", allocationSize=1)
 public class Pedido {
 	
 	@Id
@@ -63,6 +66,9 @@ public class Pedido {
 	@Getter
 	@Setter
 	private Date horaAbertura;
+	
+	@GeneratedValue(strategy=GenerationType.IDENTITY, generator="Estado_Seq")
+	private int numeroPedido;
 	
 	@Column( updatable = false )
 	@Temporal(TemporalType.TIMESTAMP)
