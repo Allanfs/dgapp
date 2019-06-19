@@ -1,12 +1,22 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Set;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
@@ -15,55 +25,24 @@ import com.github.allanfs.dgapp.dgapp.pedido.service.PedidoServiceImpl;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.postgresql.jdbc2.optional.SimpleDataSource;
-
-//@SpringJUnitConfig
-//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringJUnitConfig
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class PedidoServiceTest {
 	
-	Cliente cliente;
-	Endereco endereco;
-	Set<ItemPedido> itens;
+	@Autowired
+	private PedidoServiceImpl service;
 	
-	@BeforeEach
-	void beforeEach() {
-		
-	}
-
+	@Disabled
 	@Test
-	@DisplayName("Cadastrar um pedido e obter seu número")
+	@DisplayName("Cadastrar pedido e o número do pedido não ser 0")
 	void test() throws ParseException {
 		
-		Cliente cliente = null;
-		// inserir endereço do cliente
-		// inserir telefone do cliente
-		// inserir um item no pedido
-
 		Pedido pedido = new Pedido();
-		pedido.setCliente(cliente);
+
+		Pedido pedidoCadastrar = service.cadastrar(pedido);
 		
-		PedidoServiceImpl service = new PedidoServiceImpl();
-		
-		// mockar o repository usado no PedidoService
-		// quando chamar um metodo do repo, retornar um valor...
-
-		String numeroRetornado = pedido.getNumero();
-
-
-		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyHHmm");
-		
-		StringBuilder sb = new StringBuilder( sdf.format( Calendar.getInstance().getTime() ) );
-
-		sb.append("001");
-
-		Assertions.assertEquals(sb.toString(), numeroRetornado);
-
+//		assertNotNull(pedidoCadastrar.getNumeroPedido());
+//		assertNotEquals(0, pedidoCadastrar.getNumeroPedido());
 		
 	}
 

@@ -1,23 +1,19 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
-import java.util.ArrayList;
+import static javax.persistence.CascadeType.ALL;
+
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,7 +28,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "tb_pedido")
-@SequenceGenerator(name = "pedido_seq", sequenceName = "pedido_codigo_seq", allocationSize = 1)
 public class Pedido {
 
 	@Id
@@ -41,30 +36,29 @@ public class Pedido {
 	@Column(name = "id_pedido", updatable = false)
 	private UUID id;
 
-	@NotNull
 	@Getter	@Setter
 	@Column(updatable = false)
+	@Transient
 	private Long codigo;
 
 	@NotNull
 	@Getter	@Setter
 	private Estado estado = Estado.FECHADO;
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "Estado_Seq")
-	private int numeroPedido;
-
 	@NotNull
 	@Getter	@Setter
 	@OneToOne(targetEntity = Cliente.class)
+	@JoinColumn(name="id_cliente_fk")
 	private Cliente cliente;
 
 	@NotNull
 	@Getter	@Setter
 	@OneToOne(targetEntity = Endereco.class)
+	@JoinColumn(name="id_endereco_fk")
 	private Endereco endereco;
 
 	@Getter	@Setter
-	@OneToMany(targetEntity = ItemPedido.class, mappedBy = "id.pedido")
+	@OneToMany(targetEntity = ItemPedido.class, mappedBy = "id.pedido", orphanRemoval = true, cascade = {ALL})
 	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
 
 	@Getter	@Setter
@@ -88,5 +82,6 @@ public class Pedido {
 	@Transient
 	@Getter	@Setter
 	private float valorPago;
+	
 
 }
