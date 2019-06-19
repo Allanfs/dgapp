@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.allanfs.dgapp.dgapp.pizza.model.sabor.SaborOrdemRecheio;
+import com.github.allanfs.dgapp.dgapp.pizza.model.sabor.SaborPrecoTamanho;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,12 +31,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Sabor extends TipoInsumo {
 
-	@Getter
-	@Setter
 	@Id
+	@Getter	@Setter
 	@Column(name = "id_sabor")
 	@GeneratedValue(generator = "UUID")
-	UUID id;
+	private UUID id;
 	@Getter
 	@Setter
 	private String nome;

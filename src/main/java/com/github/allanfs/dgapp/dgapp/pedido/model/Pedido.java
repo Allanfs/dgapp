@@ -8,11 +8,15 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,84 +32,61 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "tb_pedido")
-@SequenceGenerator(name="pedido_seq", sequenceName="pedido_codigo_seq", allocationSize=1)
+@SequenceGenerator(name = "pedido_seq", sequenceName = "pedido_codigo_seq", allocationSize = 1)
 public class Pedido {
-	
+
 	@Id
+	@Getter	@Setter
 	@GeneratedValue(generator = "UUID")
-	@Column(name = "id_pedido",updatable = false)
-	@Getter
-	@Setter
+	@Column(name = "id_pedido", updatable = false)
 	private UUID id;
-	
+
 	@NotNull
+	@Getter	@Setter
 	@Column(updatable = false)
-	@Getter
-	@Setter
 	private Long codigo;
-	
+
 	@NotNull
-	@Getter
-	@Setter
+	@Getter	@Setter
 	private Estado estado = Estado.FECHADO;
-	
-	@NotNull
-	@Getter
-	@Setter
-	@Column(name="id_cliente_fk", updatable = false)
-	private Cliente cliente;
-	
-	@NotNull
-	@Column(name="id_endereco_fk")
-	@Getter
-	@Setter
-	private Endereco endereco;
-	
-	@Column( updatable = false )
-	@Temporal(TemporalType.TIMESTAMP)
-	@Getter
-	@Setter
-	private Date horaAbertura;
-	
-	@GeneratedValue(strategy=GenerationType.IDENTITY, generator="Estado_Seq")
+
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "Estado_Seq")
 	private int numeroPedido;
-	
-	@Column( updatable = false )
-	@Temporal(TemporalType.TIMESTAMP)
-	@Getter
-	@Setter
-	private Date horaFechamento;
-	
-	/**
-	 * Operações de desconto ou acrescimo
-	 * são feitos nesta classe.
-	 */
-	@Getter
-	@Setter
-	private List<Operacao> operacoes = new ArrayList<Operacao>();
-	
-	@OneToMany
-	@Getter
-	@Setter
+
+	@NotNull
+	@Getter	@Setter
+	@OneToOne(targetEntity = Cliente.class)
+	private Cliente cliente;
+
+	@NotNull
+	@Getter	@Setter
+	@OneToOne(targetEntity = Endereco.class)
+	private Endereco endereco;
+
+	@Getter	@Setter
+	@OneToMany(targetEntity = ItemPedido.class, mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
-	
-	@Getter
-	@Setter
-	private List<FormaPagamento> pagamentos = new ArrayList<FormaPagamento>();
-	
-	@Getter
-	@Setter
+
+	@Getter	@Setter
+	@Column(updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date horaAbertura;
+
+	@Getter	@Setter
+	@Column(updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date horaFechamento;
+
 	@Transient
+	@Getter	@Setter
 	private float total;
-	
-	@Getter
-	@Setter
+
 	@Transient
+	@Getter	@Setter
 	private float subtotal;
-	
-	@Getter
-	@Setter
+
 	@Transient
+	@Getter	@Setter
 	private float valorPago;
-	
+
 }

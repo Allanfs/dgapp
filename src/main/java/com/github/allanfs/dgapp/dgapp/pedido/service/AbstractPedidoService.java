@@ -1,10 +1,12 @@
-package com.github.allanfs.dgapp.dgapp.pedido.model;
+package com.github.allanfs.dgapp.dgapp.pedido.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ProibidoAlterarPedidoNoEstadoException;
 
 import lombok.Getter;

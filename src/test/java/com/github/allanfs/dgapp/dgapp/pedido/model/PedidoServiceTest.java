@@ -8,17 +8,20 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Set;
 
+import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
+import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
+import com.github.allanfs.dgapp.dgapp.cliente.service.ClienteService;
+import com.github.allanfs.dgapp.dgapp.pedido.service.PedidoServiceImpl;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
-import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
-import com.github.allanfs.dgapp.dgapp.cliente.service.ClienteService;
-import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
-import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
+import org.postgresql.jdbc2.optional.SimpleDataSource;
 
 //@SpringJUnitConfig
 //@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -37,19 +40,30 @@ class PedidoServiceTest {
 	@DisplayName("Cadastrar um pedido e obter seu número")
 	void test() throws ParseException {
 		
-		Calendar ca = Calendar.getInstance();
+		Cliente cliente = null;
+		// inserir endereço do cliente
+		// inserir telefone do cliente
+		// inserir um item no pedido
+
+		Pedido pedido = new Pedido();
+		pedido.setCliente(cliente);
 		
-		String padraoData = "ddMMyyHHmm";
+		PedidoServiceImpl service = new PedidoServiceImpl();
 		
-		SimpleDateFormat format = new SimpleDateFormat(padraoData);
-		String strDataFormatada = format.format(ca.getTime());
+		// mockar o repository usado no PedidoService
+		// quando chamar um metodo do repo, retornar um valor...
+
+		String numeroRetornado = pedido.getNumero();
+
+
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyHHmm");
 		
-		StringBuilder sb = new StringBuilder(strDataFormatada);
-		
-		strDataFormatada += "001";
-		
-		System.out.println( String.format("%-13s", strDataFormatada));
-		
+		StringBuilder sb = new StringBuilder( sdf.format( Calendar.getInstance().getTime() ) );
+
+		sb.append("001");
+
+		Assertions.assertEquals(sb.toString(), numeroRetornado);
+
 		
 	}
 

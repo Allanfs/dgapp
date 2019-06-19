@@ -15,10 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
+import com.github.allanfs.dgapp.dgapp.pizza.exception.PosicaoNegativaException;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
-import com.github.allanfs.dgapp.dgapp.pizza.model.SaborOrdemRecheio;
-import com.github.allanfs.dgapp.dgapp.pizza.model.SaborPrecoTamanho;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
+import com.github.allanfs.dgapp.dgapp.pizza.model.sabor.SaborOrdemRecheio;
+import com.github.allanfs.dgapp.dgapp.pizza.model.sabor.SaborPrecoTamanho;
 import com.github.allanfs.dgapp.dgapp.pizza.repository.SaborRepository;
 
 @Service

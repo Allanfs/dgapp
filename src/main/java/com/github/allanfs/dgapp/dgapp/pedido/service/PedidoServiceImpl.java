@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.dgapp.pedido.model;
+package com.github.allanfs.dgapp.dgapp.pedido.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
-import com.github.allanfs.dgapp.dgapp.pedido.service.ClienteNaoCadastradoException;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

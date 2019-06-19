@@ -19,9 +19,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.github.allanfs.dgapp.dgapp.pizza.model.Recheio;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
-import com.github.allanfs.dgapp.dgapp.pizza.model.SaborOrdemRecheio;
-import com.github.allanfs.dgapp.dgapp.pizza.model.SaborPrecoTamanho;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
+import com.github.allanfs.dgapp.dgapp.pizza.model.sabor.SaborOrdemRecheio;
+import com.github.allanfs.dgapp.dgapp.pizza.model.sabor.SaborPrecoTamanho;
 
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

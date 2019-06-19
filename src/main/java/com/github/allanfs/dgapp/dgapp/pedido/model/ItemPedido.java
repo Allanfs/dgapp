@@ -1,6 +1,8 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
 import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,6 +11,8 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"quantidade", "observacao"})
+@Entity
+@Table(name = "tb_item_pedido")
 public class ItemPedido {
 
 	@EmbeddedId
@@ -52,4 +56,14 @@ public class ItemPedido {
 		}
 		return id;
 	}
+	
+	/*
+	 * MAPPED SUPER CLASS	caso a subclasse herde de um tipo que não seja entity
+	 * 		toda classe que herdar desta classe, possuirá as colunas que a super tiver em atributo
+	 * SINGLE TABLE			salva as subclasses em uma unica tabela
+	 * 
+	 * JOINED				uma tabela para cada entity da herança (não importa se é abstrata)
+	 * 
+	 * TABLE PER CLASS		uma tabela para cada classe concreta
+	 */
 }

@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.dgapp.pizza.model;
+package com.github.allanfs.dgapp.dgapp.pizza.model.sabor;
 
 import java.io.Serializable;
 
@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
+import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

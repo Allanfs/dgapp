@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.dgapp.pizza.service;
+package com.github.allanfs.dgapp.dgapp.pizza.exception;
 
 /**
  * Quando a posição de um recheio em um sabor for menor que zero
