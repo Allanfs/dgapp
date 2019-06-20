@@ -2,11 +2,13 @@ package com.github.allanfs.dgapp.dgapp.pedido.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ProibidoAlterarPedidoNoEstadoException;
 
 import lombok.Getter;
@@ -44,6 +46,51 @@ public abstract class AbstractPedidoService {
 	
 	public void setEstadoFechado() {
 		pedido.setEstado(Estado.FECHADO);
+	}
+	
+	public float calcularSubtotal() {
+		
+		Map<Produto, Integer> itens = this.pedido.getItens();
+		float subtotal = 0;
+		
+		for (Map.Entry<Produto, Integer> entry: itens.entrySet()) {
+			Produto produto = entry.getKey();
+			Integer quantidade = entry.getValue();
+			
+			subtotal += produto.getPreco() * quantidade;
+		}
+		
+		return subtotal;
+	}
+	
+	public void inserirProduto(Produto produtoAdicionado) {
+		
+		Map<Produto, Integer> itens = this.pedido.getItens();
+		if (itens.containsKey(produtoAdicionado)) {
+			int quantidade = itens.get(produtoAdicionado);
+			itens.put(produtoAdicionado, ++quantidade);
+		}
+		
+	}
+	
+	public void subtrairUmaUnidadeDoProduto( Produto produto ) {
+		
+		Map<Produto, Integer> itens = this.pedido.getItens();
+		if (itens.containsKey(produto)) {
+			int quantidade = itens.get(produto);
+			if (quantidade -1 == 0) {
+				itens.remove(produto);
+			}else {
+				itens.put(produto, --quantidade);
+			}
+		}
+	}
+	
+	public void removerProdutoDoPedido( Produto produto ) {
+		Map<Produto, Integer> itens = this.pedido.getItens();
+		if (itens.containsKey(produto)) {
+			itens.remove(produto);
+		}
 	}
 	
 	/**
@@ -91,6 +138,8 @@ public abstract class AbstractPedidoService {
 		switch (getEstadoPedido()) {
 		case ABERTO:
 			System.err.println("Ao fechar pedido deve ser verificado os pagamentos");
+			// verificar se já recebeu pagamento
+			
 			this.pedido.setEstado(Estado.FECHADO);
 			return this.pedido;
 

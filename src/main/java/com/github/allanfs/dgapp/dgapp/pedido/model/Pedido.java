@@ -1,18 +1,17 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
-import static javax.persistence.CascadeType.ALL;
-
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -58,8 +57,12 @@ public class Pedido {
 	private Endereco endereco;
 
 	@Getter	@Setter
-	@OneToMany(targetEntity = ItemPedido.class, mappedBy = "id.pedido", orphanRemoval = true, cascade = {ALL})
-	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
+	@ElementCollection
+	@JoinTable(
+			name="tabela_produtos_pedido", 
+			joinColumns = {@JoinColumn(name="id_pedido_fk",referencedColumnName = "id_pedido")})
+	@Column(name="quantidadeItens")
+	private Map<Produto,Integer> itens = new HashMap<Produto,Integer>();
 
 	@Getter	@Setter
 	@Column(updatable = false)

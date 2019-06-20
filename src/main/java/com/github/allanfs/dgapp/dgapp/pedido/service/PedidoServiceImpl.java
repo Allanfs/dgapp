@@ -47,8 +47,6 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 		
 		Cliente clienteDoPedido = obj.getCliente();
 		
-		clienteDoPedido = clienteService.buscarPorId(clienteDoPedido.getId());
-		
 		if (clienteDoPedido.getEndereco().size() == 1) {
 
 			obj.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
