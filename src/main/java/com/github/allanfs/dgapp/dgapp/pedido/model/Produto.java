@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.github.allanfs.dgapp.dgapp.pedido.service.Numerario;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,4 +33,8 @@ public class Produto {
 	@Getter
 	@Setter
 	private float preco;
+	
+	@Getter
+	@Setter
+	private Numerario valor;
 }

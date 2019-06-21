@@ -2,6 +2,7 @@ package com.github.allanfs.dgapp.dgapp.pedido.model;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -64,6 +65,9 @@ public class Pedido {
 	@Column(name="quantidadeItens")
 	private Map<Produto,Integer> itens = new HashMap<Produto,Integer>();
 
+	@Getter	@Setter
+	private List<Pagamento> pagamentos;
+	
 	@Getter	@Setter
 	@Column(updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
