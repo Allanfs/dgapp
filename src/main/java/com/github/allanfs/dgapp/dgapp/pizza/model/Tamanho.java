@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -19,9 +18,8 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "tb_tamanho")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-@Table(name = "tb_tamanho")
 @NoArgsConstructor 
 @EqualsAndHashCode
 @Getter	@Setter

@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import com.github.allanfs.dgapp.dgapp.pedido.service.Numerario;
 
@@ -14,8 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table(name="tb_produto")
+@Entity(name="tb_produto")
 @EqualsAndHashCode
 @Getter @Setter
 public class Produto {

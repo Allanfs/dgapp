@@ -2,7 +2,6 @@ package com.github.allanfs.dgapp.dgapp.pizza.model.sabor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,15 +18,15 @@ import lombok.Setter;
  * @author allan
  *
  */
-@Entity
-@Table(name = "tb_sabor_ordem_recheio")
+@Entity(name = "tb_sabor_ordem_recheio")
 @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
 public class SaborOrdemRecheio {
 
 	@EmbeddedId
 	@JsonIgnore
-	@Getter private SaborOrdemRecheioEmbeddedId id;
-	@Getter @Setter private Integer posicao;
+	private SaborOrdemRecheioEmbeddedId id;
+	private Integer posicao;
 	
 	public SaborOrdemRecheio(Sabor saborNovo, Recheio recheio, int i) {
 		this(recheio, i);

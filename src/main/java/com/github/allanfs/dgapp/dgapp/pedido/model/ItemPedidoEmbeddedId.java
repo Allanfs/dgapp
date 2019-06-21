@@ -1,7 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ForeignKey;

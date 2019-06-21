@@ -1,10 +1,7 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
-import java.util.UUID;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,8 +10,7 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"quantidade", "observacao"})
-@Entity
-@Table(name = "tb_item_pedido")
+@Entity(name = "tb_item_pedido")
 @Getter @Setter
 public class ItemPedido {
 

@@ -1,7 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;

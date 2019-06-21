@@ -11,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.allanfs.dgapp.dgapp.pizza.model.sabor.SaborOrdemRecheio;
@@ -26,10 +25,9 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "tb_sabor")
 @EqualsAndHashCode(callSuper=true)
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-@Table(name = "tb_sabor")
 @NoArgsConstructor
 @Getter @Setter
 public class Sabor extends TipoInsumo {
