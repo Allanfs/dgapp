@@ -1,7 +1,9 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,86 +13,33 @@ import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
 import com.github.allanfs.dgapp.dgapp.pedido.service.Expediente;
 import com.github.allanfs.dgapp.dgapp.pedido.service.Numerario;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class PedidoNovo {
 	
-	UUID id;
+	@Getter @Setter private UUID id;
 	
-	String numeroPedido;
+	@Getter @Setter private String numeroPedido;
 	
-	Date horaAbertura;
-	Date horaFechamento;
+	@Getter @Setter private Date horaAbertura;
+	@Getter @Setter private Date horaFechamento;
 	
-	Cliente cliente;
-	Endereco endereco;
+	@Getter @Setter private Cliente cliente;
 	
-	Map<Produto, Integer> itens;
+	@Getter @Setter private Endereco endereco;
 	
-	List<Operacao> operacoes;
+	@Getter @Setter private Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
 	
-	Numerario total;
-	Numerario valorPago;
+	@Getter @Setter private List<Operacao> operacoes = new ArrayList<Operacao>();
 	
-	Expediente expediente;
-	Pedido pedido;
-	public void adicionarEndereco(Endereco endereco) {
-		this.pedido.setEndereco(endereco);
-	}
-	public void adicionarCliente(Cliente cliente) {
-		this.pedido.setCliente(cliente);
-	}
-	public void adicionarItem(Produto produto) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		if (itens.containsKey(produto)) {
-			int quantidade = itens.get(produto);
-			itens.put(produto, quantidade);
-		}else {
-			itens.put(produto, 1);
-		}
-	}
-	public void removerUmItem(Produto produto) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		
-		if (itens.containsKey(produto)) {
-			int quantidade = itens.get(produto);
-			itens.put(produto, --quantidade);
-		}
-	}
-	public void removerItem(Produto produto) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		
-		if (itens.containsKey(produto)) {
-			itens.remove(produto);
-		}
+	@Getter @Setter private Numerario total;
+	@Getter @Setter private Numerario valorPago;
+	
+	@Getter @Setter private Expediente expediente;
+	
+	public PedidoNovo() {
+		this.horaAbertura = Calendar.getInstance().getTime();
 	}
 	
-	public Numerario calcularSubtotal() {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		
-		Numerario subtotal = new Numerario();
-		
-		for (Map.Entry<Produto, Integer> entry: itens.entrySet()) {
-			Produto produto = entry.getKey();
-			Integer quantidade = entry.getValue();
-			
-			subtotal.adicionar( new Numerario(produto.getValor().getValor() * quantidade) );
-			
-		}
-		
-		return subtotal;
-	}
-	
-	public Numerario calcularTotal() {
-		Numerario subtotal = calcularSubtotal();
-		float valorDeOperacao = 0; 
-		
-		for (Operacao operacao : operacoes) {
-			valorDeOperacao += operacao.getValor();
-		}
-		
-		return new Numerario(valorDeOperacao).mais(subtotal);
-	}
-	
-	public void fecharPedido() {
-		this.horaFechamento = Calendar.getInstance().getTime();
-	}
 }
