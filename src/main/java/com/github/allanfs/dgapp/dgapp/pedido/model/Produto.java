@@ -27,5 +27,6 @@ public class Produto {
 	
 	private float preco;
 	
+//	@Embedded
 	private Numerario valor;
 }

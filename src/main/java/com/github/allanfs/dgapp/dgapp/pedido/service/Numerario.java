@@ -1,5 +1,7 @@
 package com.github.allanfs.dgapp.dgapp.pedido.service;
 
+import javax.persistence.Embeddable;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Embeddable
 public class Numerario {
 	@Getter @Setter
 	private float valor;

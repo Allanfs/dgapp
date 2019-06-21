@@ -58,6 +58,7 @@ public class Pedido {
 	@Column(name="quantidadeItens")
 	private Map<Produto,Integer> itens = new HashMap<Produto,Integer>();
 
+	@Transient
 	private List<Pagamento> pagamentos;
 	
 	@Column(updatable = false)
