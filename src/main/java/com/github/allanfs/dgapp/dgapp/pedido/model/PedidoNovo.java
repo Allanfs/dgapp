@@ -1,5 +1,6 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,10 @@ public class PedidoNovo {
 			valorDeOperacao += operacao.getValor();
 		}
 		
-		return new Numerario(valorDeOperacao);
+		return new Numerario(valorDeOperacao).mais(subtotal);
+	}
+	
+	public void fecharPedido() {
+		this.horaFechamento = Calendar.getInstance().getTime();
 	}
 }
