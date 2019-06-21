@@ -1,5 +1,7 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import java.util.UUID;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -13,17 +15,14 @@ import lombok.Setter;
 @EqualsAndHashCode(exclude = {"quantidade", "observacao"})
 @Entity
 @Table(name = "tb_item_pedido")
+@Getter @Setter
 public class ItemPedido {
 
 	@EmbeddedId
 	private ItemPedidoEmbeddedId id;
 	
-	@Getter
-	@Setter
 	private int quantidade;
 	
-	@Getter
-	@Setter
 	private String observacao;
 	
 	public ItemPedido(Pedido pedido, Produto produto) {

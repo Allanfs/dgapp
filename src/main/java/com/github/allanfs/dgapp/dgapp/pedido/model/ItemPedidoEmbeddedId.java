@@ -1,6 +1,7 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ForeignKey;
@@ -17,10 +18,9 @@ import lombok.Setter;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter @Setter
 class ItemPedidoEmbeddedId  implements Serializable {
 	
-	@Getter
-	@Setter
 	@ManyToOne()
 	@JoinColumn(
 			name="id_pedido_fk",
@@ -30,8 +30,6 @@ class ItemPedidoEmbeddedId  implements Serializable {
 			)
 	private Pedido pedido;
 	
-	@Getter
-	@Setter
 	@ManyToOne()
 	@JoinColumn(name="id_produto_fk", referencedColumnName="id_produto",
 		foreignKey = @ForeignKey(

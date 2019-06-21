@@ -34,56 +34,37 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter @Setter
 public class Cliente {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@Column(name = "id_cliente",updatable = false)
-	@Getter
-	@Setter
 	private UUID id;
 
 	@OneToMany(fetch = FetchType.EAGER, targetEntity = Telefone.class, mappedBy = "cliente", orphanRemoval = true, cascade = {ALL})
-	@Getter
-	@Setter
 	@Builder.Default
 	private Set<Telefone> telefone = new HashSet<Telefone>();
 
 	@OneToMany(fetch = FetchType.EAGER, targetEntity = Endereco.class, mappedBy = "cliente", orphanRemoval = true, cascade = {ALL})
-	@Getter
-	@Setter
 	@Builder.Default
 	private Set<Endereco> endereco = new HashSet<Endereco>();
 
-	@Getter
-	@Setter
 	@NotNull
 	private String nome;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-	@Getter
-	@Setter
 	private Date dataNascimento;
 	
-	@Getter
-	@Setter
 	private String cpf;
 
-	@Getter
-	@Setter
 	private String instagram;
 	
-	@Getter
-	@Setter
 	private String facebook;
 
 	@Email
-	@Getter
-	@Setter
 	private String email;
 
-	@Getter
-	@Setter
 	@Column( insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCadastro;

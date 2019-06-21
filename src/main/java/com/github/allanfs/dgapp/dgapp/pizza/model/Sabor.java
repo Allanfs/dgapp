@@ -19,6 +19,7 @@ import com.github.allanfs.dgapp.dgapp.pizza.model.sabor.SaborPrecoTamanho;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,29 +27,24 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
+@EqualsAndHashCode(callSuper=true)
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Table(name = "tb_sabor")
 @NoArgsConstructor
+@Getter @Setter
 public class Sabor extends TipoInsumo {
 
 	@Id
-	@Getter	@Setter
 	@Column(name = "id_sabor")
 	@GeneratedValue(generator = "UUID")
 	private UUID id;
-	@Getter
-	@Setter
 	private String nome;
 
-	@Getter
-	@Setter
 	@OneToMany(mappedBy= "id.sabor",
 			fetch=FetchType.EAGER, 
 			cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
 	private Set<SaborOrdemRecheio> recheios = new HashSet<SaborOrdemRecheio>();
 
-	@Getter
-	@Setter
 	@OneToMany(mappedBy= "id.sabor",
 			fetch=FetchType.EAGER, 
 			cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

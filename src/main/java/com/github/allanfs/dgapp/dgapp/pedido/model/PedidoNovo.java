@@ -16,27 +16,27 @@ import com.github.allanfs.dgapp.dgapp.pedido.service.Numerario;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter @Setter
 public class PedidoNovo {
 	
-	@Getter @Setter private UUID id;
+	private UUID id;
 	
-	@Getter @Setter private String numeroPedido;
+	private String numeroPedido;
 	
-	@Getter @Setter private Date horaAbertura;
-	@Getter @Setter private Date horaFechamento;
+	private Date horaAbertura;
+	private Date horaFechamento;
 	
-	@Getter @Setter private Cliente cliente;
+	private Cliente cliente;
 	
-	@Getter @Setter private Endereco endereco;
+	private Endereco endereco;
 	
-	@Getter @Setter private Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
+	private Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
 	
-	@Getter @Setter private List<Operacao> operacoes = new ArrayList<Operacao>();
+	private List<Operacao> operacoes = new ArrayList<Operacao>();
 	
-	@Getter @Setter private Numerario total;
-	@Getter @Setter private Numerario valorPago;
-	
-	@Getter @Setter private Expediente expediente;
+	private Numerario total;
+	private Numerario valorPago;
+	private Expediente expediente;
 	
 	public PedidoNovo() {
 		this.horaAbertura = Calendar.getInstance().getTime();

@@ -17,24 +17,17 @@ import lombok.Setter;
 @Entity
 @Table(name="tb_produto")
 @EqualsAndHashCode
+@Getter @Setter
 public class Produto {
 	
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@Column(name = "id_produto",updatable = false)
-	@Getter
-	@Setter
 	private UUID id;
 	
-	@Getter
-	@Setter
 	private String nome;
 	
-	@Getter
-	@Setter
 	private float preco;
 	
-	@Getter
-	@Setter
 	private Numerario valor;
 }

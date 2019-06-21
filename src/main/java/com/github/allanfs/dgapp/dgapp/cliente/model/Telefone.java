@@ -27,34 +27,22 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
+@Getter @Setter
 public class Telefone {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@Column(name = "id_telefone")
-	@Getter
-	@Setter
 	private UUID id;
 
 	@ManyToOne
 	@JoinColumn(name = "id_cliente_fk")
-	@Getter
-	@Setter
 	@NotNull
 	private Cliente cliente;
-
-	@Getter
-	@Setter
 	private Integer ddd;
-	@Getter
-	@Setter
 	@NotNull
 	private String numero;
-	@Getter
-	@Setter
 	private boolean whatsapp;
-	@Getter
-	@Setter
 	private String observacao;
 
 }
