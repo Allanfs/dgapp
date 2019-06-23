@@ -9,9 +9,8 @@ import com.github.allanfs.dgapp.dgapp.pizza.model.Recheio;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Dentro de uma classe sabor, os 
@@ -20,7 +19,7 @@ import lombok.Setter;
  */
 @Entity(name = "tb_sabor_ordem_recheio")
 @NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
+@Data
 public class SaborOrdemRecheio {
 
 	@EmbeddedId

@@ -8,16 +8,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Embeddable
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Data
 class ItemPedidoEmbeddedId  implements Serializable {
 	
 	@ManyToOne()

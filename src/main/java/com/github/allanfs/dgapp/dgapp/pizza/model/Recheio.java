@@ -10,17 +10,16 @@ import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @AllArgsConstructor
 @Entity(name = "tb_recheio")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @NoArgsConstructor 
 @EqualsAndHashCode(callSuper=true)
-@Getter	@Setter	
+@Data
 public class Recheio extends TipoInsumo{
 	
 	@Id

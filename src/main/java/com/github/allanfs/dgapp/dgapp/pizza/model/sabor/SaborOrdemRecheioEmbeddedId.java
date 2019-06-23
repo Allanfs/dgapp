@@ -10,13 +10,10 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Recheio;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
-import com.github.allanfs.dgapp.dgapp.pizza.model.TipoInsumo;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Dentro de uma classe sabor, os recheios 
@@ -31,8 +28,7 @@ import lombok.Setter;
 @Embeddable
 @NoArgsConstructor @AllArgsConstructor
 @JsonIgnoreProperties(value = "sabor")
-@EqualsAndHashCode
-@Getter @Setter
+@Data
 public class SaborOrdemRecheioEmbeddedId implements Serializable{
 
 	@ManyToOne()

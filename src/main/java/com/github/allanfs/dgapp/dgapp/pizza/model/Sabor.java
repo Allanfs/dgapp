@@ -18,10 +18,9 @@ import com.github.allanfs.dgapp.dgapp.pizza.model.sabor.SaborPrecoTamanho;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @AllArgsConstructor
 @Builder
@@ -29,7 +28,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper=true)
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @NoArgsConstructor
-@Getter @Setter
+@Data
 public class Sabor extends TipoInsumo {
 
 	@Id

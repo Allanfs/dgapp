@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.github.allanfs.dgapp.dgapp.pedido.service.AbstractPedidoService;
 import com.github.allanfs.dgapp.dgapp.pedido.service.PedidoServiceImpl;
 
 class PedidoServiceUnitTest {
