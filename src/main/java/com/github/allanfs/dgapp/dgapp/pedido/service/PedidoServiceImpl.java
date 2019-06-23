@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.service.ClienteService;
-import com.github.allanfs.dgapp.dgapp.pedido.model.AbstractPedidoService;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
 
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.github.allanfs.dgapp.dgapp.pedido.model;
+package com.github.allanfs.dgapp.dgapp.pedido.service;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -13,6 +13,9 @@ import org.springframework.context.MessageSource;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Operacao;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
 
 import lombok.Getter;

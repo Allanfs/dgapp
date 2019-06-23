@@ -17,8 +17,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
 import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
-import com.github.allanfs.dgapp.dgapp.pedido.service.ClienteNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.PedidoServiceImpl;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
 

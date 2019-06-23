@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -18,7 +17,6 @@ import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Telefone;
 import com.github.allanfs.dgapp.dgapp.cliente.repository.ClienteRepository;
-import com.github.allanfs.dgapp.dgapp.cliente.repository.TelefoneRepository;
 import com.github.allanfs.dgapp.dgapp.pizza.service.IService;
 
 @Service

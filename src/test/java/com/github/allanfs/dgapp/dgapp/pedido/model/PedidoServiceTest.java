@@ -37,20 +37,6 @@ class PedidoServiceTest {
 	
 	@MockBean
 	PedidoRepository pedidoRepo;
-	
-	@Disabled
-	@Test
-	@DisplayName("Cadastrar pedido e o número do pedido não ser 0")
-	void test() throws ParseException {
-		
-		Pedido pedido = new Pedido();
-
-		Pedido pedidoCadastrar = service.cadastrar(pedido);
-		
-//		assertNotNull(pedidoCadastrar.getNumeroPedido());
-//		assertNotEquals(0, pedidoCadastrar.getNumeroPedido());
-		
-	}
 
 	@Test
 	@DisplayName("Cadastrar pedido com cliente que possui apenas um endereço")
