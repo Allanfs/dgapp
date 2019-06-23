@@ -1,27 +1,29 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import java.math.BigDecimal;
+
 public enum Operacao {
 	DESCONTO , COBRANCA ;
 
-	private float valor;
+	private BigDecimal valor;
 	
-	public float getValor() {
+	public BigDecimal getValor() {
 		if (this == COBRANCA) {
-			if (this.valor > 0) {
+			if (this.valor.compareTo( new BigDecimal(0) )  > 0 ) {
 				return this.valor;
 			}else {
-				return this.valor * -1;
+				return this.valor.negate();
 			}
 		}else {
-			if (this.valor > 0) {
-				return this.valor * -1;
+			if (this.valor.compareTo( new BigDecimal(0) )  > 0 ) {
+				return this.valor.negate();
 			}else {
 				return this.valor;
 			}
 		}
 	}
 	
-	public Operacao setValor(float valor) {
+	public Operacao setValor(BigDecimal valor) {
 		this.valor = valor;
 		return this;
 	}

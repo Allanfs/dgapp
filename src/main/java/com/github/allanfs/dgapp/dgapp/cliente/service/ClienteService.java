@@ -116,8 +116,6 @@ public class ClienteService implements IService<Cliente> {
 			novoEndereco.setCliente(cliente);
 		}
 		
-		novoEndereco = enderecoService.cadastrar(novoEndereco);
-		
 		adicionarEnderecoNoCliente(novoEndereco, cliente);
 		
 		return cliente;

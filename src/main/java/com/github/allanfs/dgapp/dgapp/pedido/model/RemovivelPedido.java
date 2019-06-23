@@ -27,7 +27,7 @@ import lombok.Setter;
 
 @Entity(name = "tb_pedido")
 @Getter	@Setter
-public class Pedido {
+public class RemovivelPedido {
 
 	@Id
 	@GeneratedValue(generator = "UUID")
