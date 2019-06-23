@@ -13,6 +13,7 @@ import org.springframework.context.MessageSource;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Operacao;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
@@ -30,6 +31,18 @@ public abstract class AbstractPedidoService {
 	@Autowired
 	protected MessageSource message;
 
+	private boolean estadoEhAberto() {
+		return this.pedido.getEstado().estaAberto();
+	}
+	
+	private boolean estadoEhCancelado() {
+		return this.pedido.getEstado().estaCancelado();
+	}
+	
+	private boolean estadoEhFechado() {
+		return this.pedido.getEstado().estaFechado();
+	}
+	
 	public void adicionarEndereco(Endereco endereco) {
 		this.pedido.setEndereco(endereco);
 	}
@@ -121,7 +134,6 @@ public abstract class AbstractPedidoService {
 		Map<Produto, Integer> itens = this.pedido.getItens();
 
 		BigDecimal subtotal = new BigDecimal(0);
-		;
 
 		for (Map.Entry<Produto, Integer> entry : itens.entrySet()) {
 			Produto produto = entry.getKey();
@@ -146,7 +158,10 @@ public abstract class AbstractPedidoService {
 	}
 
 	public void fecharPedido() {
-		this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
+		if (estadoEhAberto()) {
+			this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
+			this.pedido.setEstado(Estado.FECHADO);
+		}
 	}
 
 }

@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -36,6 +37,9 @@ public class Pedido {
 	@GeneratedValue(generator = "UUID")
 	@Column(name = "id_pedido", updatable = false)
 	private UUID id;
+	
+	@Enumerated
+	private Estado estado;
 	
 	private String numeroPedido;
 	
@@ -67,6 +71,9 @@ public class Pedido {
 	@Transient
 	private List<Operacao> operacoes = new ArrayList<Operacao>();
 	
+	@Transient
+	private FormaDePagamento pagamento;
+	
 	@Column(name = "total")
 	private BigDecimal total;
 	
@@ -78,6 +85,8 @@ public class Pedido {
 	
 	public Pedido() {
 		this.horaAbertura = Calendar.getInstance().getTime();
+		this.estado = Estado.ABERTO;
+		
 	}
 	
 }
