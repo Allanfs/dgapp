@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.service.ClienteService;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
@@ -86,7 +88,26 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 	@Override
 	public Pedido editar(Pedido obj) throws EntityNotFoundException {
-		return null;
+		this.pedido = obj;
+		
+		if ( this.pedido != null ) {
+			if (this.pedido.getCliente() == null) {
+				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
+				
+			}
+			if (this.pedido.getCliente().getEndereco() == null) {
+				throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT) );
+			}
+		}
+		
+		if (obj.getId() == null || obj.getNumeroPedido() == null) {
+			throw new IllegalArgumentException("Pedido não cadastrado");
+		}
+		
+		validarItens();
+		
+		return this.service.save(obj);
+		
 	}
 
 	@Override
@@ -97,8 +118,12 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 	@Override
 	public Pedido buscarPorId(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Pedido> pedidoBuscado = service.findById(id);
+		if (pedidoBuscado.isPresent()) {
+			return pedidoBuscado.get();
+		}else {
+			return null;
+		}
 	}
 
 	@Override
@@ -111,6 +136,11 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	public void deletar(UUID id) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public List<Pedido> buscarPorEstado(Estado estado) {
+		return service.findByEstado(estado);
 	}
 
 }

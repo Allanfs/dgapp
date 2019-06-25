@@ -96,6 +96,16 @@ public abstract class AbstractPedidoService {
 			itens.put(produto, 1);
 		}
 	}
+	
+	public void adicionarItem(Produto produto, int qtdAdicionar) {
+		Map<Produto, Integer> itens = this.pedido.getItens();
+		if (itens.containsKey(produto)) {
+			int quantidade = itens.get(produto);
+			itens.put(produto, ++quantidade + qtdAdicionar);
+		} else {
+			itens.put(produto, qtdAdicionar);
+		}
+	}
 
 	public void removerUmItem(Produto produto) {
 		Map<Produto, Integer> itens = this.pedido.getItens();
@@ -164,4 +174,14 @@ public abstract class AbstractPedidoService {
 		}
 	}
 
+	public Pedido cancelarPedido() {
+		if (estadoEhAberto()) {
+			this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
+			this.pedido.setEstado(Estado.CANCELADO);
+			
+			return this.pedido;
+		}
+		return null;
+	}
+	
 }
