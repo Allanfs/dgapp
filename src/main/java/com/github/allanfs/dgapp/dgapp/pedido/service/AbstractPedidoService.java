@@ -1,163 +1,187 @@
 package com.github.allanfs.dgapp.dgapp.pedido.service;
 
-import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Predicate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
+import com.github.allanfs.dgapp.dgapp.pedido.model.Operacao;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
-import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ProibidoAlterarPedidoNoEstadoException;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
 
 import lombok.Getter;
 import lombok.Setter;
 
 public abstract class AbstractPedidoService {
+
 	@Getter
 	@Setter
-	public Pedido pedido;
-	
-	public String gerarNumeroPedido() {
-		Calendar ca = Calendar.getInstance();
+	protected Pedido pedido;
 
-		String padraoData = "ddMMyyHHmm";
+	@Autowired
+	protected MessageSource message;
 
-		SimpleDateFormat format = new SimpleDateFormat(padraoData);
-		String strDataFormatada = format.format(ca.getTime());
-
-		StringBuilder sb = new StringBuilder(strDataFormatada);
-
-		strDataFormatada += "001";
-
-		System.out.println(String.format("%-13s", strDataFormatada));
-		
-		return strDataFormatada;
-	}
-
-	public Estado getEstadoPedido() {
-		return pedido.getEstado();
+	private boolean estadoEhAberto() {
+		return this.pedido.getEstado().estaAberto();
 	}
 	
-	public void setEstadoAberto() {
-		pedido.setEstado(Estado.ABERTO);
+	private boolean estadoEhCancelado() {
+		return this.pedido.getEstado().estaCancelado();
 	}
 	
-	public void setEstadoFechado() {
-		pedido.setEstado(Estado.FECHADO);
+	private boolean estadoEhFechado() {
+		return this.pedido.getEstado().estaFechado();
 	}
 	
-	public float calcularSubtotal() {
-		
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		float subtotal = 0;
-		
-		for (Map.Entry<Produto, Integer> entry: itens.entrySet()) {
-			Produto produto = entry.getKey();
-			Integer quantidade = entry.getValue();
-			
-			subtotal += produto.getPreco() * quantidade;
+	public void adicionarEndereco(Endereco endereco) {
+		this.pedido.setEndereco(endereco);
+	}
+
+	public void adicionarCliente(Cliente cliente) {
+		this.pedido.setCliente(cliente);
+	}
+
+	public boolean validarItens() {
+
+		if (this.pedido.getItens() == null || this.pedido.getItens().size() <= 0) {
+			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
 		}
-		
-		return subtotal;
-	}
-	
-	public void inserirProduto(Produto produtoAdicionado) {
-		
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		if (itens.containsKey(produtoAdicionado)) {
-			int quantidade = itens.get(produtoAdicionado);
-			itens.put(produtoAdicionado, ++quantidade);
+
+		Predicate<? super Entry<Produto, Integer>> itensMenoresQueZero = entry -> entry.getValue() <= 0;
+
+		Set<Entry<Produto, Integer>> entrySetItens = this.pedido.getItens().entrySet();
+
+		entrySetItens.removeIf(itensMenoresQueZero);
+
+		if (this.obterQuantidadeDeItens() <= 0) {
+			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
 		}
-		
+
+		return true;
+
 	}
-	
-	public void subtrairUmaUnidadeDoProduto( Produto produto ) {
-		
+
+	public int obterQuantidadeDeItensUnicos() {
+
+		return this.pedido.getItens().size();
+
+	}
+
+	public int obterQuantidadeDeItens() {
+		Set<Entry<Produto, Integer>> entrySet = this.pedido.getItens().entrySet();
+		int quantidade = 0;
+		for (Entry<Produto, Integer> entry : entrySet) {
+			quantidade += entry.getValue();
+		}
+
+		return quantidade;
+	}
+
+	public void adicionarItem(Produto produto) {
 		Map<Produto, Integer> itens = this.pedido.getItens();
 		if (itens.containsKey(produto)) {
 			int quantidade = itens.get(produto);
-			if (quantidade -1 == 0) {
-				itens.remove(produto);
-			}else {
-				itens.put(produto, --quantidade);
-			}
+			itens.put(produto, ++quantidade);
+		} else {
+			itens.put(produto, 1);
 		}
 	}
 	
-	public void removerProdutoDoPedido( Produto produto ) {
+	public void adicionarItem(Produto produto, int qtdAdicionar) {
 		Map<Produto, Integer> itens = this.pedido.getItens();
+		if (itens.containsKey(produto)) {
+			int quantidade = itens.get(produto);
+			itens.put(produto, ++quantidade + qtdAdicionar);
+		} else {
+			itens.put(produto, qtdAdicionar);
+		}
+	}
+
+	public void removerUmItem(Produto produto) {
+		Map<Produto, Integer> itens = this.pedido.getItens();
+
+		if (itens.containsKey(produto)) {
+			int quantidade = itens.get(produto);
+			itens.put(produto, --quantidade);
+		}
+	}
+
+	public void removerItem(Produto produto) {
+		Map<Produto, Integer> itens = this.pedido.getItens();
+
 		if (itens.containsKey(produto)) {
 			itens.remove(produto);
 		}
 	}
-	
-	/**
-	 * @param endereco que será entregue o pedido
-	 * @param forcar - insere o endereco mesmo que o cliente não possua o endereço informado
-	 * @throws ProibidoAlterarPedidoNoEstadoException caso pedido esteja {@link Estado#FECHADO} ou {@link Estado#CANCELADO}
-	 */
-	public void inserirEndereco(Endereco endereco, boolean forcar) throws ProibidoAlterarPedidoNoEstadoException {
-		
-		Estado estadoDoPedido = this.pedido.getEstado();
-		if (estadoDoPedido.estaAberto()) {
-			
-			Cliente clienteDoPedido = pedido.getCliente();
-			
-			boolean enderecoEhDoCliente = endereco.getCliente().equals(clienteDoPedido);
-			boolean clientePossiuEndereco = clienteDoPedido.getEndereco().contains(endereco);
-			
-			if (enderecoEhDoCliente && clientePossiuEndereco) {
-				pedido.setEndereco(endereco);
-			} else {
-				if (forcar) {
-					pedido.setEndereco(endereco);
-					return;
-				}
-			}
-			System.err.println("O Cliente não possui o endereco, nem o endereço é do cliente informado");
-				
-		}else {
-			
-			throw new ProibidoAlterarPedidoNoEstadoException(pedido.getEstado());
-			
-		}
-		
-	}
-	
-	public void inserirCliente(Cliente cliente) throws ProibidoAlterarPedidoNoEstadoException {
-		if (this.pedido.getEstado().estaAberto()) {
-			pedido.setCliente(cliente);
-		}else {
-			throw new ProibidoAlterarPedidoNoEstadoException(pedido.getEstado());
-		}
-	}
-	
-	public Pedido fecharPedido() throws ProibidoAlterarPedidoNoEstadoException {
-		switch (getEstadoPedido()) {
-		case ABERTO:
-			System.err.println("Ao fechar pedido deve ser verificado os pagamentos");
-			// verificar se já recebeu pagamento
-			
-			this.pedido.setEstado(Estado.FECHADO);
-			return this.pedido;
 
-		default:
-			throw new ProibidoAlterarPedidoNoEstadoException(pedido.getEstado());
+	public void adicionarDesconto(Operacao desconto) {
+		if (desconto.ehDesconto()) {
+			this.pedido.getOperacoes().add(desconto);
 		}
+	}
+
+	public void adicionarCobranca(Operacao cobranca) {
+		if (cobranca.ehCobranca()) {
+			this.pedido.getOperacoes().add(cobranca);
+		}
+	}
+
+	public void adidiconarOperacao(Operacao operacao) {
+		this.pedido.getOperacoes().add(operacao);
+	}
+
+	public BigDecimal calcularSubtotal() {
+		Map<Produto, Integer> itens = this.pedido.getItens();
+
+		BigDecimal subtotal = new BigDecimal(0);
+
+		for (Map.Entry<Produto, Integer> entry : itens.entrySet()) {
+			Produto produto = entry.getKey();
+			BigDecimal quantidade = new BigDecimal(entry.getValue());
+
+			subtotal = subtotal.add(produto.getValor().multiply(quantidade));
+
+		}
+
+		return subtotal;
+	}
+
+	public BigDecimal calcularTotal() {
+		BigDecimal subtotal = calcularSubtotal();
+		BigDecimal valorDeOperacao = new BigDecimal(0);
+
+		for (Operacao operacao : this.pedido.getOperacoes()) {
+			valorDeOperacao = valorDeOperacao.add(operacao.getValor());
+		}
+
+		return subtotal.add(valorDeOperacao);
+	}
+
+	public void fecharPedido() {
+		if (estadoEhAberto()) {
+			this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
+			this.pedido.setEstado(Estado.FECHADO);
+		}
+	}
+
+	public Pedido cancelarPedido() {
+		if (estadoEhAberto()) {
+			this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
+			this.pedido.setEstado(Estado.CANCELADO);
+			
+			return this.pedido;
+		}
+		return null;
 	}
 	
-	public Pedido cancelarPedido() throws ProibidoAlterarPedidoNoEstadoException {
-		
-		switch (pedido.getEstado()) {
-		case ABERTO:
-			pedido.setEstado(Estado.CANCELADO);
-			return this.pedido;
-			
-		default:
-			throw new ProibidoAlterarPedidoNoEstadoException(pedido.getEstado());
-		}
-		
-	}
 }

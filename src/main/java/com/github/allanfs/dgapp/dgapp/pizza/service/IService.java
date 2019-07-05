@@ -22,7 +22,7 @@ public interface IService<T> {
      * @return obj atualizado
      * @throws EntityNotFoundException
      */
-    public T editar( T obj ) throws EntityNotFoundException;
+    public T editar( T obj );
 
     public List<T> buscarTodos();
 

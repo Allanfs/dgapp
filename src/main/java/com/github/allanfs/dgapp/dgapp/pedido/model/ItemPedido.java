@@ -1,9 +1,17 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import java.util.Date;
+import java.util.Set;
+import java.util.UUID;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
+import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
+import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
+import com.github.allanfs.dgapp.dgapp.cliente.model.Telefone;
+
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,19 +19,15 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"quantidade", "observacao"})
-@Entity
-@Table(name = "tb_item_pedido")
+@Entity(name = "tb_item_pedido")
+@Data
 public class ItemPedido {
 
 	@EmbeddedId
 	private ItemPedidoEmbeddedId id;
 	
-	@Getter
-	@Setter
 	private int quantidade;
 	
-	@Getter
-	@Setter
 	private String observacao;
 	
 	public ItemPedido(Pedido pedido, Produto produto) {
