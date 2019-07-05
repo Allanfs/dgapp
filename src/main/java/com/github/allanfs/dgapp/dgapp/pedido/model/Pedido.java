@@ -71,8 +71,8 @@ public class Pedido {
 	@Transient
 	private List<Operacao> operacoes = new ArrayList<Operacao>();
 	
-	@Transient
-	private FormaDePagamento pagamento;
+//	@Transient
+//	private FormaDePagamento pagamento;
 	
 	@Column(name = "total")
 	private BigDecimal total;

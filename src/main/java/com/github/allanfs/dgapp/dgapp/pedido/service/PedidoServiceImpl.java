@@ -7,8 +7,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +15,6 @@ import com.github.allanfs.dgapp.dgapp.cliente.service.ClienteService;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
-import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
 
 import lombok.NoArgsConstructor;
@@ -39,7 +36,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	public Pedido cadastrar() {
 		if ( this.pedido != null ) {
 			if (this.pedido.getCliente() == null) {
-				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
+//				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
 				
 			}
 			if (this.pedido.getCliente().getEndereco() == null) {
@@ -87,12 +84,12 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	}
 
 	@Override
-	public Pedido editar(Pedido obj) throws EntityNotFoundException {
+	public Pedido editar(Pedido obj) {
 		this.pedido = obj;
 		
 		if ( this.pedido != null ) {
 			if (this.pedido.getCliente() == null) {
-				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
+//				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
 				
 			}
 			if (this.pedido.getCliente().getEndereco() == null) {
