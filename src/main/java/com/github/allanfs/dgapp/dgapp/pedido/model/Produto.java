@@ -8,10 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Entity(name="tb_produto")
 @Data
+@Builder
 public class Produto {
 	
 	@Id

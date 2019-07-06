@@ -7,15 +7,16 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.service.ClienteService;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import lombok.NoArgsConstructor;
 
@@ -36,10 +37,9 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	public Pedido cadastrar() {
 		if ( this.pedido != null ) {
 			if (this.pedido.getCliente() == null) {
-//				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
+				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
 				
-			}
-			if (this.pedido.getCliente().getEndereco() == null) {
+			}else if (this.pedido.getCliente().getEndereco() == null) {
 				throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT) );
 			}
 		}
@@ -61,7 +61,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 		Pedido p = service.save(this.pedido);
 
 		long codigoPedido = gerarCodigoDoPedido();
-		return null;
+		return p;
 	}
 
 	@Override
