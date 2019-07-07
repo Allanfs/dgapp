@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class PedidoServiceImpl extends AbstractPedidoService implements PedidoService {
 
 	@Autowired
-	private PedidoRepository service;
+	private PedidoRepository repo;
 
 	@Autowired
 	private ClienteService clienteService;
@@ -58,7 +58,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 		validarItens();
 		
-		Pedido p = service.save(this.pedido);
+		Pedido p = repo.save(this.pedido);
 
 		long codigoPedido = gerarCodigoDoPedido();
 		return p;
@@ -89,7 +89,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 		
 		if ( this.pedido != null ) {
 			if (this.pedido.getCliente() == null) {
-//				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
+				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
 				
 			}
 			if (this.pedido.getCliente().getEndereco() == null) {
@@ -97,24 +97,24 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 			}
 		}
 		
-		if (obj.getId() == null || obj.getNumeroPedido() == null) {
+		if (this.pedido.getId() == null || this.pedido.getNumeroPedido() == null) {
 			throw new IllegalArgumentException("Pedido não cadastrado");
 		}
 		
 		validarItens();
 		
-		return this.service.save(obj);
+		return this.repo.save(obj);
 		
 	}
 
 	@Override
 	public List<Pedido> buscarTodos() {
-		return service.findAll();
+		return repo.findAll();
 	}
 
 	@Override
 	public Pedido buscarPorId(UUID id) {
-		Optional<Pedido> pedidoBuscado = service.findById(id);
+		Optional<Pedido> pedidoBuscado = repo.findById(id);
 		if (pedidoBuscado.isPresent()) {
 			return pedidoBuscado.get();
 		}else {
@@ -136,7 +136,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 	@Override
 	public List<Pedido> buscarPorEstado(Estado estado) {
-		return service.findByEstado(estado);
+		return repo.findByEstado(estado);
 	}
 
 }

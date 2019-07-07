@@ -10,7 +10,7 @@ import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 import com.github.allanfs.dgapp.dgapp.pizza.service.TamanhoService;
 
 @RestController
-@RequestMapping(name = "TamanhoController", path="/tamanho")
+@RequestMapping(name = "TamanhoController", path="/tamanhos")
 public class TamanhoController extends AbstractController<Tamanho>{
 
 	@Autowired

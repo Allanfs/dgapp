@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -20,11 +21,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity(name = "tb_telefone")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "cliente" })
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"cliente"})
 @Getter @Setter
 public class Telefone {
 
@@ -37,6 +38,7 @@ public class Telefone {
 	@JoinColumn(name = "id_cliente_fk")
 	@NotNull
 	private Cliente cliente;
+ 
 	private Integer ddd;
 	@NotNull
 	private String numero;
