@@ -18,14 +18,33 @@ public interface PedidoService extends IService<Pedido> {
 
 	public void adicionarCliente(Cliente cliente);
 
+	/**
+	 * Obtem a quantidade de pedidos únicos no pedido,
+	 * sem calcular a quantidade de cada um.
+	 */
 	public int obterQuantidadeDeItensUnicos();
 
 	public int obterQuantidadeDeItens();
 
+	/**
+	 * Insere o produto ao pedido. Caso o produto já 
+	 * exista no pedido sua quantidade será incrementada.
+	 * @param produto
+	 */
 	public void adicionarItem(Produto produto);
 
+	/**
+	 * Remove uma unidade de um produto no pedido.
+	 * Se após a remoção a quantidade do produto for zero,
+	 * o produto será removido do pedido.
+	 * @param produto
+	 */
 	public void removerUmItem(Produto produto);
 
+	/**
+	 * Remove o produto do pedido, independente de sua quantidade.
+	 * @param produto
+	 */
 	public void removerItem(Produto produto);
 
 	public void adicionarDesconto(Operacao desconto);
@@ -34,12 +53,27 @@ public interface PedidoService extends IService<Pedido> {
 
 	public void adidiconarOperacao(Operacao operacao);
 
+	/**
+	 * @return o valor da soma de cada produto vezes sua quantidade no pedido
+	 */
 	public BigDecimal calcularSubtotal();
 
+	/**
+	 * @return o subtotal e as operações de desconto e cobrança do pedido.
+	 * @see #calcularSubtotal
+	 */
 	public BigDecimal calcularTotal();
 
+	/**
+	 * Altera o estado do pedido para {@link Estado#FECHADO}.
+	 * Após isso o pedido não pode mais ser alterado.
+	 */
 	public void fecharPedido();
 	
+	/**
+	 * Altera o estado do pedido para {@link Estado#CANCELADO}.
+	 * Após isso o pedido não pode mais ser alterado.
+	 */
 	public Pedido cancelarPedido();
 	
 	/* Metodos de busca */

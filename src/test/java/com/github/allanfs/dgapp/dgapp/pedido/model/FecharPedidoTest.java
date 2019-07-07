@@ -2,7 +2,7 @@ package com.github.allanfs.dgapp.dgapp.pedido.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.exparity.hamcrest.date.DateMatchers;
+import static org.exparity.hamcrest.date.DateMatchers.isToday;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,8 +40,7 @@ class FecharPedidoTest {
 		Pedido pedidoCancelado = service.cancelarPedido();
 		
 		Assertions.assertTrue(pedidoCancelado.getHoraFechamento() != null);
-		assertThat(pedidoCancelado.getHoraFechamento(), DateMatchers.isToday());
-		
+		assertThat(pedidoCancelado.getHoraFechamento(), isToday());
 		
 	}
 

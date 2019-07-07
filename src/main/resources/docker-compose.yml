@@ -1,6 +1,17 @@
 version: "3"
 
 services:
+  spring:
+    image: maven
+    entrypoint: mvn spring-boot:run
+    working_dir: /usr/src/mymaven
+    volumes:
+      - "/home/allan/Documentos/projetos/git/dom-gilittus/dgapp:/usr/src/mymaven"  # caminho do projeto backend
+      - "~/.m2:/root/.m2" # utiliza as dependencias existentes no host
+    ports:
+      - "8080:8080"
+    links:
+      - db
   db:
     build: ./
     image: myimg

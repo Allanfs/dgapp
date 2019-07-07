@@ -109,8 +109,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 	@Override
 	public List<Pedido> buscarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.findAll();
 	}
 
 	@Override
