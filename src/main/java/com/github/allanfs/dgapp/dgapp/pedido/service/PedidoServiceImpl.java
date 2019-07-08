@@ -56,7 +56,9 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 		}
 
-		validarItens();
+		if (validarItens()) {
+			this.pedido.setEstado(Estado.ABERTO);
+		};
 		
 		Pedido p = repo.save(this.pedido);
 

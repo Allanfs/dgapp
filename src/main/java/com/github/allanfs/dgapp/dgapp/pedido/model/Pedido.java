@@ -65,11 +65,6 @@ public class Pedido {
 	@Column(name = "valorPago")
 	private BigDecimal valorPago;
 	
-	public Pedido() {
-		this.horaAbertura = Calendar.getInstance().getTime();
-		this.estado = Estado.ABERTO;
-		
-	}
 	
 	/* public int getQuantidadeItem(Produto p){
 		Optional<ItemPedido> itemOpt = this.itens.stream().filter( item -> item.getProduto().equals(p)).findFirst();

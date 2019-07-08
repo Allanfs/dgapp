@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
@@ -49,8 +51,8 @@ class CadastrarPedidoTest {
 	}
 	
 	@Test
+	@DisplayName("Cadastrar pedido sem qualquer informação e obter ClienteNaoInformadoException")
 	void cadastrarPedidoVazioEObterClienteNaoInformadoException() {
-		assertThat(this.pedido.getEstado(), is(Estado.ABERTO));	
 		assertThrows(ClienteNaoInformadoException.class, () -> service.cadastrar(pedido));
 				
 	}
@@ -141,10 +143,13 @@ class CadastrarPedidoTest {
 		
 		
 		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(new BigDecimal(15)).build();
-		fail("Pedido não usa mais Map<Produto, Integer>. Agora usa List<ItemPedido>");
-		// Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
-		// itens.put(produto, -1);
-		// pedido.setItens(itens);
+	
+		List<ItemPedido> itens = new LinkedList<ItemPedido>();
+		ItemPedido itemPedido = new ItemPedido();
+		itemPedido.setProduto(produto);
+		itemPedido.setQuantidade(-5);
+
+		pedido.setItens(itens);
 		
 		assertThrows(PedidoSemItensException.class, () -> service.cadastrar(pedido) ); 
 
@@ -161,52 +166,39 @@ class CadastrarPedidoTest {
 		
 		pedido.setCliente(cliente);
 		
-		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(new BigDecimal(10)).build();
-		Produto produto1 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(new BigDecimal(15)).build();
-		Produto produto2 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(new BigDecimal(20)).build();
-		
-		fail("Pedido não usa mais Map<Produto, Integer>. Agora usa List<ItemPedido>");
-		// Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
-		// itens.put(produto, 1);
-		// itens.put(produto1, 3);
-		// itens.put(produto2, 4);
-		// pedido.setItens(itens);
-		
-		
+		List<ItemPedido> itens = criarListaDeItens();
+		int tamanhoEsperado = itens.size();
+
+		pedido.setItens(itens);
+
 		pedido = service.cadastrar(pedido);
 		if (pedido == null) {
 			fail("Pedido veio null");
 		}
-		assertThat(this.pedido.getEstado(), is(Estado.ABERTO));	
-		assertTrue(pedido.getCliente().equals(cliente));
-		assertTrue(pedido.getItens().size() == 3);
+
+		assertThat(this.pedido.getEstado(), is(Estado.ABERTO));
+		assertThat(pedido.getCliente(), is(equalTo(cliente)));
+		assertThat(pedido.getItens().size(), is(tamanhoEsperado));
 
 	}
 
 	@Test
 	@DisplayName("Cadastrar pedido informando cliente com um endereço, e três itens diferentes, um deles sendo negativo, e obter pedido cadastrado, com status aberto e dois itens diferentes")
 	void cadastrarPedidoComVariosItensEUmNegativo() {
-		Cliente cliente = new Cliente();
-		
-		Endereco endereco = new Endereco();
-		
-		cliente.getEndereco().add(endereco);
-		
-		pedido.setCliente(cliente);
-		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(new BigDecimal(15)).build();
-		Produto produto2 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(new BigDecimal(20)).build();
-		
-		fail("Pedido não usa mais Map<Produto, Integer>. Agora usa List<ItemPedido>");
-		// Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
-		// itens.put(produto, -1);
-		// itens.put(produto2, 4);
 
-		// pedido.setItens(itens);
+		Cliente cliente = new Cliente();
+		Endereco endereco = new Endereco();
+		List<ItemPedido> itens = criarListaDeItens(-1,2,3);
+		int tamanhoEsperado = itens.size() -1 ;	// -1 por que o item que possui quantidade negativa é excluido da lista
+
+		cliente.getEndereco().add(endereco);
+		pedido.setCliente(cliente);
+		pedido.setItens(itens);		
 		
 		service.cadastrar(pedido);
 		
 		assertThat(this.pedido.getEstado(), is(Estado.ABERTO));	
-		assertTrue(service.obterQuantidadeDeItensUnicos() == 1); 
+		assertTrue(service.obterQuantidadeDeItensUnicos() == tamanhoEsperado); 
 
 	}
 
@@ -215,4 +207,44 @@ class CadastrarPedidoTest {
 		Mockito.when(pedidoRepo.save( Mockito.any(Pedido.class) )).thenReturn( pedido );
 	}
 
+	private List<ItemPedido> criarListaDeItens(int... quantidades ) {
+		List<ItemPedido> itens = new LinkedList<ItemPedido>();
+
+		for (int valor : quantidades) {
+			ItemPedido itemPedido = new ItemPedido();
+			itemPedido.setProduto(Produto.builder().nome("produto").id(UUID.randomUUID())
+					.preco(new BigDecimal(Math.random() * 10)).build());
+			itemPedido.setQuantidade(valor);			
+
+			itens.add(itemPedido);
+		}
+		return itens;
+	}
+
+	private List<ItemPedido> criarListaDeItens() {
+		List<ItemPedido> itens = new LinkedList<ItemPedido>();
+		
+		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(new BigDecimal(10)).build();
+		Produto produto1 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(new BigDecimal(15)).build();
+		Produto produto2 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(new BigDecimal(20)).build();
+
+		ItemPedido itemPedido = new ItemPedido();
+		itemPedido.setProduto(produto);
+		itemPedido.setQuantidade(1);
+		
+		ItemPedido itemPedido1 = new ItemPedido();
+		itemPedido1.setProduto(produto1);
+		itemPedido1.setQuantidade(2);
+
+		ItemPedido itemPedido2 = new ItemPedido();
+		itemPedido2.setProduto(produto2);
+		itemPedido2.setQuantidade(2);
+
+		itens.add(itemPedido);
+		itens.add(itemPedido1);
+		itens.add(itemPedido2);
+
+		return itens;
+	}
+	
 }

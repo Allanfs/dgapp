@@ -3,21 +3,20 @@ package com.github.allanfs.dgapp.dgapp.pedido.service;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.function.Predicate;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
+import com.github.allanfs.dgapp.dgapp.pedido.model.ItemPedido;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Operacao;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,15 +33,15 @@ public abstract class AbstractPedidoService {
 	private boolean estadoEhAberto() {
 		return this.pedido.getEstado().estaAberto();
 	}
-	
+
 	private boolean estadoEhCancelado() {
 		return this.pedido.getEstado().estaCancelado();
 	}
-	
+
 	private boolean estadoEhFechado() {
 		return this.pedido.getEstado().estaFechado();
 	}
-	
+
 	public void adicionarEndereco(Endereco endereco) {
 		this.pedido.setEndereco(endereco);
 	}
@@ -53,14 +52,36 @@ public abstract class AbstractPedidoService {
 
 	public boolean validarItens() {
 
+		/*
+		 * 1) verifica se existem itens no pedido
+		 */
 		if (this.pedido.getItens() == null || this.pedido.getItens().size() <= 0) {
 			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
 		}
 
 		Predicate<? super Entry<Produto, Integer>> itensMenoresQueZero = entry -> entry.getValue() <= 0;
 
-		// verificar se a quantidade de itens presente no pedido é valida
+		/*
+		 * 2) verificar se a quantidade de itens presente no pedido é valida 3)
+		 * verificar se o item possui referencia a este pedido.
+		 * parallelStream evita ConcurrentModificationException
+		 */
+		this.pedido.getItens().parallelStream().forEach(item -> {
+			if (item.getQuantidade() <= 0) {
+				this.pedido.getItens().remove(item);
+				return;
+			}
+			if (item.getPedido() == null) {
+				item.setPedido(this.pedido);
+			}
 
+		});
+
+		/*
+		 * 3) verifica a quantidade de itens novamente. 
+		 * Se, após a validação não houver pelo menos  um item
+		 * uma exceção é lançada
+		 */
 		if (this.obterQuantidadeDeItens() <= 0) {
 			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
 		}
@@ -76,7 +97,11 @@ public abstract class AbstractPedidoService {
 	}
 
 	public int obterQuantidadeDeItens() {
-		return -1;
+		int quantidadeTotal = 0;
+		for (ItemPedido item : this.pedido.getItens()) {
+			quantidadeTotal = item.getQuantidade();
+		}
+		return quantidadeTotal;
 	}
 
 	public void adicionarItem(Produto produto) {
