@@ -59,9 +59,7 @@ public abstract class AbstractPedidoService {
 
 		Predicate<? super Entry<Produto, Integer>> itensMenoresQueZero = entry -> entry.getValue() <= 0;
 
-		Set<Entry<Produto, Integer>> entrySetItens = this.pedido.getItens().entrySet();
-
-		entrySetItens.removeIf(itensMenoresQueZero);
+		// verificar se a quantidade de itens presente no pedido é valida
 
 		if (this.obterQuantidadeDeItens() <= 0) {
 			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
@@ -78,93 +76,45 @@ public abstract class AbstractPedidoService {
 	}
 
 	public int obterQuantidadeDeItens() {
-		Set<Entry<Produto, Integer>> entrySet = this.pedido.getItens().entrySet();
-		int quantidade = 0;
-		for (Entry<Produto, Integer> entry : entrySet) {
-			quantidade += entry.getValue();
-		}
-
-		return quantidade;
+		return -1;
 	}
 
 	public void adicionarItem(Produto produto) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		if (itens.containsKey(produto)) {
-			int quantidade = itens.get(produto);
-			itens.put(produto, ++quantidade);
-		} else {
-			itens.put(produto, 1);
-		}
 	}
 	
 	public void adicionarItem(Produto produto, int qtdAdicionar) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		if (itens.containsKey(produto)) {
-			int quantidade = itens.get(produto);
-			itens.put(produto, ++quantidade + qtdAdicionar);
-		} else {
-			itens.put(produto, qtdAdicionar);
-		}
 	}
 
 	public void removerUmItem(Produto produto) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-
-		if (itens.containsKey(produto)) {
-			int quantidade = itens.get(produto);
-			itens.put(produto, --quantidade);
-		}
 	}
 
 	public void removerItem(Produto produto) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-
-		if (itens.containsKey(produto)) {
-			itens.remove(produto);
-		}
 	}
 
 	public void adicionarDesconto(Operacao desconto) {
 		if (desconto.ehDesconto()) {
-			this.pedido.getOperacoes().add(desconto);
 		}
 	}
 
 	public void adicionarCobranca(Operacao cobranca) {
 		if (cobranca.ehCobranca()) {
-			this.pedido.getOperacoes().add(cobranca);
 		}
 	}
 
 	public void adidiconarOperacao(Operacao operacao) {
-		this.pedido.getOperacoes().add(operacao);
 	}
 
 	public BigDecimal calcularSubtotal() {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-
+		System.err.println("Implementar calculo de subtotal.");
 		BigDecimal subtotal = new BigDecimal(0);
-
-		for (Map.Entry<Produto, Integer> entry : itens.entrySet()) {
-			Produto produto = entry.getKey();
-			BigDecimal quantidade = new BigDecimal(entry.getValue());
-
-			subtotal = subtotal.add(produto.getValor().multiply(quantidade));
-
-		}
 
 		return subtotal;
 	}
 
 	public BigDecimal calcularTotal() {
 		BigDecimal subtotal = calcularSubtotal();
-		BigDecimal valorDeOperacao = new BigDecimal(0);
 
-		for (Operacao operacao : this.pedido.getOperacoes()) {
-			valorDeOperacao = valorDeOperacao.add(operacao.getValor());
-		}
-
-		return subtotal.add(valorDeOperacao);
+		return subtotal.add(subtotal);
 	}
 
 	public void fecharPedido() {

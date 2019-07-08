@@ -4,9 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.HashMap;
+import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.UUID;
 
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
@@ -132,11 +131,11 @@ class CadastrarPedidoTest {
 		pedido.setCliente(cliente);
 		
 		
-		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(10).build();
-		
-		Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
-		itens.put(produto, -1);
-		pedido.setItens(itens);
+		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(new BigDecimal(15)).build();
+		fail("Pedido não usa mais Map<Produto, Integer>. Agora usa List<ItemPedido>");
+		// Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
+		// itens.put(produto, -1);
+		// pedido.setItens(itens);
 		
 		assertThrows(PedidoSemItensException.class, () -> service.cadastrar(pedido) ); 
 
@@ -152,15 +151,16 @@ class CadastrarPedidoTest {
 		
 		pedido.setCliente(cliente);
 		
-		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(10).build();
-		Produto produto1 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(15).build();
-		Produto produto2 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(20).build();
+		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(new BigDecimal(10)).build();
+		Produto produto1 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(new BigDecimal(15)).build();
+		Produto produto2 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(new BigDecimal(20)).build();
 		
-		Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
-		itens.put(produto, 1);
-		itens.put(produto1, 3);
-		itens.put(produto2, 4);
-		pedido.setItens(itens);
+		fail("Pedido não usa mais Map<Produto, Integer>. Agora usa List<ItemPedido>");
+		// Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
+		// itens.put(produto, 1);
+		// itens.put(produto1, 3);
+		// itens.put(produto2, 4);
+		// pedido.setItens(itens);
 		
 		
 		pedido = service.cadastrar(pedido);
@@ -181,14 +181,15 @@ class CadastrarPedidoTest {
 		cliente.getEndereco().add(endereco);
 		
 		pedido.setCliente(cliente);
-		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(10).build();
-		Produto produto2 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(20).build();
+		Produto produto = Produto.builder().id(UUID.randomUUID()).nome("produto 1").preco(new BigDecimal(15)).build();
+		Produto produto2 = Produto.builder().id(UUID.randomUUID()).nome("produto 2").preco(new BigDecimal(20)).build();
 		
-		Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
-		itens.put(produto, -1);
-		itens.put(produto2, 4);
+		fail("Pedido não usa mais Map<Produto, Integer>. Agora usa List<ItemPedido>");
+		// Map<Produto, Integer> itens = new HashMap<Produto, Integer>();
+		// itens.put(produto, -1);
+		// itens.put(produto2, 4);
 
-		pedido.setItens(itens);
+		// pedido.setItens(itens);
 		
 		service.cadastrar(pedido);
 		

@@ -26,14 +26,15 @@ class PedidoServiceUnitTest {
 	@BeforeEach
 	public void setUp() {
 		pedido = new Pedido();
+		fail("Pedido não usa mais Map<Produto, Integer>. Agora usa List<ItemPedido>");
 
 		produto1 = new Produto();
 		produto1.setNome("Refrigerante 1L");
-		produto1.setValor(new BigDecimal(valorProduto1));
+		// produto1.setValor(new BigDecimal(valorProduto1));
 		
 		produto2 = new Produto();
 		produto2.setNome("Paçoca");
-		produto2.setValor(new BigDecimal(valorProduto2));
+		// produto2.setValor(new BigDecimal(valorProduto2));
 		
 		pedidoService = new PedidoServiceImpl();
 		pedidoService.setPedido(pedido);

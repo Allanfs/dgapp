@@ -15,7 +15,7 @@ public abstract class FormaDePagamento {
 	private Pedido pedido;
 	
 	FormaDePagamento(Pedido pedido, BigDecimal valor){
-		pedido.setPagamento(this);
+//		pedido.setPagamento(this);
 		this.valor = valor;
 	}
 	
