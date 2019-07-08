@@ -1,5 +1,8 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -17,6 +20,7 @@ import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInfor
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +47,16 @@ class CadastrarPedidoTest {
 		mockarMetodo(this.pedido);
 
 	}
-
+	
 	@Test
-	void cadastrarPedidoVazio() {
-		
+	void cadastrarPedidoVazioEObterClienteNaoInformadoException() {
+		assertThat(this.pedido.getEstado(), is(Estado.ABERTO));	
 		assertThrows(ClienteNaoInformadoException.class, () -> service.cadastrar(pedido));
 				
 	}
 	
 	@Test
+	@DisplayName("Cadastrar pedido sem informar endereço, informando cliente sem endereço, e obter EnderecoNaoInformadoException")
 	void cadastrarPedidoApenasComCliente() {
 		
 		Cliente cliente = new Cliente();
@@ -63,6 +68,7 @@ class CadastrarPedidoTest {
 	}
 	
 	@Test
+	@DisplayName("Cadastrar pedido sem informar cliente, e obter ClienteNaoInformadoException")
 	void cadastrarPedidoApenasComEndereco() {
 		
 		Endereco endereco = new Endereco();
@@ -74,6 +80,7 @@ class CadastrarPedidoTest {
 	}
 	
 	@Test
+	@DisplayName("Cadastrar pedido sem informar itens, informando cliente com apenas um endereço, e obter PedidoSemItensException")
 	void cadastrarPedidoSemItensComClienteComUmEndereco() {
 
 		Cliente cliente = new Cliente();
@@ -91,17 +98,18 @@ class CadastrarPedidoTest {
 	}
 	
 	@Test
+	@DisplayName("Cadastrar pedido sem informar itens, informando cliente com mais de um endereço, e obter EnderecoNaoInformadoException")
 	void cadastrarPedidoSemItensComClienteComMaisDeUmEndereco() {
 
 		Cliente cliente = new Cliente();
 		HashSet<Endereco> enderecos = new HashSet<Endereco>();
-		enderecos.add(Endereco.builder().cliente(cliente).build());
-		enderecos.add(Endereco.builder().cliente(cliente).build());
+		enderecos.add(Endereco.builder().id(UUID.randomUUID()).cliente(cliente).build());
+		enderecos.add(Endereco.builder().id(UUID.randomUUID()).cliente(cliente).build());
 		cliente.setEndereco(enderecos);
 
 		pedido.setCliente(cliente);
 		
-		assertThrows(PedidoSemItensException.class, () -> service.cadastrar(pedido));
+		assertThrows(EnderecoNaoInformadoException.class, () -> service.cadastrar(pedido));
 		
 	}
 	
@@ -121,6 +129,7 @@ class CadastrarPedidoTest {
 	}
 	
 	@Test
+	@DisplayName("Cadastrar pedido informando cliente com um endereço, e um item com quantidade menor que zero, e obter PedidoSemItensException")
 	void cadastrarPedidoComUnicoItemNegativo() {
 		Cliente cliente = new Cliente();
 		
@@ -142,6 +151,7 @@ class CadastrarPedidoTest {
 	}
 	
 	@Test
+	@DisplayName("Cadastrar pedido informando cliente com um endereço, e três itens diferentes, e obter pedido cadastrado, com status aberto, três itens cadastrados")
 	void cadastrarPedidoComItensComQuantidadePositiva() {
 		Cliente cliente = new Cliente();
 		
@@ -167,12 +177,14 @@ class CadastrarPedidoTest {
 		if (pedido == null) {
 			fail("Pedido veio null");
 		}
+		assertThat(this.pedido.getEstado(), is(Estado.ABERTO));	
 		assertTrue(pedido.getCliente().equals(cliente));
 		assertTrue(pedido.getItens().size() == 3);
 
 	}
 
 	@Test
+	@DisplayName("Cadastrar pedido informando cliente com um endereço, e três itens diferentes, um deles sendo negativo, e obter pedido cadastrado, com status aberto e dois itens diferentes")
 	void cadastrarPedidoComVariosItensEUmNegativo() {
 		Cliente cliente = new Cliente();
 		
@@ -193,6 +205,7 @@ class CadastrarPedidoTest {
 		
 		service.cadastrar(pedido);
 		
+		assertThat(this.pedido.getEstado(), is(Estado.ABERTO));	
 		assertTrue(service.obterQuantidadeDeItensUnicos() == 1); 
 
 	}
