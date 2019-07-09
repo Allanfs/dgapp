@@ -1,5 +1,7 @@
 package com.github.allanfs.dgapp.dgapp.pedido.service;
 
+import static org.springframework.util.StringUtils.isEmpty;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Locale;
@@ -13,6 +15,8 @@ import com.github.allanfs.dgapp.dgapp.pedido.model.ItemPedido;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Operacao;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.CancelamentoDePedidoException;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.FechamentoDePedidoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,19 +148,48 @@ public abstract class AbstractPedidoService {
 
 	public void fecharPedido() {
 		if (estadoEhAberto()) {
+			// forma de pagamento
+			if(this.pedido.getPagamento() != null){
+				switch (this.pedido.getPagamento().getValor().compareTo(this.pedido.getTotal())) {
+				case 0: // valor exato
+
+					break;
+				case -1: // pagamento é menor que o valor total -> não fecha
+
+					break;
+				case 1: // pagamento é maior que o valor total -> informa troco
+
+					break;
+
+				default:
+					break;
+				}
+			}else{
+				throw new FechamentoDePedidoException("Pagamento não informado");
+			}
 			this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
 			this.pedido.setEstado(Estado.FECHADO);
+		} else if (estadoEhCancelado()) {
+			throw new FechamentoDePedidoException("Pedido no estado cancelado");
+		} else if (estadoEhFechado()) {
+			throw new FechamentoDePedidoException("Pedido no estado cancelado");
+
 		}
 	}
 
 	public Pedido cancelarPedido() {
 		if (estadoEhAberto()) {
+			if (isEmpty(this.pedido.getMotivoCancelamento())) {
+				throw new CancelamentoDePedidoException("Motivo do cancelamento não informado");
+			}
 			this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
 			this.pedido.setEstado(Estado.CANCELADO);
 			
 			return this.pedido;
+		}else{
+			return null;
 		}
-		return null;
+		
 	}
 	
 }

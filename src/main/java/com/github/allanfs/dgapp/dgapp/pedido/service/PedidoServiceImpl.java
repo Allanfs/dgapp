@@ -50,7 +50,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 			this.pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
 
-		} else if (clienteDoPedido.getEndereco().size() > 1 || clienteDoPedido.getEndereco().size() == 0) {
+		} else if (clienteDoPedido.getEndereco().size() >= 0) {
 
 			throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT));
 

@@ -41,7 +41,7 @@ public class Pedido {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date horaAbertura = null;
 	
-	@Column(updatable = false)
+	@Column()
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date horaFechamento = null;
 	
@@ -64,26 +64,19 @@ public class Pedido {
 	
 	@Column(name = "valorPago")
 	private BigDecimal valorPago;
-	
-	
-	/* public int getQuantidadeItem(Produto p){
-		Optional<ItemPedido> itemOpt = this.itens.stream().filter( item -> item.getProduto().equals(p)).findFirst();
 
-		if (itemOpt.isPresent()) {
-			return itemOpt.get().getQuantidade();
-		}else{
-			return -1;
-		}
-		
-	}
-	public void setItem(Produto p) {
-		int qtd = this.getQuantidadeItem(p);
-		if ( qtd < 0 )  {
-			this.itens.add( new ItemPedido(this, p) );
-		}else{
-			this.itens.stream().filter( item -> item.getProduto().equals(p) ).findFirst().get().setQuantidade(++qtd);
-		} 
-	}*/
+	private FormaDePagamento pagamento;
 	
+	/**
+	 * o   motivo  do cancelamento só será preenchido
+	 * quando o pedido    realmente    for cancelado.
+	 * Caso contrário,     permanecerá          null.
+	 * Um  pedido  só   é cancelado se, e somente se,
+	 * o motivo do cancelamento tenha sido informado,
+	 * para     então   alterar o status do   pedido.
+	 */
+	@Column(name = "cancelamento")
+	private String motivoCancelamento;
+
 	
 }

@@ -8,14 +8,14 @@ import lombok.Data;
 @Data
 public abstract class FormaDePagamento {
 
-	private BigDecimal valor;
+	protected BigDecimal valor;
 	
-	private Date hora;
+	protected Date hora;
 	
-	private Pedido pedido;
+	protected Pedido pedido;
 	
 	FormaDePagamento(Pedido pedido, BigDecimal valor){
-//		pedido.setPagamento(this);
+		pedido.setPagamento(this);
 		this.valor = valor;
 	}
 	
