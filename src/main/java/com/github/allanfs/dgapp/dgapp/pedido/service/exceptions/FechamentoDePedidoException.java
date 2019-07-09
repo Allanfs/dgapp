@@ -6,7 +6,5 @@ package com.github.allanfs.dgapp.dgapp.pedido.service.exceptions;
 public class FechamentoDePedidoException extends RuntimeException {
 	public FechamentoDePedidoException(String message){
 		super(message);
-	}{
-
-  
+	}
 }

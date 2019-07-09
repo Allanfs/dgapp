@@ -7,16 +7,15 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.service.ClienteService;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
-import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import lombok.NoArgsConstructor;
 
@@ -25,30 +24,27 @@ import lombok.NoArgsConstructor;
 public class PedidoServiceImpl extends AbstractPedidoService implements PedidoService {
 
 	@Autowired
-	private PedidoRepository repo;
-
-	@Autowired
 	private ClienteService clienteService;
 
 	public PedidoServiceImpl(Pedido pedido) {
 		this.pedido = pedido;
 	}
 
-	public Pedido cadastrar() {
-		if ( this.pedido != null ) {
-			if (this.pedido.getCliente() == null) {
+	public Pedido cadastrar(Pedido pedido) {
+		if ( pedido != null ) {
+			if (pedido.getCliente() == null) {
 				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
 				
-			}else if (this.pedido.getCliente().getEndereco() == null) {
+			}else if (pedido.getCliente().getEndereco() == null) {
 				throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT) );
 			}
 		}
 
-		Cliente clienteDoPedido = this.pedido.getCliente();
+		Cliente clienteDoPedido = pedido.getCliente();
 
 		if (clienteDoPedido.getEndereco().size() == 1) {
 
-			this.pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
+			pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
 
 		} else if (clienteDoPedido.getEndereco().size() >= 0) {
 
@@ -56,22 +52,14 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 		}
 
-		if (validarItens()) {
-			this.pedido.setEstado(Estado.ABERTO);
+		if (validarItens(pedido)) {
+			pedido.setEstado(Estado.ABERTO);
 		};
 		
-		Pedido p = repo.save(this.pedido);
+		Pedido p = repo.save(pedido);
 
 		long codigoPedido = gerarCodigoDoPedido();
 		return p;
-	}
-
-	@Override
-	public Pedido cadastrar(Pedido obj) throws EnderecoNaoInformadoException {
-		
-		this.pedido = obj;
-
-		return this.cadastrar();
 	}
 
 	private long gerarCodigoDoPedido() {
@@ -86,26 +74,25 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	}
 
 	@Override
-	public Pedido editar(Pedido obj) {
-		this.pedido = obj;
+	public Pedido editar(Pedido pedido) {
 		
-		if ( this.pedido != null ) {
-			if (this.pedido.getCliente() == null) {
+		if ( pedido != null ) {
+			if (pedido.getCliente() == null) {
 				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
 				
 			}
-			if (this.pedido.getCliente().getEndereco() == null) {
+			if (pedido.getCliente().getEndereco() == null) {
 				throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT) );
 			}
 		}
 		
-		if (this.pedido.getId() == null || this.pedido.getNumeroPedido() == null) {
+		if (pedido.getId() == null || pedido.getNumeroPedido() == null) {
 			throw new IllegalArgumentException("Pedido não cadastrado");
 		}
 		
-		validarItens();
+		validarItens(pedido);
 		
-		return this.repo.save(obj);
+		return this.repo.save(pedido);
 		
 	}
 
@@ -139,6 +126,18 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	@Override
 	public List<Pedido> buscarPorEstado(Estado estado) {
 		return repo.findByEstado(estado);
+	}
+
+	@Override
+	public Pedido cancelarPedido() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void fecharPedido() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

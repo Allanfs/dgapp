@@ -13,14 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
-import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
-import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
-import com.github.allanfs.dgapp.dgapp.pedido.service.PedidoServiceImpl;
-import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
-import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
-import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +22,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
+import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
+import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
+import com.github.allanfs.dgapp.dgapp.pedido.service.PedidoServiceImpl;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
 
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -198,7 +198,7 @@ class CadastrarPedidoTest {
 		service.cadastrar(pedido);
 		
 		assertThat(this.pedido.getEstado(), is(Estado.ABERTO));	
-		assertTrue(service.obterQuantidadeDeItensUnicos() == tamanhoEsperado); 
+		assertTrue(service.obterQuantidadeDeItensUnicos(this.pedido) == tamanhoEsperado); 
 
 	}
 
