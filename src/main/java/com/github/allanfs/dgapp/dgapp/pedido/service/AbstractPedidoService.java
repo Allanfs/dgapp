@@ -39,45 +39,20 @@ public abstract class AbstractPedidoService {
 	@Autowired
 	protected MessageSource message;
 
-	@Deprecated
-	private boolean estadoEhAberto() {
-		return this.pedido.getEstado().estaAberto();
-	}
-	
 	private boolean estadoEhAberto(Pedido pedido) {
 		return pedido.getEstado().estaAberto();
-	}
-
-	@Deprecated
-	private boolean estadoEhCancelado() {
-		return this.pedido.getEstado().estaCancelado();
 	}
 
 	private boolean estadoEhCancelado(Pedido pedido) {
 		return pedido.getEstado().estaCancelado();
 	}
 	
-	@Deprecated
-	private boolean estadoEhFechado() {
-		return this.pedido.getEstado().estaFechado();
-	}
-	
 	private boolean estadoEhFechado(Pedido pedido) {
 		return this.pedido.getEstado().estaFechado();
 	}
 	
-	@Deprecated
-	public void adicionarEndereco(Endereco endereco) {
-		this.pedido.setEndereco(endereco);
-	}
-	
 	public void adicionarEndereco(Pedido pedido, Endereco endereco) {
 		pedido.setEndereco(endereco);
-	}
-
-	@Deprecated
-	public void adicionarCliente(Cliente cliente) {
-		this.pedido.setCliente(cliente);
 	}
 	
 	public void adicionarCliente(Pedido pedido, Cliente cliente) {
@@ -96,8 +71,8 @@ public abstract class AbstractPedidoService {
 		Predicate<? super Entry<Produto, Integer>> itensMenoresQueZero = entry -> entry.getValue() <= 0;
 
 		/*
-		 * 2) verificar se a quantidade de itens presente no pedido é valida 3)
-		 * verificar se o item possui referencia a este pedido.
+		 * 2) verificar se a quantidade de itens presente no pedido é valida;
+		 * 3) verificar se o item possui referencia a este pedido.
 		 * parallelStream evita ConcurrentModificationException
 		 */
 		pedido.getItens().parallelStream().forEach(item -> {
@@ -124,26 +99,10 @@ public abstract class AbstractPedidoService {
 
 	}
 
-	@Deprecated
-	public int obterQuantidadeDeItensUnicos() {
-
-		return this.pedido.getItens().size();
-
-	}
-	
 	public int obterQuantidadeDeItensUnicos(Pedido pedido) {
 
 		return pedido.getItens().size();
 
-	}
-
-	@Deprecated
-	public int obterQuantidadeDeItens() {
-		int quantidadeTotal = 0;
-		for (ItemPedido item : this.pedido.getItens()) {
-			quantidadeTotal = item.getQuantidade();
-		}
-		return quantidadeTotal;
 	}
 	
 	public int obterQuantidadeDeItens(Pedido pedido) {
@@ -154,29 +113,29 @@ public abstract class AbstractPedidoService {
 		return quantidadeTotal;
 	}
 
-	public void adicionarItem(Produto produto) {
+	public void adicionarItem(Pedido pedido, Produto produto) {
 	}
 	
 	public void adicionarItem(Produto produto, int qtdAdicionar) {
 	}
 
-	public void removerUmItem(Produto produto) {
+	public void removerUmItem(Pedido pedido, Produto produto) {
 	}
 
-	public void removerItem(Produto produto) {
+	public void removerItem(Pedido pedido, Produto produto) {
 	}
 
-	public void adicionarDesconto(Operacao desconto) {
+	public void adicionarDesconto(Pedido pedido, Operacao desconto) {
 		if (desconto.ehDesconto()) {
 		}
 	}
 
-	public void adicionarCobranca(Operacao cobranca) {
+	public void adicionarCobranca(Pedido pedido, Operacao cobranca) {
 		if (cobranca.ehCobranca()) {
 		}
 	}
 
-	public void adidiconarOperacao(Operacao operacao) {
+	public void adidiconarOperacao(Pedido pedido, Operacao operacao) {
 	}
 
 	/**
@@ -190,15 +149,15 @@ public abstract class AbstractPedidoService {
 		}
 	}
 
-	public BigDecimal calcularSubtotal() {
+	public BigDecimal calcularSubtotal(Pedido pedido) {
 		System.err.println("Implementar calculo de subtotal.");
 		BigDecimal subtotal = new BigDecimal(0);
 
 		return subtotal;
 	}
 
-	public BigDecimal calcularTotal() {
-		BigDecimal subtotal = calcularSubtotal();
+	public BigDecimal calcularTotal(Pedido pedido) {
+		BigDecimal subtotal = calcularSubtotal(pedido);
 
 		return subtotal.add(subtotal);
 	}
@@ -207,6 +166,7 @@ public abstract class AbstractPedidoService {
 		if (estadoEhAberto(pedido)) {
 			// forma de pagamento
 			if(this.pedido.getPagamento() != null){
+				
 				switch (this.pedido.getPagamento().getValorPago().compareTo(this.pedido.getTotal())) {
 				case 0: // valor exato
 
@@ -221,6 +181,7 @@ public abstract class AbstractPedidoService {
 				default:
 					break;
 				}
+				
 			}else{
 				throw new FechamentoDePedidoException("Pagamento não informado");
 			}

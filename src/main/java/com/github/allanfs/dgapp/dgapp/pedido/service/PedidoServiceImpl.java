@@ -128,16 +128,4 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 		return repo.findByEstado(estado);
 	}
 
-	@Override
-	public Pedido cancelarPedido() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void fecharPedido() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
