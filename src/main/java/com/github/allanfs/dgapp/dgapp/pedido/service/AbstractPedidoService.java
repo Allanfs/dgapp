@@ -4,8 +4,10 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,14 @@ public abstract class AbstractPedidoService {
 
 	@Autowired
 	protected MessageSource message;
+	
+	public List<Pedido> buscarPorEstado(Estado estado) {
+		return repo.findByEstado(estado);
+	}
+	
+	public List<Pedido> buscarPedidoPorCliente(UUID id) {
+		return repo.findByCliente(id);
+	}
 
 	private boolean estadoEhAberto(Pedido pedido) {
 		return pedido.getEstado().estaAberto();
@@ -165,7 +175,7 @@ public abstract class AbstractPedidoService {
 	public void fecharPedido(Pedido pedido) {
 		if (estadoEhAberto(pedido)) {
 			// forma de pagamento
-			if(this.pedido.getPagamento() != null){
+			if(pedido.getPagamento() != null){
 				
 				switch (this.pedido.getPagamento().getValorPago().compareTo(this.pedido.getTotal())) {
 				case 0: // valor exato
@@ -185,8 +195,8 @@ public abstract class AbstractPedidoService {
 			}else{
 				throw new FechamentoDePedidoException("Pagamento não informado");
 			}
-			this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
-			this.pedido.setEstado(Estado.FECHADO);
+			pedido.setHoraFechamento(Calendar.getInstance().getTime());
+			pedido.setEstado(Estado.FECHADO);
 		} else if (estadoEhCancelado(pedido)) {
 			throw new FechamentoDePedidoException("Pedido no estado cancelado");
 		} else if (estadoEhFechado(pedido)) {
