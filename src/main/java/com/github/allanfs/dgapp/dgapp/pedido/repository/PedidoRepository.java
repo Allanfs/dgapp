@@ -16,7 +16,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, UUID> {
 
 	List<Pedido> findByEstado(Estado estado);
 	
-	List<Pedido> findByCliente(Cliente cliente);
+	List<Pedido> findByCliente(UUID id);	// vai ter que fazer uma consulta pra buscar os pedidos de um cliente por ID
 	
 //	List<Pedido> findByExpediente(Expediente expediente);
 	

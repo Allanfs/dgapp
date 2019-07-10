@@ -31,31 +31,38 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	}
 
 	public Pedido cadastrar(Pedido pedido) {
-		if ( pedido != null ) {
+		if (pedido != null) {
 			if (pedido.getCliente() == null) {
-				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
-				
-			}else if (pedido.getCliente().getEndereco() == null) {
-				throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT) );
+				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT));
+
+			} else if (pedido.getEndereco() == null) {
+				throw new EnderecoNaoInformadoException(
+						message.getMessage("endereco.nao.informado", null, Locale.ROOT));
+			} else {
+
 			}
 		}
 
+		/*
+		 * Se o endereço do pedido E o cliente tenha mais de um endereço
+		 */
 		Cliente clienteDoPedido = pedido.getCliente();
-
-		if (clienteDoPedido.getEndereco().size() == 1) {
-
-			pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
-
-		} else if (clienteDoPedido.getEndereco().size() >= 0) {
+		if (pedido.getEndereco() == null && clienteDoPedido.getEndereco().size() > 1) {
 
 			throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT));
+
+		} else if (clienteDoPedido.getEndereco().size() == 1) {
+
+			pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
 
 		}
 
 		if (validarItens(pedido)) {
+
 			pedido.setEstado(Estado.ABERTO);
-		};
-		
+
+		}
+
 		Pedido p = repo.save(pedido);
 
 		long codigoPedido = gerarCodigoDoPedido();
@@ -75,25 +82,26 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 	@Override
 	public Pedido editar(Pedido pedido) {
-		
-		if ( pedido != null ) {
+
+		if (pedido != null) {
 			if (pedido.getCliente() == null) {
-				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
-				
+				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT));
+
 			}
 			if (pedido.getCliente().getEndereco() == null) {
-				throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT) );
+				throw new EnderecoNaoInformadoException(
+						message.getMessage("endereco.nao.informado", null, Locale.ROOT));
 			}
 		}
-		
+
 		if (pedido.getId() == null || pedido.getNumeroPedido() == null) {
 			throw new IllegalArgumentException("Pedido não cadastrado");
 		}
-		
+
 		validarItens(pedido);
-		
+
 		return this.repo.save(pedido);
-		
+
 	}
 
 	@Override
@@ -106,7 +114,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 		Optional<Pedido> pedidoBuscado = repo.findById(id);
 		if (pedidoBuscado.isPresent()) {
 			return pedidoBuscado.get();
-		}else {
+		} else {
 			return null;
 		}
 	}
@@ -121,11 +129,6 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	public void deletar(UUID id) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public List<Pedido> buscarPorEstado(Estado estado) {
-		return repo.findByEstado(estado);
 	}
 
 }

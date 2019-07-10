@@ -40,6 +40,7 @@ public class ItemPedido {
 		criarIDSeNaoExistir().setProduto(produto);
 	}
 	
+	@JsonIgnore
 	public Pedido getPedido() {
 		return criarIDSeNaoExistir().getPedido();
 	}

@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +29,7 @@ public class FormaDePagamento {
 	protected Date hora;
 	
 	@OneToOne(mappedBy = "pagamento")
+	@JsonIgnore
 	protected Pedido pedido;
 	
 	FormaDePagamento(Pedido pedido, BigDecimal valor){

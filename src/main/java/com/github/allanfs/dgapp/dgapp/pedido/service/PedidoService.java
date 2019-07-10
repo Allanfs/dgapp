@@ -18,6 +18,8 @@ public interface PedidoService extends IService<Pedido> {
 
 	public void adicionarCliente(Pedido pedido, Cliente cliente);
 
+	public List<Pedido> buscarPedidoPorCliente(UUID id);
+	
 	/**
 	 * Obtem a quantidade de pedidos únicos no pedido,
 	 * sem calcular a quantidade de cada um.

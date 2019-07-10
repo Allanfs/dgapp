@@ -1,10 +1,12 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -17,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
 
@@ -24,11 +27,11 @@ import lombok.Data;
 
 @Data
 @Entity(name="tb_pedido")
-public class Pedido {
+public class Pedido implements Serializable {
 	
 	@Id
 	@GeneratedValue(generator = "UUID")
-	@Column(name = "id_pedido", updatable = false)
+	@Column(name = "id_pedido")
 	private UUID id;
 	
 	@Enumerated
@@ -55,7 +58,7 @@ public class Pedido {
 	private Endereco endereco;
 	
 	@JoinColumn(name = "id_itempedido")
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<ItemPedido> itens;
 	
 	@Column(name = "total")
