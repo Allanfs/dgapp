@@ -124,20 +124,20 @@ INSERT INTO tb_endereco (id_endereco, rua, numero, bairro, complemento, id_clien
 
 
 --- produtos ---
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66ef71e-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Chedar', '5');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66ef9a8-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Chocolate', '8');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66efaf2-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Cream Cheese', '8');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66efeee-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Catupiry', '5');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0056-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Frampiry', '8');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0196-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Catupiresa', '8');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0506-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Solpiry', '8');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f066e-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Água sem gás', '2.5');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f093e-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Água com gás', '2.5');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0a92-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Aqua Fresh', '3.5');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0bbe-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Coca 1L', '7');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0cea-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Coca Lata', '4.5');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f1104-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Guaraná 1L', '6');
-INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f1294-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Guraná Lata', '4.5');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66ef71e-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Chedar', '5');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66ef9a8-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Chocolate', '8');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66efaf2-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Cream Cheese', '8');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66efeee-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Catupiry', '5');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0056-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Frampiry', '8');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0196-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Catupiresa', '8');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0506-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Borda Solpiry', '8');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f066e-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Água sem gás', '2.5');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f093e-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Água com gás', '2.5');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0a92-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Aqua Fresh', '3.5');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0bbe-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Coca 1L', '7');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f0cea-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Coca Lata', '4.5');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f1104-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Guaraná 1L', '6');
+-- INSERT INTO tb_produto (id_produto, nome, preco) VALUES ('a66f1294-a0b2-11e9-a2a3-2a2ae2dbcce4', 'Guraná Lata', '4.5');
 
 
 

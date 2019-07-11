@@ -2,8 +2,12 @@ package com.github.allanfs.dgapp.dgapp.pedido.model;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.allanfs.dgapp.dgapp.pizza.model.ProdutoPizza;
+import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,6 +26,17 @@ public class ItemPedido {
 	private int quantidade;
 	
 	private String observacao;
+
+	private ProdutoPizza pizza;
+	
+	/**
+	 * Tamanho é setado apenas se
+	 * o produto for uma pizza
+	 */
+	@ManyToOne
+	@JoinColumn(name="id_tamanho_fk")
+	private Tamanho tamanho;
+
 	
 	public ItemPedido(Pedido pedido, Produto produto) {
 		this.id = new ItemPedidoEmbeddedId(pedido, produto);
