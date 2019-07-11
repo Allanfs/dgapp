@@ -1,7 +1,5 @@
 package com.github.allanfs.dgapp.dgapp.cliente.model;
 
-import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -18,16 +16,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity(name="tb_endereco")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "cliente" })
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
+@EqualsAndHashCode(exclude = {"cliente"})
 public class Endereco {
 
 	@Id

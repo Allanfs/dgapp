@@ -2,21 +2,39 @@ package com.github.allanfs.dgapp.dgapp.pedido.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public abstract class FormaDePagamento {
+@Entity(name = "tb_pagamentos")
+@NoArgsConstructor
+public class FormaDePagamento {
 
-	private BigDecimal valor;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@Column(name = "id_pagamento")
+	protected UUID id;
+	protected BigDecimal valorPago;
 	
-	private Date hora;
+	protected Date hora;
 	
-	private Pedido pedido;
+	@OneToOne(mappedBy = "pagamento")
+	@JsonIgnore
+	protected Pedido pedido;
 	
 	FormaDePagamento(Pedido pedido, BigDecimal valor){
 		pedido.setPagamento(this);
-		this.valor = valor;
+		this.valorPago = valor;
 	}
 	
 }

@@ -8,10 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name="tb_produto")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Produto {
 	
 	@Id
@@ -21,7 +27,6 @@ public class Produto {
 	
 	private String nome;
 	
-	private float preco;
+	private BigDecimal preco;
 	
-	private BigDecimal valor;
 }

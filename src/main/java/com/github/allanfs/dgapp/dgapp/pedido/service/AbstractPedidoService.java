@@ -1,11 +1,13 @@
 package com.github.allanfs.dgapp.dgapp.pedido.service;
 
+import static org.springframework.util.StringUtils.isEmpty;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,14 @@ import org.springframework.context.MessageSource;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
+import com.github.allanfs.dgapp.dgapp.pedido.model.FormaDePagamento;
+import com.github.allanfs.dgapp.dgapp.pedido.model.ItemPedido;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Operacao;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
+import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.CancelamentoDePedidoException;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.FechamentoDePedidoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
 
 import lombok.Getter;
@@ -29,41 +36,72 @@ public abstract class AbstractPedidoService {
 	protected Pedido pedido;
 
 	@Autowired
-	protected MessageSource message;
+	protected PedidoRepository repo;
 
-	private boolean estadoEhAberto() {
-		return this.pedido.getEstado().estaAberto();
+	@Autowired
+	protected MessageSource message;
+	
+	public List<Pedido> buscarPorEstado(Estado estado) {
+		return repo.findByEstado(estado);
 	}
 	
-	private boolean estadoEhCancelado() {
-		return this.pedido.getEstado().estaCancelado();
+	public List<Pedido> buscarPedidoPorCliente(UUID id) {
+		return repo.findByCliente(id);
+	}
+
+	private boolean estadoEhAberto(Pedido pedido) {
+		return pedido.getEstado().estaAberto();
+	}
+
+	private boolean estadoEhCancelado(Pedido pedido) {
+		return pedido.getEstado().estaCancelado();
 	}
 	
-	private boolean estadoEhFechado() {
+	private boolean estadoEhFechado(Pedido pedido) {
 		return this.pedido.getEstado().estaFechado();
 	}
 	
-	public void adicionarEndereco(Endereco endereco) {
-		this.pedido.setEndereco(endereco);
+	public void adicionarEndereco(Pedido pedido, Endereco endereco) {
+		pedido.setEndereco(endereco);
+	}
+	
+	public void adicionarCliente(Pedido pedido, Cliente cliente) {
+		pedido.setCliente(cliente);
 	}
 
-	public void adicionarCliente(Cliente cliente) {
-		this.pedido.setCliente(cliente);
-	}
+	public boolean validarItens(Pedido pedido) {
 
-	public boolean validarItens() {
-
-		if (this.pedido.getItens() == null || this.pedido.getItens().size() <= 0) {
+		/*
+		 * 1) verifica se existem itens no pedido
+		 */
+		if (pedido.getItens() == null || pedido.getItens().size() <= 0) {
 			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
 		}
 
 		Predicate<? super Entry<Produto, Integer>> itensMenoresQueZero = entry -> entry.getValue() <= 0;
 
-		Set<Entry<Produto, Integer>> entrySetItens = this.pedido.getItens().entrySet();
+		/*
+		 * 2) verificar se a quantidade de itens presente no pedido é valida;
+		 * 3) verificar se o item possui referencia a este pedido.
+		 * parallelStream evita ConcurrentModificationException
+		 */
+		pedido.getItens().parallelStream().forEach(item -> {
+			if (item.getQuantidade() <= 0) {
+				pedido.getItens().remove(item);
+				return;
+			}
+			if (item.getPedido() == null) {
+				item.setPedido(pedido);
+			}
 
-		entrySetItens.removeIf(itensMenoresQueZero);
+		});
 
-		if (this.obterQuantidadeDeItens() <= 0) {
+		/*
+		 * 3) verifica a quantidade de itens novamente. 
+		 * Se, após a validação não houver pelo menos  um item
+		 * uma exceção é lançada
+		 */
+		if (this.obterQuantidadeDeItens(pedido) <= 0) {
 			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
 		}
 
@@ -71,117 +109,115 @@ public abstract class AbstractPedidoService {
 
 	}
 
-	public int obterQuantidadeDeItensUnicos() {
+	public int obterQuantidadeDeItensUnicos(Pedido pedido) {
 
-		return this.pedido.getItens().size();
+		return pedido.getItens().size();
 
 	}
-
-	public int obterQuantidadeDeItens() {
-		Set<Entry<Produto, Integer>> entrySet = this.pedido.getItens().entrySet();
-		int quantidade = 0;
-		for (Entry<Produto, Integer> entry : entrySet) {
-			quantidade += entry.getValue();
+	
+	public int obterQuantidadeDeItens(Pedido pedido) {
+		int quantidadeTotal = 0;
+		for (ItemPedido item : pedido.getItens()) {
+			quantidadeTotal = item.getQuantidade();
 		}
-
-		return quantidade;
+		return quantidadeTotal;
 	}
 
-	public void adicionarItem(Produto produto) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		if (itens.containsKey(produto)) {
-			int quantidade = itens.get(produto);
-			itens.put(produto, ++quantidade);
-		} else {
-			itens.put(produto, 1);
-		}
+	public void adicionarItem(Pedido pedido, Produto produto) {
 	}
 	
 	public void adicionarItem(Produto produto, int qtdAdicionar) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-		if (itens.containsKey(produto)) {
-			int quantidade = itens.get(produto);
-			itens.put(produto, ++quantidade + qtdAdicionar);
-		} else {
-			itens.put(produto, qtdAdicionar);
-		}
 	}
 
-	public void removerUmItem(Produto produto) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-
-		if (itens.containsKey(produto)) {
-			int quantidade = itens.get(produto);
-			itens.put(produto, --quantidade);
-		}
+	public void removerUmItem(Pedido pedido, Produto produto) {
 	}
 
-	public void removerItem(Produto produto) {
-		Map<Produto, Integer> itens = this.pedido.getItens();
-
-		if (itens.containsKey(produto)) {
-			itens.remove(produto);
-		}
+	public void removerItem(Pedido pedido, Produto produto) {
 	}
 
-	public void adicionarDesconto(Operacao desconto) {
+	public void adicionarDesconto(Pedido pedido, Operacao desconto) {
 		if (desconto.ehDesconto()) {
-			this.pedido.getOperacoes().add(desconto);
 		}
 	}
 
-	public void adicionarCobranca(Operacao cobranca) {
+	public void adicionarCobranca(Pedido pedido, Operacao cobranca) {
 		if (cobranca.ehCobranca()) {
-			this.pedido.getOperacoes().add(cobranca);
 		}
 	}
 
-	public void adidiconarOperacao(Operacao operacao) {
-		this.pedido.getOperacoes().add(operacao);
+	public void adidiconarOperacao(Pedido pedido, Operacao operacao) {
 	}
 
-	public BigDecimal calcularSubtotal() {
-		Map<Produto, Integer> itens = this.pedido.getItens();
+	/**
+	 * Caso o pedido já tenha um pagamento informado irá sobrescreve-lo
+	 * @param pedido {@link Pedido} já cadastrado que será adicionado o pagamento.
+	 * @param pagamento {@link com.github.allanfs.dgapp.dgapp.pedido.model.Pagamento Pagamento}
+	 */
+	public void adicionarPagamento(Pedido pedido, FormaDePagamento pagamento) {
+		if (pagamento != null) {
+			pedido.setPagamento(pagamento);
+		}
+	}
 
+	public BigDecimal calcularSubtotal(Pedido pedido) {
+		System.err.println("Implementar calculo de subtotal.");
 		BigDecimal subtotal = new BigDecimal(0);
-
-		for (Map.Entry<Produto, Integer> entry : itens.entrySet()) {
-			Produto produto = entry.getKey();
-			BigDecimal quantidade = new BigDecimal(entry.getValue());
-
-			subtotal = subtotal.add(produto.getValor().multiply(quantidade));
-
-		}
 
 		return subtotal;
 	}
 
-	public BigDecimal calcularTotal() {
-		BigDecimal subtotal = calcularSubtotal();
-		BigDecimal valorDeOperacao = new BigDecimal(0);
+	public BigDecimal calcularTotal(Pedido pedido) {
+		BigDecimal subtotal = calcularSubtotal(pedido);
 
-		for (Operacao operacao : this.pedido.getOperacoes()) {
-			valorDeOperacao = valorDeOperacao.add(operacao.getValor());
-		}
-
-		return subtotal.add(valorDeOperacao);
+		return subtotal.add(subtotal);
 	}
 
-	public void fecharPedido() {
-		if (estadoEhAberto()) {
-			this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
-			this.pedido.setEstado(Estado.FECHADO);
+	public void fecharPedido(Pedido pedido) {
+		if (estadoEhAberto(pedido)) {
+			// forma de pagamento
+			if(pedido.getPagamento() != null){
+				
+				switch (this.pedido.getPagamento().getValorPago().compareTo(this.pedido.getTotal())) {
+				case 0: // valor exato
+
+					break;
+				case -1: // pagamento é menor que o valor total -> não fecha
+
+					break;
+				case 1: // pagamento é maior que o valor total -> informa troco
+
+					break;
+
+				default:
+					break;
+				}
+				
+			}else{
+				throw new FechamentoDePedidoException("Pagamento não informado");
+			}
+			pedido.setHoraFechamento(Calendar.getInstance().getTime());
+			pedido.setEstado(Estado.FECHADO);
+		} else if (estadoEhCancelado(pedido)) {
+			throw new FechamentoDePedidoException("Pedido no estado cancelado");
+		} else if (estadoEhFechado(pedido)) {
+			throw new FechamentoDePedidoException("Pedido no estado cancelado");
+
 		}
 	}
 
-	public Pedido cancelarPedido() {
-		if (estadoEhAberto()) {
-			this.pedido.setHoraFechamento(Calendar.getInstance().getTime());
-			this.pedido.setEstado(Estado.CANCELADO);
-			
-			return this.pedido;
+	public Pedido cancelarPedido(Pedido pedido) {
+		if (estadoEhAberto(pedido)) {
+			if (isEmpty(pedido.getMotivoCancelamento())) {
+				throw new CancelamentoDePedidoException("Motivo do cancelamento não informado");
+			}
+			pedido.setHoraFechamento(Calendar.getInstance().getTime());
+			pedido.setEstado(Estado.CANCELADO);
+
+			return repo.save(pedido);
+		}else{
+			throw new CancelamentoDePedidoException("Apenas pedidos no estado ABERTO podem ser cancelados.");
 		}
-		return null;
+		
 	}
 	
 }

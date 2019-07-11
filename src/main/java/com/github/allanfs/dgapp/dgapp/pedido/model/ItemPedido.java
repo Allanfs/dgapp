@@ -1,21 +1,13 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
-import com.github.allanfs.dgapp.dgapp.cliente.model.Endereco;
-import com.github.allanfs.dgapp.dgapp.cliente.model.Telefone;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"quantidade", "observacao"})
@@ -24,6 +16,7 @@ import lombok.Setter;
 public class ItemPedido {
 
 	@EmbeddedId
+	@JsonIgnore
 	private ItemPedidoEmbeddedId id;
 	
 	private int quantidade;
@@ -47,6 +40,7 @@ public class ItemPedido {
 		criarIDSeNaoExistir().setProduto(produto);
 	}
 	
+	@JsonIgnore
 	public Pedido getPedido() {
 		return criarIDSeNaoExistir().getPedido();
 	}

@@ -14,7 +14,7 @@ import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
 import com.github.allanfs.dgapp.dgapp.cliente.service.ClienteService;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
-import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
 
 import lombok.NoArgsConstructor;
@@ -24,52 +24,49 @@ import lombok.NoArgsConstructor;
 public class PedidoServiceImpl extends AbstractPedidoService implements PedidoService {
 
 	@Autowired
-	private PedidoRepository service;
-
-	@Autowired
 	private ClienteService clienteService;
 
 	public PedidoServiceImpl(Pedido pedido) {
 		this.pedido = pedido;
 	}
 
-	public Pedido cadastrar() {
-		if ( this.pedido != null ) {
-			if (this.pedido.getCliente() == null) {
-//				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
-				
-			}
-			if (this.pedido.getCliente().getEndereco() == null) {
-				throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT) );
+	public Pedido cadastrar(Pedido pedido) {
+		if (pedido != null) {
+			if (pedido.getCliente() == null) {
+				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT));
+
+			} else if (pedido.getEndereco() == null) {
+				throw new EnderecoNaoInformadoException(
+						message.getMessage("endereco.nao.informado", null, Locale.ROOT));
+			} else {
+
 			}
 		}
 
-		Cliente clienteDoPedido = this.pedido.getCliente();
-
-		if (clienteDoPedido.getEndereco().size() == 1) {
-
-			this.pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
-
-		} else if (clienteDoPedido.getEndereco().size() > 1 || clienteDoPedido.getEndereco().size() == 0) {
+		/*
+		 * Se o endereço do pedido E o cliente tenha mais de um endereço
+		 */
+		Cliente clienteDoPedido = pedido.getCliente();
+		if (pedido.getEndereco() == null && clienteDoPedido.getEndereco().size() > 1) {
 
 			throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT));
 
+		} else if (clienteDoPedido.getEndereco().size() == 1) {
+
+			pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
+
 		}
 
-		validarItens();
-		
-		Pedido p = service.save(this.pedido);
+		if (validarItens(pedido)) {
+
+			pedido.setEstado(Estado.ABERTO);
+
+		}
+
+		Pedido p = repo.save(pedido);
 
 		long codigoPedido = gerarCodigoDoPedido();
-		return null;
-	}
-
-	@Override
-	public Pedido cadastrar(Pedido obj) throws EnderecoNaoInformadoException {
-		
-		this.pedido = obj;
-
-		return this.cadastrar();
+		return p;
 	}
 
 	private long gerarCodigoDoPedido() {
@@ -84,41 +81,40 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	}
 
 	@Override
-	public Pedido editar(Pedido obj) {
-		this.pedido = obj;
-		
-		if ( this.pedido != null ) {
-			if (this.pedido.getCliente() == null) {
-//				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT) );
-				
+	public Pedido editar(Pedido pedido) {
+
+		if (pedido != null) {
+			if (pedido.getCliente() == null) {
+				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT));
+
 			}
-			if (this.pedido.getCliente().getEndereco() == null) {
-				throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT) );
+			if (pedido.getCliente().getEndereco() == null) {
+				throw new EnderecoNaoInformadoException(
+						message.getMessage("endereco.nao.informado", null, Locale.ROOT));
 			}
 		}
-		
-		if (obj.getId() == null || obj.getNumeroPedido() == null) {
+
+		if (pedido.getId() == null || pedido.getNumeroPedido() == null) {
 			throw new IllegalArgumentException("Pedido não cadastrado");
 		}
-		
-		validarItens();
-		
-		return this.service.save(obj);
-		
+
+		validarItens(pedido);
+
+		return this.repo.save(pedido);
+
 	}
 
 	@Override
 	public List<Pedido> buscarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		return repo.findAll();
 	}
 
 	@Override
 	public Pedido buscarPorId(UUID id) {
-		Optional<Pedido> pedidoBuscado = service.findById(id);
+		Optional<Pedido> pedidoBuscado = repo.findById(id);
 		if (pedidoBuscado.isPresent()) {
 			return pedidoBuscado.get();
-		}else {
+		} else {
 			return null;
 		}
 	}
@@ -133,11 +129,6 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	public void deletar(UUID id) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public List<Pedido> buscarPorEstado(Estado estado) {
-		return service.findByEstado(estado);
 	}
 
 }
