@@ -26,7 +26,7 @@ import com.github.allanfs.dgapp.dgapp.pizza.repository.SaborRepository;
 public class SaborService implements IService<Sabor> {
 
 	@Autowired
-	private SaborRepository saborRepo;
+	private SaborRepository repo;
 
 	@Autowired
 	private RecheioService recheioService;
@@ -62,7 +62,7 @@ public class SaborService implements IService<Sabor> {
 		
 		sePrecoInvalidoPreencherValorPadrao(saborCadastrado);
 		
-		return saborRepo.save(saborCadastrado);
+		return repo.save(saborCadastrado);
 	}
 
 	/**
@@ -91,15 +91,15 @@ public class SaborService implements IService<Sabor> {
 
 	public Sabor editar(Sabor sabor) {
 
-		return saborRepo.save(sabor);
+		return repo.save(sabor);
 	}
 
 	public List<Sabor> buscarTodos() {
-		return saborRepo.findAll();
+		return repo.findAll();
 	}
 
 	public Sabor buscarPorId(UUID id) {
-		Optional<Sabor> saborBuscado = saborRepo.findById(id);
+		Optional<Sabor> saborBuscado = repo.findById(id);
 
 		if (!saborBuscado.isPresent()) {
 			throw new EntityNotFoundException(mensagem.getMessage("sabor.inexistente", null, Locale.ROOT));
@@ -108,7 +108,7 @@ public class SaborService implements IService<Sabor> {
 	}
 
 	public Sabor buscarPorNome(String nome) {
-		Optional<Sabor> saborBuscado = saborRepo.findByNome(nome);
+		Optional<Sabor> saborBuscado = repo.findByNome(nome);
 
 		if (!saborBuscado.isPresent()) {
 			throw new EntityNotFoundException(
@@ -119,13 +119,13 @@ public class SaborService implements IService<Sabor> {
 
 	public void deletar(UUID id) {
 
-		Optional<Sabor> saborBuscado = saborRepo.findById(id);
+		Optional<Sabor> saborBuscado = repo.findById(id);
 
 		if (!saborBuscado.isPresent()) {
 			throw new EntityNotFoundException(mensagem.getMessage("sabor.inexistente", null, Locale.ROOT));
 		}
 
-		saborRepo.delete(saborBuscado.get());
+		repo.delete(saborBuscado.get());
 	}
 	
 	public boolean recheioExisteNoSabor( String nomeRecheio, Sabor sabor ) {
@@ -247,6 +247,11 @@ public class SaborService implements IService<Sabor> {
 
 		sabor.setPrecos(precoPadrao);
 
+	}
+
+	@Override
+	public Integer obterQuantidadeDeRegistrosAtivos() {
+		return repo.contarQuantidadeDeSabores();
 	}
 
 }

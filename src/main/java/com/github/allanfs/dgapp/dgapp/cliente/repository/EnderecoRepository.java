@@ -13,5 +13,8 @@ public interface EnderecoRepository  extends JpaRepository<Endereco, UUID>{
 
 	@Query(nativeQuery = true, value = "SELECT * FROM tb_endereco as endereco WHERE endereco.id_cliente_fk=?1")
 	List<Endereco> buscarEnderecosDoCliente(String id);
+
+	@Query(value = "SELECT COUNT(*) FROM tb_endereco")
+	Integer contarQuantidadeDeEnderecosCadastrados();
 	
 }

@@ -80,6 +80,8 @@ public interface PedidoService extends IService<Pedido> {
 	
 	/* Metodos de busca */
 	public List<Pedido> buscarPorEstado(Estado estado);
+	
+	public Integer contarPedidosNoEstado(Estado estado);
 
 	public default void deletar( UUID id ) {
 		return;

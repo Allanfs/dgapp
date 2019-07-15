@@ -60,6 +60,11 @@ public class AbstractController<T> {
         return new ResponseEntity<List<T>>(todos, HttpStatus.OK);
         
     }
+    
+    @GetMapping("/contar")
+	public ResponseEntity<Integer> obterQuantidadeDeClientesCadastrados() {
+		return new ResponseEntity<Integer>( service.obterQuantidadeDeRegistrosAtivos() , HttpStatus.OK);
+	}
 
     @PutMapping("/{id}")
     public ResponseEntity<T> editar(@RequestBody T obj, @PathVariable UUID id){

@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import com.github.allanfs.dgapp.dgapp.cliente.model.Cliente;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
 import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, UUID> {
@@ -23,5 +23,10 @@ public interface PedidoRepository extends JpaRepository<Pedido, UUID> {
 	List<Pedido> findByTotalGreaterThanEqual(BigDecimal valor);
 	
 	List<Pedido> findByTotalLessThanEqual(BigDecimal valor);
+
+	@Query(value = "SELECT COUNT(*) FROM tb_pedido")
+	Integer contarQuantidadeDePedidos();
+	
+	Integer countByEstado(Estado estado);
 	
 }

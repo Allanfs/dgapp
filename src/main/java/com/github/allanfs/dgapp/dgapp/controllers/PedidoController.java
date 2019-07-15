@@ -48,6 +48,11 @@ public class PedidoController extends AbstractController<Pedido> {
 
 	}
 	
+	@GetMapping("/estado/{estado}/contar")
+	public ResponseEntity<Integer> contarPedidosNoStatus(@PathVariable Estado estado) {
+			return new ResponseEntity<Integer>(0, HttpStatus.OK);
+	}
+	
 	@ExceptionHandler({ ClienteNaoInformadoException.class, EnderecoNaoInformadoException.class })
 	public ResponseEntity<String> componenteNaoInformado(Exception e) {
 		return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);

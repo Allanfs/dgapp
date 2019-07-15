@@ -117,4 +117,9 @@ public class TelefoneService implements IService<Telefone> {
 		repo.deleteByNumero( buscarPorTelefone(numero).getNumero() );
 	}
 
+	@Override
+	public Integer obterQuantidadeDeRegistrosAtivos() {
+		return repo.contarQuantidadeDeTelefonesCadastrados();
+	}
+
 }

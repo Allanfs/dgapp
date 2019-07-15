@@ -131,4 +131,9 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 	}
 
+	@Override
+	public Integer obterQuantidadeDeRegistrosAtivos() {
+		return repo.contarQuantidadeDePedidos();
+	}
+
 }

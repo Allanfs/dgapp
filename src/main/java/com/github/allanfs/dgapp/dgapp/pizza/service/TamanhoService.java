@@ -18,13 +18,13 @@ import com.github.allanfs.dgapp.dgapp.pizza.repository.TamanhoRepository;
 public class TamanhoService implements IService<Tamanho>{
 
     @Autowired
-    private TamanhoRepository tamanhoRepo;
+    private TamanhoRepository repo;
     
     @Autowired
     private MessageSource mensagem;
 
     public Tamanho cadastrar(Tamanho tamanho){
-        return tamanhoRepo.save(tamanho);
+        return repo.save(tamanho);
     }
     
     public Tamanho editar(Tamanho tamanhoEditar){
@@ -33,11 +33,11 @@ public class TamanhoService implements IService<Tamanho>{
     		throw new EntityNotFoundException(mensagem.getMessage("tamanho.nao.cadastrado", null, Locale.ROOT));
     	}
     	
-    	Optional<Tamanho> tamanhoBuscadoOpt = tamanhoRepo.findById( tamanhoEditar.getId() );
+    	Optional<Tamanho> tamanhoBuscadoOpt = repo.findById( tamanhoEditar.getId() );
     	
     	if(tamanhoBuscadoOpt.isPresent()) {
     		
-    		return tamanhoRepo.save(tamanhoEditar);
+    		return repo.save(tamanhoEditar);
     		
     	}else {
     		throw new EntityNotFoundException(mensagem.getMessage("tamanho.nao.cadastrado", null, Locale.ROOT));
@@ -46,11 +46,11 @@ public class TamanhoService implements IService<Tamanho>{
     }
 
     public List<Tamanho> buscarTodos(){
-        return tamanhoRepo.findAll();
+        return repo.findAll();
     }
 
     public Tamanho buscarPorId( UUID id) {
-        Optional<Tamanho> tamanhoBuscado = tamanhoRepo.findById( id );
+        Optional<Tamanho> tamanhoBuscado = repo.findById( id );
         
         if( !tamanhoBuscado.isPresent() ) {
         	throw new EntityNotFoundException(mensagem.getMessage("tamanho.inexistente", null, Locale.ROOT));
@@ -61,7 +61,7 @@ public class TamanhoService implements IService<Tamanho>{
     
     @Override
 	public Tamanho buscarPorNome(String nome) {
-    	Optional<Tamanho> tamanhoBuscado = tamanhoRepo.findByNome( nome );
+    	Optional<Tamanho> tamanhoBuscado = repo.findByNome( nome );
     	
         if( !tamanhoBuscado.isPresent() ) {
 			throw new EntityNotFoundException(
@@ -73,14 +73,19 @@ public class TamanhoService implements IService<Tamanho>{
     
     public void deletar( UUID id ) {
     	
-    	Optional<Tamanho> tamanhoBuscado = tamanhoRepo.findById( id );
+    	Optional<Tamanho> tamanhoBuscado = repo.findById( id );
     	
     	if( !tamanhoBuscado.isPresent() ) {
         	throw new EntityNotFoundException(mensagem.getMessage("tamanho.inexistente", null, Locale.ROOT));
         }
     	
-    	tamanhoRepo.delete( tamanhoBuscado.get() );
+    	repo.delete( tamanhoBuscado.get() );
     }
+
+	@Override
+	public Integer obterQuantidadeDeRegistrosAtivos() {
+		return repo.contarQuantidadeDeTamanhos();
+	}
 
 	
     

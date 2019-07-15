@@ -31,4 +31,6 @@ public interface IService<T> {
     public T buscarPorNome( String nome );
 
     public void deletar( UUID id );
+
+	public Integer obterQuantidadeDeRegistrosAtivos();
 }

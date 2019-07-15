@@ -220,4 +220,7 @@ public abstract class AbstractPedidoService {
 		
 	}
 	
+	public Integer contarPedidosNoEstado(Estado estado) {
+		return repo.countByEstado(estado);
+	}
 }

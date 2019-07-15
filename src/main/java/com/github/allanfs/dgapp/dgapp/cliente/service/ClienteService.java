@@ -185,4 +185,9 @@ public class ClienteService implements IService<Cliente> {
 		}
 	}
 
+	@Override
+	public Integer obterQuantidadeDeRegistrosAtivos() {
+		return repo.contarQuantidadeDeClientesCadastrados();
+	}
+
 }

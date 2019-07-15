@@ -18,30 +18,30 @@ import com.github.allanfs.dgapp.dgapp.pizza.repository.RecheioRepository;
 public class RecheioService implements IService<Recheio>{
 
     @Autowired
-    private RecheioRepository recheioRepo;
+    private RecheioRepository repo;
 
     @Autowired
     private MessageSource mensagem;
     
     public Recheio cadastrar(Recheio Recheio){
-        return recheioRepo.save(Recheio);
+        return repo.save(Recheio);
     }
     
     public Recheio editar(Recheio recheio){
     	
-    	if( recheio.getId() == null | recheioRepo.existsById(recheio.getId()) ) {
+    	if( recheio.getId() == null | repo.existsById(recheio.getId()) ) {
     		throw new EntityNotFoundException(mensagem.getMessage("recheio.inexistente", null, Locale.ROOT));
     	}
     	
-        return recheioRepo.save(recheio);
+        return repo.save(recheio);
     }
 
     public List<Recheio> buscarTodos(){
-        return recheioRepo.findAll();
+        return repo.findAll();
     }
 
     public Recheio buscarPorId( UUID id) {
-    	Optional<Recheio> recheioBuscado = recheioRepo.findById( id );
+    	Optional<Recheio> recheioBuscado = repo.findById( id );
     	
     	if( !recheioBuscado.isPresent() ) {
     		throw new EntityNotFoundException(mensagem.getMessage("recheio.inexistente", null, Locale.ROOT));
@@ -51,7 +51,7 @@ public class RecheioService implements IService<Recheio>{
     }
     
     public Recheio buscarPorNome( String nome ) {
-    	Optional<Recheio> recheioBuscado = recheioRepo.findByNome( nome );
+    	Optional<Recheio> recheioBuscado = repo.findByNome( nome );
     	
     	if( !recheioBuscado.isPresent() ) {
 			throw new EntityNotFoundException(
@@ -63,13 +63,18 @@ public class RecheioService implements IService<Recheio>{
     
     public void deletar( UUID id ) {
     	
-    	Optional<Recheio> recheioBuscado = recheioRepo.findById( id );
+    	Optional<Recheio> recheioBuscado = repo.findById( id );
     	
     	if( !recheioBuscado.isPresent() ) {
     		throw new EntityNotFoundException(mensagem.getMessage("recheio.inexistente", null, Locale.ROOT));
     	}
     	
-    	recheioRepo.delete( recheioBuscado.get() );
+    	repo.delete( recheioBuscado.get() );
     }
+
+	@Override
+	public Integer obterQuantidadeDeRegistrosAtivos() {
+		return repo.contarQuantidadeDeRecheios();
+	}
     
 }

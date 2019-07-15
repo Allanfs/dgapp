@@ -82,4 +82,9 @@ public class EnderecoService implements IService<Endereco> {
 		
 	}
 
+	@Override
+	public Integer obterQuantidadeDeRegistrosAtivos() {
+		return repo.contarQuantidadeDeEnderecosCadastrados();
+	}
+
 }

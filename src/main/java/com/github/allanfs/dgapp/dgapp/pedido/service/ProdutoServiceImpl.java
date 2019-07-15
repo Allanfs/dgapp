@@ -17,47 +17,51 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProdutoServiceImpl implements IService<Produto> {
 
-  @Autowired
-  private ProdutoRepository repo;
+	@Autowired
+	private ProdutoRepository repo;
 
-  @Override
-  public Produto cadastrar(Produto obj) {
-    return repo.save(obj);
-  }
+	@Override
+	public Produto cadastrar(Produto obj) {
+		return repo.save(obj);
+	}
 
-  @Override
-  public Produto editar(Produto obj) {
-    if (obj.getId() == null) {
-      throw new IllegalStateException("Produto não cadastrado");
-    }else{
-      return repo.save(obj);
-    }
-  }
+	@Override
+	public Produto editar(Produto obj) {
+		if (obj.getId() == null) {
+			throw new IllegalStateException("Produto não cadastrado");
+		} else {
+			return repo.save(obj);
+		}
+	}
 
-  @Override
-  public List<Produto> buscarTodos() {
-    return repo.findAll();
-  }
+	@Override
+	public List<Produto> buscarTodos() {
+		return repo.findAll();
+	}
 
-  @Override
-  public Produto buscarPorId(UUID id) {
-    Optional<Produto> produtoBuscado = repo.findById(id);
+	@Override
+	public Produto buscarPorId(UUID id) {
+		Optional<Produto> produtoBuscado = repo.findById(id);
 		if (produtoBuscado.isPresent()) {
 			return produtoBuscado.get();
-		}else {
+		} else {
 			return null;
 		}
-  }
+	}
 
-  @Override
-  public Produto buscarPorNome(String nome) {
-    return null;
-  }
+	@Override
+	public Produto buscarPorNome(String nome) {
+		return null;
+	}
 
-  @Override
-  public void deletar(UUID id) {
-    repo.deleteById(id);
-  }
+	@Override
+	public void deletar(UUID id) {
+		repo.deleteById(id);
+	}
 
-  
+	@Override
+	public Integer obterQuantidadeDeRegistrosAtivos() {
+		return repo.contarQuantidadeDeProdutos();
+	}
+
 }
