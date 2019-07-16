@@ -6,9 +6,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -24,7 +22,9 @@ import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
 import com.github.allanfs.dgapp.dgapp.pedido.repository.PedidoRepository;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.CancelamentoDePedidoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.FechamentoDePedidoException;
+import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
+import com.github.allanfs.dgapp.dgapp.pizza.model.ProdutoPizza;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -78,12 +78,13 @@ public abstract class AbstractPedidoService {
 			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
 		}
 
-		Predicate<? super Entry<Produto, Integer>> itensMenoresQueZero = entry -> entry.getValue() <= 0;
-
 		/*
 		 * 2) verificar se a quantidade de itens presente no pedido é valida;
 		 * 3) verificar se o item possui referencia a este pedido.
 		 * parallelStream evita ConcurrentModificationException
+		 * 4) Verifica se o item é do tipo pizza,
+		 * se for, valida os sabores do Item.
+		 * se não, ignora, settando-os com null
 		 */
 		pedido.getItens().parallelStream().forEach(item -> {
 			if (item.getQuantidade() <= 0) {
@@ -94,10 +95,25 @@ public abstract class AbstractPedidoService {
 				item.setPedido(pedido);
 			}
 
+			if (item.getProduto().isPizza()) {
+				if (item.getPizza() != null) {
+					validarPizza(item.getPizza()); // se lançar exceção tem algo errado
+				} else {
+					throw new PedidoException("Pizza sem informações.");
+				}
+
+			} else {
+				/*
+				 * 4.1) despreza campos pertinentes a pizza
+				 */
+				item.setPizza(null);
+
+			}
+
 		});
 
 		/*
-		 * 3) verifica a quantidade de itens novamente. 
+		 * 5) verifica a quantidade de itens novamente. 
 		 * Se, após a validação não houver pelo menos  um item
 		 * uma exceção é lançada
 		 */
@@ -109,6 +125,28 @@ public abstract class AbstractPedidoService {
 
 	}
 
+	private void validarPizza(ProdutoPizza pizza) {
+		
+		int quantidadeDeSaboresNaPizza;
+		int numeroMaximoDeSaboresNoTamanho;
+		
+		
+		if (pizza.getTamanho() == null) {
+			throw new PedidoException("Tamanho da pizza não informado.");
+		} else if (pizza.getSabores().isEmpty()) {
+			throw new PedidoException("Sabores da pizza não foram informados.");
+		}
+		
+		quantidadeDeSaboresNaPizza = pizza.getSabores().size();
+		numeroMaximoDeSaboresNoTamanho = pizza.getTamanho().getNumeroMaximoSabores();
+		
+		if(quantidadeDeSaboresNaPizza > numeroMaximoDeSaboresNoTamanho) {
+			String msg = String.format("Quantidade de sabores maior que a permitida para o tamanho. %d foram informados, o máximo é %d", quantidadeDeSaboresNaPizza, numeroMaximoDeSaboresNoTamanho);
+			throw new PedidoException(msg);
+		}
+		
+	}
+	
 	public int obterQuantidadeDeItensUnicos(Pedido pedido) {
 
 		return pedido.getItens().size();

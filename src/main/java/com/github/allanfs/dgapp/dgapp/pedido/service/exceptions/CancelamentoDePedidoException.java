@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
  * CancelamentoDePedidoException
  */
 @NoArgsConstructor
-public class CancelamentoDePedidoException extends RuntimeException {
+public class CancelamentoDePedidoException extends PedidoException {
 
   public CancelamentoDePedidoException(String message) {
     super(message);
