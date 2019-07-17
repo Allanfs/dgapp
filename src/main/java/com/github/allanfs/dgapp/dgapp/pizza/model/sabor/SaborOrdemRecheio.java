@@ -1,7 +1,12 @@
 package com.github.allanfs.dgapp.dgapp.pizza.model.sabor;
 
-import javax.persistence.EmbeddedId;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,9 +27,14 @@ import lombok.NoArgsConstructor;
 @Data
 public class SaborOrdemRecheio {
 
-	@EmbeddedId
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@Column(name="id_sor")
+	private UUID id;
+	
+	@Embedded
 	@JsonIgnore
-	private SaborOrdemRecheioEmbeddedId id;
+	private SaborOrdemRecheioEmbeddedId sor;
 	private Integer posicao;
 	
 	public SaborOrdemRecheio(Sabor saborNovo, Recheio recheio, int i) {
@@ -38,33 +48,33 @@ public class SaborOrdemRecheio {
 	}
 	
 	public Recheio getRecheio() {
-		return id.getRecheio();
+		return sor.getRecheio();
 	}
 	
 	@JsonBackReference
 	public Sabor getSabor() {
-		return id.getSabor();
+		return sor.getSabor();
 	}
 	
 	public void setRecheio( Recheio recheio ) {
-		if( id == null ) {
-			id = new SaborOrdemRecheioEmbeddedId();
+		if( sor == null ) {
+			sor = new SaborOrdemRecheioEmbeddedId();
 		}
-		id.setRecheio(recheio);
+		sor.setRecheio(recheio);
 	}
 	
 	public void setSabor( Sabor sabor ) {
-		if( id == null ) {
-			id = new SaborOrdemRecheioEmbeddedId();
+		if( sor == null ) {
+			sor = new SaborOrdemRecheioEmbeddedId();
 		}
-		id.setSabor(sabor);
+		sor.setSabor(sabor);
 	}
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((sor == null) ? 0 : sor.hashCode());
 		result = prime * result + posicao;
 		return result;
 	}
@@ -77,10 +87,10 @@ public class SaborOrdemRecheio {
 		if (getClass() != obj.getClass())
 			return false;
 		SaborOrdemRecheio other = (SaborOrdemRecheio) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (sor == null) {
+			if (other.sor != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!sor.equals(other.sor))
 			return false;
 		if (posicao != other.posicao)
 			return false;

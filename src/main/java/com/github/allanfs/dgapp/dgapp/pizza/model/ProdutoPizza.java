@@ -27,4 +27,8 @@ public class ProdutoPizza extends Produto {
   @JoinColumn(name="id_sabor_fk")
   private List<ItemPedidoSabor> sabores;
   
+  public ProdutoPizza() {
+	  this.setPizza(true);
+  }
+  
 }

@@ -37,7 +37,7 @@ public class Sabor extends TipoInsumo {
 	private UUID id;
 	private String nome;
 
-	@OneToMany(mappedBy= "id.sabor",
+	@OneToMany(mappedBy= "sor.sabor",
 			fetch=FetchType.EAGER, 
 			cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
 	private Set<SaborOrdemRecheio> recheios = new HashSet<SaborOrdemRecheio>();

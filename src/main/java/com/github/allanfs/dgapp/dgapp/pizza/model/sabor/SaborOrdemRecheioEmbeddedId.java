@@ -13,6 +13,7 @@ import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -29,6 +30,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor @AllArgsConstructor
 @JsonIgnoreProperties(value = "sabor")
 @Data
+@EqualsAndHashCode(exclude = "sabor")
 public class SaborOrdemRecheioEmbeddedId implements Serializable{
 
 	@ManyToOne()

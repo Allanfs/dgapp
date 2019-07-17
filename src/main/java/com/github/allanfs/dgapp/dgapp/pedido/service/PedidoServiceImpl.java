@@ -34,12 +34,6 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 		if (pedido != null) {
 			if (pedido.getCliente() == null) {
 				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT));
-
-			} else if (pedido.getEndereco() == null) {
-				throw new EnderecoNaoInformadoException(
-						message.getMessage("endereco.nao.informado", null, Locale.ROOT));
-			} else {
-
 			}
 		}
 
@@ -47,14 +41,16 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 		 * Se o endereço do pedido E o cliente tenha mais de um endereço
 		 */
 		Cliente clienteDoPedido = pedido.getCliente();
-		if (pedido.getEndereco() == null && clienteDoPedido.getEndereco().size() > 1) {
+		int quantidadeEnderecos = clienteDoPedido.getEndereco().size();
+		if (pedido.getEndereco() == null 
+				&& (quantidadeEnderecos > 1)
+				|| quantidadeEnderecos <= 0) {
 
 			throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT));
 
-		} else if (clienteDoPedido.getEndereco().size() == 1) {
+		} else {
 
 			pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
-
 		}
 
 		if (validarItens(pedido)) {

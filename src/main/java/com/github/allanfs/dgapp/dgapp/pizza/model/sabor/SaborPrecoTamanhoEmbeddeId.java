@@ -13,6 +13,7 @@ import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Embeddable
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(value = "sabor")
 @Data
+@EqualsAndHashCode(exclude = "sabor")
 class SaborPrecoTamanhoEmbeddeId implements Serializable {
 
 	@ManyToOne()
