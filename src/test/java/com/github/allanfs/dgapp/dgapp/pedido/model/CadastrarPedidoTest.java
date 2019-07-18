@@ -34,7 +34,9 @@ import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensEx
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class CadastrarPedidoTest {
-
+	// TODO criar teste REST
+	// TODO criar teste cadastrando uma pizza e adicionando sabores
+	// TODO verificar os estados do pedido
 	@MockBean
 	private PedidoRepository pedidoRepo;
 	

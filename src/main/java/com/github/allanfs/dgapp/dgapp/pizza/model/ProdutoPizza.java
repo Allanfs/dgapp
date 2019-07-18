@@ -17,6 +17,10 @@ import lombok.Data;
  * ser adicionado {@linkplain Sabor Sabores}, e um {@link Tamanho}.</p>
  * <p>Os sabores são adicionados por {@link ItemPedidoSabor}, a qual
  * representa a relação entre um {@link Sabor} e um {@link ProdutoPizza} </p>
+ * <hr>
+ * <p>É necessário que seja utilizado {@link ItemPedidoSabor} pois o mesmo
+ * possui um UUID, e é necessário para evitar registros com chave duplicada
+ * (que aconteceria caso fosse usado uma lista de Sabores).</p>
  * @see Produto
  * @see ItemPedidoSabor
  * 

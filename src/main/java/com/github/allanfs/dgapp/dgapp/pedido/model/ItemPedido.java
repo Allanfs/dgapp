@@ -56,14 +56,17 @@ public class ItemPedido {
 	@OneToOne(targetEntity = ProdutoPizza.class)
 	private ProdutoPizza pizza;
 	
-	/**
-	 * Tamanho é setado apenas se
-	 * o produto for uma pizza
-	 */
-	@ManyToOne
-	@JoinColumn(name="id_tamanho_fk")
-	private Tamanho tamanho;
-
+	public ItemPedido(Pedido pedido, ProdutoPizza produto, int quantidade ) {
+		this.id = new ItemPedidoEmbeddedId(pedido, produto);
+		this.pizza = produto;
+		this.quantidade = quantidade;
+	}
+	
+	public ItemPedido(Pedido pedido, ProdutoPizza produto) {
+		this.id = new ItemPedidoEmbeddedId(pedido, produto);
+		this.pizza = produto;
+		this.quantidade = 1;
+	}
 	
 	public ItemPedido(Pedido pedido, Produto produto) {
 		this.id = new ItemPedidoEmbeddedId(pedido, produto);

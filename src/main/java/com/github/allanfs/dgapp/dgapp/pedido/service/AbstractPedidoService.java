@@ -133,7 +133,7 @@ public abstract class AbstractPedidoService {
 		
 		if (pizza.getTamanho() == null) {
 			throw new PedidoException("Tamanho da pizza não informado.");
-		} else if (pizza.getSabores().isEmpty()) {
+		} else if (pizza.getSabores() == null || pizza.getSabores().isEmpty()) {
 			throw new PedidoException("Sabores da pizza não foram informados.");
 		}
 		
@@ -260,5 +260,8 @@ public abstract class AbstractPedidoService {
 	
 	public Integer contarPedidosNoEstado(Estado estado) {
 		return repo.countByEstado(estado);
+	}
+	
+	public void adicionarPizza(Pedido pedido, ProdutoPizza pizza) {
 	}
 }
