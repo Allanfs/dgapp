@@ -13,7 +13,13 @@ import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
 import lombok.Data;
 
 /**
- * ProdutoPizza
+ * <p>Representa um {@link Produto} marcado como pizza, o qual pode
+ * ser adicionado {@linkplain Sabor Sabores}, e um {@link Tamanho}.</p>
+ * <p>Os sabores são adicionados por {@link ItemPedidoSabor}, a qual
+ * representa a relação entre um {@link Sabor} e um {@link ProdutoPizza} </p>
+ * @see Produto
+ * @see ItemPedidoSabor
+ * 
  */
 @Entity(name="tb_produto_pizza")
 @Data

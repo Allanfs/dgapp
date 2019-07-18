@@ -14,6 +14,31 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+/**
+ * <p>
+ * Representa a relação entre um Pedido e um Produto.
+ * {@link Produto}s podem ser adicionados no pedido através desta classe.</p>
+ * <p>
+ * Todo {@link ItemPedido} precisa de:
+ * <ul>
+ * 	<li>uma referencia ao {@link Pedido} que compoe</li>
+ * 	<li>uma referencia ao {@link Produto}</li>
+ * </ul>
+ * <br>
+ * Um pedido se relaciona com vários produtos, e um produto se relaciona com varios pedidos.
+ * </p>
+ * <hr>
+ * <p>
+ * {@link ProdutoPizza} é usado apenas quando o {@link Produto} inserido
+ * {@link Produto#isPizza()}, será verificado durante o cadastro do {@link Pedido} 
+ * se este {@link ItemPedido} é válido.
+ * </p>
+ * @author allan
+ * @see Produto
+ * @see Pedido
+ * @see ProdutoPizza
+ *
+ */
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"quantidade", "observacao"})
 @Entity(name = "tb_item_pedido")
@@ -82,3 +107,4 @@ public class ItemPedido {
 	 * TABLE PER CLASS		uma tabela para cada classe concreta
 	 */
 }
+
