@@ -15,23 +15,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name="tb_produto")
+@Entity(name = "tb_produto")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Produto {
-	
+
 	@Id
 	@GeneratedValue(generator = "UUID")
-	@Column(name = "id_produto",updatable = false)
+	@Column(name = "id_produto", updatable = false)
 	private UUID id;
-	
+
 	private String nome;
-	
+
 	private BigDecimal preco;
 
 	private boolean pizza;
-	
+
 }

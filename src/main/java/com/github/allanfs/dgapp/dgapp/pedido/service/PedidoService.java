@@ -10,7 +10,6 @@ import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Operacao;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Produto;
-import com.github.allanfs.dgapp.dgapp.pizza.model.ProdutoPizza;
 import com.github.allanfs.dgapp.dgapp.pizza.service.IService;
 
 public interface PedidoService extends IService<Pedido> {
@@ -50,8 +49,6 @@ public interface PedidoService extends IService<Pedido> {
 	 */
 	public void removerItem(Pedido pedido, Produto produto);
 	
-	public void adicionarPizza(Pedido pedido, ProdutoPizza pizza);
-
 	public void adicionarDesconto(Pedido pedido, Operacao desconto);
 
 	public void adicionarCobranca(Pedido pedido, Operacao cobranca);

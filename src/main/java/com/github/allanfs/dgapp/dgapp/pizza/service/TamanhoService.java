@@ -16,7 +16,7 @@ import com.github.allanfs.dgapp.dgapp.pizza.repository.TamanhoRepository;
 
 @Service
 public class TamanhoService implements IService<Tamanho>{
-
+	
     @Autowired
     private TamanhoRepository repo;
     
@@ -24,6 +24,14 @@ public class TamanhoService implements IService<Tamanho>{
     private MessageSource mensagem;
 
     public Tamanho cadastrar(Tamanho tamanho){
+    	if (tamanho.getNome() == null ||
+    			tamanho.getNumeroFatias() == 0 ||
+    			tamanho.getNumeroMaximoSabores() == 0||
+    			tamanho.getPrecoPadrao() == 0 ||
+    			tamanho.getCentimetros() == 0 ) {
+			throw new IllegalArgumentException("Tamanho informado não possui todos os campos preenchidos");
+		}
+    	IService.logger.info("Cadastrando tamanho: nome [%s]", tamanho.getNome());
         return repo.save(tamanho);
     }
     

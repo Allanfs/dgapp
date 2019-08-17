@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Os métodos se reponsabilizam de verificar
  * a consistencia dos dados, e caso não estejam
@@ -14,7 +17,7 @@ import javax.persistence.EntityNotFoundException;
  *
  */
 public interface IService<T> {
-
+	static final Logger logger = LoggerFactory.getLogger(IService.class);
     public T cadastrar( T obj );
 
     /**

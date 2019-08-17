@@ -16,6 +16,7 @@ import com.github.allanfs.dgapp.dgapp.pedido.model.Estado;
 import com.github.allanfs.dgapp.dgapp.pedido.model.Pedido;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.ClienteNaoInformadoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.EnderecoNaoInformadoException;
+import com.github.allanfs.dgapp.dgapp.pizza.service.IService;
 
 import lombok.NoArgsConstructor;
 
@@ -31,8 +32,10 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 	}
 
 	public Pedido cadastrar(Pedido pedido) {
+		IService.logger.info("Validando pedido recebido...");
 		if (pedido != null) {
 			if (pedido.getCliente() == null) {
+				IService.logger.error("Cliente do pedido não foi informado");
 				throw new ClienteNaoInformadoException(message.getMessage("cliente.nao.informado", null, Locale.ROOT));
 			}
 		}
@@ -45,22 +48,23 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 		if (pedido.getEndereco() == null 
 				&& (quantidadeEnderecos > 1)
 				|| quantidadeEnderecos <= 0) {
-
+			IService.logger.error(message.getMessage("endereco.nao.informado", null, Locale.ROOT));
 			throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT));
 
 		} else {
-
+			IService.logger.info("Usado unido endereço do cliente para o pedido");
 			pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
 		}
 
+		IService.logger.info("Validar itens...");
 		if (validarItens(pedido)) {
 
 			pedido.setEstado(Estado.ABERTO);
-
+			IService.logger.info("IAlterando estado do pedido para ABERTO");
 		}
 
 		Pedido p = repo.save(pedido);
-
+		IService.logger.info("Pedido salvo!");
 		long codigoPedido = gerarCodigoDoPedido();
 		return p;
 	}

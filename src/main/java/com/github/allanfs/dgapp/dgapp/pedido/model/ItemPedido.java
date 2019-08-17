@@ -1,13 +1,13 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
+import java.util.List;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.allanfs.dgapp.dgapp.pizza.model.ProdutoPizza;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Tamanho;
 
 import lombok.Data;
@@ -27,16 +27,9 @@ import lombok.NoArgsConstructor;
  * <br>
  * Um pedido se relaciona com vários produtos, e um produto se relaciona com varios pedidos.
  * </p>
- * <hr>
- * <p>
- * {@link ProdutoPizza} é usado apenas quando o {@link Produto} inserido
- * {@link Produto#isPizza()}, será verificado durante o cadastro do {@link Pedido} 
- * se este {@link ItemPedido} é válido.
- * </p>
  * @author allan
  * @see Produto
  * @see Pedido
- * @see ProdutoPizza
  *
  */
 @NoArgsConstructor
@@ -49,25 +42,16 @@ public class ItemPedido {
 	@JsonIgnore
 	private ItemPedidoEmbeddedId id;
 	
+	@OneToMany
+	private List<SaborDeItemPedido> sabores;
+	
+	@OneToOne(targetEntity = Tamanho.class)
+	private Tamanho tamanho;
+	
 	private int quantidade;
 	
 	private String observacao;
 
-	@OneToOne(targetEntity = ProdutoPizza.class)
-	private ProdutoPizza pizza;
-	
-	public ItemPedido(Pedido pedido, ProdutoPizza produto, int quantidade ) {
-		this.id = new ItemPedidoEmbeddedId(pedido, produto);
-		this.pizza = produto;
-		this.quantidade = quantidade;
-	}
-	
-	public ItemPedido(Pedido pedido, ProdutoPizza produto) {
-		this.id = new ItemPedidoEmbeddedId(pedido, produto);
-		this.pizza = produto;
-		this.quantidade = 1;
-	}
-	
 	public ItemPedido(Pedido pedido, Produto produto) {
 		this.id = new ItemPedidoEmbeddedId(pedido, produto);
 		this.quantidade = 1;
@@ -98,6 +82,10 @@ public class ItemPedido {
 			id = new ItemPedidoEmbeddedId();
 		}
 		return id;
+	}
+	
+	public boolean quantidadeMaiorQueZero() {
+		return this.quantidade > 0;
 	}
 	
 	/*

@@ -9,7 +9,7 @@ import io.swagger.annotations.Api;
 
 @Api(value="API REST recheio")
 @RestController
-@RequestMapping(name = "RecheioController",path = "/recheio")
+@RequestMapping(name = "RecheioController",path = "/recheios")
 public class RecheioController extends AbstractController<Recheio>{
 
 }

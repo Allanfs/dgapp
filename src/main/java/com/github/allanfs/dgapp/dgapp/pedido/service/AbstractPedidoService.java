@@ -24,7 +24,7 @@ import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.CancelamentoDePe
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.FechamentoDePedidoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoException;
 import com.github.allanfs.dgapp.dgapp.pedido.service.exceptions.PedidoSemItensException;
-import com.github.allanfs.dgapp.dgapp.pizza.model.ProdutoPizza;
+import com.github.allanfs.dgapp.dgapp.pizza.service.IService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -75,65 +75,65 @@ public abstract class AbstractPedidoService {
 		 * 1) verifica se existem itens no pedido
 		 */
 		if (pedido.getItens() == null || pedido.getItens().size() <= 0) {
+			IService.logger.info("Pedido não possui itens.");
 			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
 		}
 
+		
+		IService.logger.info( String.format("Pedido com [%d] itens", pedido.getItens().size()) );
 		/*
 		 * 2) verificar se a quantidade de itens presente no pedido é valida;
 		 * 3) verificar se o item possui referencia a este pedido.
 		 * parallelStream evita ConcurrentModificationException
-		 * 4) Verifica se o item é do tipo pizza,
+		 * 4) Verifica se o item é pizza,
 		 * se for, valida os sabores do Item.
 		 * se não, ignora, settando-os com null
 		 */
-		pedido.getItens().parallelStream().forEach(item -> {
-			if (item.getQuantidade() <= 0) {
+		pedido.getItens().parallelStream().forEach( item -> {
+			if (!item.quantidadeMaiorQueZero()) {
 				pedido.getItens().remove(item);
 				return;
 			}
+			
 			if (item.getPedido() == null) {
 				item.setPedido(pedido);
 			}
-
-			if (item.getProduto().isPizza()) {
-				if (item.getPizza() != null) {
-					validarPizza(item.getPizza()); // se lançar exceção tem algo errado
-				} else {
-					throw new PedidoException("Pizza sem informações.");
-				}
-
-			} else {
+			if (!pizzaValida(item)) {
 				/*
 				 * 4.1) despreza campos pertinentes a pizza
 				 */
-				item.setPizza(null);
-
+				item.setTamanho(null);
+				item.setSabores(null);
+				IService.logger.info("Item não é uma pizza!");
 			}
-
+			
 		});
-
+		
 		/*
 		 * 5) verifica a quantidade de itens novamente. 
 		 * Se, após a validação não houver pelo menos  um item
 		 * uma exceção é lançada
 		 */
 		if (this.obterQuantidadeDeItens(pedido) <= 0) {
+			IService.logger.info("Após validação dos itens, não há nenhum item no pedido.");
 			throw new PedidoSemItensException(message.getMessage("pedido.sem.itens", null, Locale.ROOT));
 		}
-
+		IService.logger.info("Validação de itens do pedido. OK");
 		return true;
 
 	}
 
-	private void validarPizza(ProdutoPizza pizza) {
+	private void validarPizza(ItemPedido pizza) {
 		
 		int quantidadeDeSaboresNaPizza;
 		int numeroMaximoDeSaboresNoTamanho;
 		
 		
 		if (pizza.getTamanho() == null) {
+			IService.logger.info("Tamanho da pizza não foi informado");
 			throw new PedidoException("Tamanho da pizza não informado.");
 		} else if (pizza.getSabores() == null || pizza.getSabores().isEmpty()) {
+			IService.logger.info("Sabores da pizza não foram informados");
 			throw new PedidoException("Sabores da pizza não foram informados.");
 		}
 		
@@ -142,9 +142,52 @@ public abstract class AbstractPedidoService {
 		
 		if(quantidadeDeSaboresNaPizza > numeroMaximoDeSaboresNoTamanho) {
 			String msg = String.format("Quantidade de sabores maior que a permitida para o tamanho. %d foram informados, o máximo é %d", quantidadeDeSaboresNaPizza, numeroMaximoDeSaboresNoTamanho);
+			IService.logger.info(msg);
 			throw new PedidoException(msg);
 		}
 		
+	}
+	
+	private boolean pizzaValida(ItemPedido pizza) {
+		
+		int quantidadeDeSaboresNaPizza;
+		int numeroMaximoDeSaboresNoTamanho;
+		
+		// o produto do item é null ou não é pizza?
+		if (pizza.getProduto() == null || !pizza.getProduto().isPizza()) {
+			return false;
+		}
+		
+		if (pizza.getTamanho() == null) {	// o tamanho foi informado?
+			
+			IService.logger.info("Tamanho da pizza não foi informado");
+			throw new PedidoException("Tamanho da pizza não informado.");
+			
+		} else if (pizza.getSabores() == null || pizza.getSabores().isEmpty()) {	// os sabores são validos?
+			
+			IService.logger.info("Sabores da pizza não foram informados");
+			throw new PedidoException("Sabores da pizza não foram informados.");
+			
+		}
+		
+		quantidadeDeSaboresNaPizza = pizza.getSabores().size();
+		numeroMaximoDeSaboresNoTamanho = pizza.getTamanho().getNumeroMaximoSabores();
+		
+		// a pizza tem mais sabores do que o tamanho permite?		
+		if(quantidadeDeSaboresNaPizza > numeroMaximoDeSaboresNoTamanho) {
+			
+			String msg = String.format("Quantidade de sabores maior que a permitida para o tamanho. %d foram informados, o máximo é %d", quantidadeDeSaboresNaPizza, numeroMaximoDeSaboresNoTamanho);
+			IService.logger.info(msg);
+			throw new PedidoException(msg);
+			
+		}
+		
+		// associa o itemPedido aos sabores
+		pizza.getSabores().stream()
+			.filter(sabor -> sabor.id.getItemPedido() == null)
+			.forEach(sabor -> sabor.id.setItemPedido(pizza));
+		
+		return true;
 	}
 	
 	public int obterQuantidadeDeItensUnicos(Pedido pedido) {
@@ -262,6 +305,4 @@ public abstract class AbstractPedidoService {
 		return repo.countByEstado(estado);
 	}
 	
-	public void adicionarPizza(Pedido pedido, ProdutoPizza pizza) {
-	}
 }

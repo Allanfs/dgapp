@@ -3,6 +3,8 @@ package com.github.allanfs.dgapp.dgapp.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ import com.github.allanfs.dgapp.dgapp.pizza.service.IService;
  */
 public class AbstractController<T> {
 
+	private static final Logger logger = LoggerFactory.getLogger(AbstractController.class);
+	
     @Autowired
     protected IService<T> service;
 
@@ -50,10 +54,11 @@ public class AbstractController<T> {
     
     @GetMapping
     public ResponseEntity< List<T> > buscarTodos(){
-        
+         
         List<T> todos = service.buscarTodos();
 
         if (todos.isEmpty()) {
+        	logger.info("Nenhum registro encontrado:" + this.getClass().getName());
             return new ResponseEntity<List<T>>(todos, HttpStatus.NO_CONTENT);
         }
         
