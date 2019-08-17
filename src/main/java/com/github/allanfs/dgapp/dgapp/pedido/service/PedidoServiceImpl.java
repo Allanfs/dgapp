@@ -52,7 +52,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 			throw new EnderecoNaoInformadoException(message.getMessage("endereco.nao.informado", null, Locale.ROOT));
 
 		} else {
-			IService.logger.info("Usado unido endereço do cliente para o pedido");
+			IService.logger.info("Usado único endereço do cliente para o pedido");
 			pedido.setEndereco(clienteDoPedido.getEndereco().stream().findFirst().get());
 		}
 
@@ -60,7 +60,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 		if (validarItens(pedido)) {
 
 			pedido.setEstado(Estado.ABERTO);
-			IService.logger.info("IAlterando estado do pedido para ABERTO");
+			IService.logger.info("Alterando estado do pedido para ABERTO");
 		}
 
 		Pedido p = repo.save(pedido);
@@ -106,6 +106,7 @@ public class PedidoServiceImpl extends AbstractPedidoService implements PedidoSe
 
 	@Override
 	public List<Pedido> buscarTodos() {
+		IService.logger.info("Buscando todos os pedidos cadastrados");
 		return repo.findAll();
 	}
 

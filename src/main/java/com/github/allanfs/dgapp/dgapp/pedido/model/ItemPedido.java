@@ -1,9 +1,16 @@
 package com.github.allanfs.dgapp.dgapp.pedido.model;
 
 import java.util.List;
+import java.util.UUID;
 
-import javax.persistence.EmbeddedId;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -38,11 +45,29 @@ import lombok.NoArgsConstructor;
 @Data
 public class ItemPedido {
 
-	@EmbeddedId
-	@JsonIgnore
-	private ItemPedidoEmbeddedId id;
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@Column(name = "id_item_pedido")
+	private UUID id;
 	
-	@OneToMany
+	@ManyToOne()
+	@JoinColumn(
+			name="id_pedido_fk",
+			referencedColumnName="id_pedido",
+			foreignKey = @ForeignKey(
+					name="id_pedido_fk_esta_para_id_pedido")
+			)
+	@JsonIgnore
+	private Pedido pedido;
+	
+	@ManyToOne()
+	@JoinColumn(name="id_produto_fk", referencedColumnName="id_produto",
+		foreignKey = @ForeignKey(
+				name="id_produto_fk_esta_para_id_produto")
+		)
+	private Produto produto;
+	
+	@OneToMany(cascade = CascadeType.ALL)	
 	private List<SaborDeItemPedido> sabores;
 	
 	@OneToOne(targetEntity = Tamanho.class)
@@ -53,35 +78,16 @@ public class ItemPedido {
 	private String observacao;
 
 	public ItemPedido(Pedido pedido, Produto produto) {
-		this.id = new ItemPedidoEmbeddedId(pedido, produto);
+//		this.id = new ItemPedidoEmbeddedId(pedido, produto);
+		this.pedido = pedido;
+		this.produto = produto;
 		this.quantidade = 1;
 	}
 
 	public ItemPedido(Pedido pedido, Produto produto, int quantidade ) {
-		this.id = new ItemPedidoEmbeddedId(pedido, produto);
+		this.pedido = pedido;
+		this.produto = produto;
 		this.quantidade = quantidade;
-	}
-	
-	public Produto getProduto() {
-		return criarIDSeNaoExistir().getProduto();
-	}
-	public void setProduto( Produto produto ) {
-		criarIDSeNaoExistir().setProduto(produto);
-	}
-	
-	@JsonIgnore
-	public Pedido getPedido() {
-		return criarIDSeNaoExistir().getPedido();
-	}
-	public void setPedido( Pedido pedido ) {
-		criarIDSeNaoExistir().setPedido(pedido);
-	}
-	
-	private ItemPedidoEmbeddedId criarIDSeNaoExistir() {
-		if(id == null) {
-			id = new ItemPedidoEmbeddedId();
-		}
-		return id;
 	}
 	
 	public boolean quantidadeMaiorQueZero() {

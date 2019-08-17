@@ -152,9 +152,10 @@ public abstract class AbstractPedidoService {
 		
 		int quantidadeDeSaboresNaPizza;
 		int numeroMaximoDeSaboresNoTamanho;
-		
+		IService.logger.info("Item null, " + (pizza== null));
 		// o produto do item é null ou não é pizza?
 		if (pizza.getProduto() == null || !pizza.getProduto().isPizza()) {
+			IService.logger.info("Produto da pizza é null ou não é pizza");
 			return false;
 		}
 		
@@ -169,7 +170,7 @@ public abstract class AbstractPedidoService {
 			throw new PedidoException("Sabores da pizza não foram informados.");
 			
 		}
-		
+		IService.logger.info("Item é uma pizza. Possui tamanho e sabores validos");
 		quantidadeDeSaboresNaPizza = pizza.getSabores().size();
 		numeroMaximoDeSaboresNoTamanho = pizza.getTamanho().getNumeroMaximoSabores();
 		
@@ -184,9 +185,11 @@ public abstract class AbstractPedidoService {
 		
 		// associa o itemPedido aos sabores
 		pizza.getSabores().stream()
-			.filter(sabor -> sabor.id.getItemPedido() == null)
-			.forEach(sabor -> sabor.id.setItemPedido(pizza));
-		
+			.filter(sabor -> sabor.getItemPedido() == null)
+			.forEach(sabor -> {
+				IService.logger.info("Sabor com item pedido null " + (sabor.getItemPedido() == null));
+				sabor.setItemPedido(pizza);
+			});
 		return true;
 	}
 	

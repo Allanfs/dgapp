@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -36,6 +37,7 @@ public class Endereco {
 	@ManyToOne
 	@JoinColumn(name = "id_cliente_fk")
 	@NotNull
+	@JsonIgnore
 	private Cliente cliente;
 	
 	@NotNull(message = "Rua deve ser preenchida")
