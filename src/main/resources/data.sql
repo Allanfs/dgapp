@@ -302,7 +302,6 @@ INSERT INTO tb_sabor_ordem_recheio (id_sor, ID_SABOR_ORDEM_SABOR, ID_RECHEIO_ORD
 ,('6716de00-a829-11e9-a2a3-2a2ae2dbcce4','39fa8476-a824-11e9-a2a3-2a2ae2dbcce4', 'a5fb0b8c-8a2e-11e9-bc42-526af7764f64', 2)
 ,('6716df2c-a829-11e9-a2a3-2a2ae2dbcce4','39fa8476-a824-11e9-a2a3-2a2ae2dbcce4', 'a5fb1c4e-8a2e-11e9-bc42-526af7764f64', 3)
 ,('6716e058-a829-11e9-a2a3-2a2ae2dbcce4','39fa8476-a824-11e9-a2a3-2a2ae2dbcce4', 'a5fb0448-8a2e-11e9-bc42-526af7764f64', 4)
-,('6716e44a-a829-11e9-a2a3-2a2ae2dbcce4','39fa8476-a824-11e9-a2a3-2a2ae2dbcce4', 'a5fb1c4e-8a2e-11e9-bc42-526af7764f64', 5)
 ,('6716e5a8-a829-11e9-a2a3-2a2ae2dbcce4','39fa8476-a824-11e9-a2a3-2a2ae2dbcce4', 'a5fad400-8a2e-11e9-bc42-526af7764f64', 6)
 ,('6716e6d4-a829-11e9-a2a3-2a2ae2dbcce4','39fa8476-a824-11e9-a2a3-2a2ae2dbcce4', 'a5fb0ee8-8a2e-11e9-bc42-526af7764f64', 7)
 ,('6716e7f6-a829-11e9-a2a3-2a2ae2dbcce4','39fa85fc-a824-11e9-a2a3-2a2ae2dbcce4', 'a5fb0a60-8a2e-11e9-bc42-526af7764f64', 1)
