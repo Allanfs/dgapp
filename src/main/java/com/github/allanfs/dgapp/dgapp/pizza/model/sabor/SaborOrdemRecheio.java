@@ -3,18 +3,20 @@ package com.github.allanfs.dgapp.dgapp.pizza.model.sabor;
 import java.util.UUID;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Recheio;
 import com.github.allanfs.dgapp.dgapp.pizza.model.Sabor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -25,6 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "tb_sabor_ordem_recheio")
 @NoArgsConstructor @AllArgsConstructor
 @Data
+@EqualsAndHashCode(exclude = {"sabor"})
 public class SaborOrdemRecheio {
 
 	@Id
@@ -32,68 +35,34 @@ public class SaborOrdemRecheio {
 	@Column(name="id_sor")
 	private UUID id;
 	
-	@Embedded
+	@ManyToOne()
+	@JoinColumn(
+			name = "ID_SABOR_FK", 
+			referencedColumnName = "id_sabor", 
+			foreignKey = @ForeignKey(
+					name = "id_sabor_fk_esta_para_id_sabor"))
 	@JsonIgnore
-	private SaborOrdemRecheioEmbeddedId sor;
-	private Integer posicao;
+	private Sabor sabor;
+	
+	@ManyToOne()
+	@JoinColumn(
+			name = "ID_RECHEIO_FK", 
+			referencedColumnName = "id_recheio", 
+			foreignKey = @ForeignKey(
+					name = "id_recheio_fk_esta_para_id_recheio"))
+	private Recheio recheio;
+	
+	private int posicao;
 	
 	public SaborOrdemRecheio(Sabor saborNovo, Recheio recheio, int i) {
 		this(recheio, i);
-		setSabor(saborNovo);
+		this.sabor = saborNovo;
+		
 	}
 	
 	public SaborOrdemRecheio(Recheio recheio, Integer i) {
-		setRecheio(recheio);
-		setPosicao(i);
+		this.recheio = recheio;
+		this.posicao = i;
 	}
 	
-	public Recheio getRecheio() {
-		return sor.getRecheio();
-	}
-	
-	@JsonBackReference
-	public Sabor getSabor() {
-		return sor.getSabor();
-	}
-	
-	public void setRecheio( Recheio recheio ) {
-		if( sor == null ) {
-			sor = new SaborOrdemRecheioEmbeddedId();
-		}
-		sor.setRecheio(recheio);
-	}
-	
-	public void setSabor( Sabor sabor ) {
-		if( sor == null ) {
-			sor = new SaborOrdemRecheioEmbeddedId();
-		}
-		sor.setSabor(sabor);
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((sor == null) ? 0 : sor.hashCode());
-		result = prime * result + posicao;
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SaborOrdemRecheio other = (SaborOrdemRecheio) obj;
-		if (sor == null) {
-			if (other.sor != null)
-				return false;
-		} else if (!sor.equals(other.sor))
-			return false;
-		if (posicao != other.posicao)
-			return false;
-		return true;
-	}
 }
